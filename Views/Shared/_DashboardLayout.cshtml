@@ -59,6 +59,23 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                             Thương hiệu
                         </a>
+                        <div class="sb-sidenav-menu-heading">Đơn hàng</div>
+                        <a class="nav-link" asp-controller="OrdersManager" asp-action="PendingOrders">
+                            <div class="sb-nav-link-icon"><i class="fas fa-hourglass-half"></i></div>
+                            Chưa xử lý
+                        </a>
+                        <a class="nav-link" asp-controller="OrdersManager" asp-action="ProcessingOrders">
+                            <div class="sb-nav-link-icon"><i class="fas fa-angle-double-right"></i></div>
+                            Đang xử lý
+                        </a>
+                        <a class="nav-link" asp-controller="OrdersManager" asp-action="CompletedOrders">
+                            <div class="sb-nav-link-icon"><i class="fas fa-check-circle"></i></div>
+                            Đã hoàn thành
+                        </a>
+                        <a class="nav-link" asp-controller="OrdersManager" asp-action="CanceledOrders">
+                            <div class="sb-nav-link-icon"><i class="fas fa-times-circle"></i></div>
+                            Đã huỷ
+                        </a>
                         <div class="sb-sidenav-menu-heading">Thành viên</div>
                         <a class="nav-link" asp-controller="RolesManager" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-tag"></i></div>

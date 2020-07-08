@@ -51,11 +51,6 @@ namespace TheGioiDienThoai.Controllers
             return View();
         }
 
-        private object List<T>()
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetRolesName(string userId)
         {
             var user = Task.Run(async () => await userManager.FindByIdAsync(userId)).Result;

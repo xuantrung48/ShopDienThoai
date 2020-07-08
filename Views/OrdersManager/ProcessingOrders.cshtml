@@ -1,0 +1,72 @@
+﻿@model List<OrderDetailViewModel>
+@{
+    ViewBag.Title = "Danh sách đơn hàng đang xử lý";
+}
+
+<table class="table table-hover table-responsive table-bordered display w-100 d-block d-md-table" id="productsTable">
+    <thead>
+        <tr class="thead-dark">
+            <th>Id</th>
+            <th>Ngày đặt hàng</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Tên khách hàng</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="OrdersManager" asp-action="Edit" asp-route-id="@order.OrderId">@order.OrderId</a>
+                </td>
+                <td>
+                    @order.OrderTime.ToString("dd/MM/yyyy hh:mm tt")
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@order.ProductId" target="_blank">@order.ProductName</a>
+                </td>
+                <td>
+                    @order.ProductPrice.ToString("#,##0") ₫
+                </td>
+                <td>
+                    @order.CustomerName
+                </td>
+                <td>
+                    <a asp-controller="OrdersManager" asp-action="Edit" asp-route-id="@order.OrderId"  asp-route-backAction="ProcessingOrders" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section datatablejs{
+    <environment include="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    </environment>
+    <environment exclude="Development">
+        https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js
+    </environment>
+    <script>
+        $(document).ready(function () {
+            $('#productsTable').DataTable();
+        });
+    </script>
+}
+@section datatablecss{
+    <environment include="Development">
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css
+    </environment>
+}
+@section lightboxcss{
+    <environment include="Development">
+        <link href="~/lib/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css
+    </environment>
+}

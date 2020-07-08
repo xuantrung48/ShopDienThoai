@@ -14,7 +14,6 @@ namespace TheGioiDienThoai.Controllers
 {
     public class OrderController : Controller
     {
-
         private readonly AppDbContext context;
         private readonly IProductRepository productRepository;
         private readonly IBrandRepository brandRepository;
@@ -67,34 +66,38 @@ namespace TheGioiDienThoai.Controllers
         [HttpPost]
         public IActionResult UserBuy(CustomerViewModel model)
         {
-            var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
-            var product = (from p in context.Products where p.ProductId == model.ProductId select p).ToList().FirstOrDefault();
-            var customer = new Customer()
+            if (ModelState.IsValid)
             {
-                CustomerName = model.Name,
-                Address = model.Address,
-                PhoneNumber = model.PhoneNumber,
-                UserId = currentUser.Id
-            };
-            var createCustomer = customerRepository.Create(customer);
-            var order = new Order()
-            {
-                CustomerId = createCustomer.CustomerId,
-                OrderTime = DateTime.Now,
-                Status = OrderStatus.Pending
-            };
-            var createOrder = orderRepository.Create(order);
-            var orderDetail = new OrderDetail()
-            {
-                OrderId = createOrder.OrderId,
-                ProductId = product.ProductId,
-                Price = product.Price,
-                Quantity = 1
-            };
-            var createOrderDetail = orderDetailRepository.Create(orderDetail);
-            context.Products.Find(model.ProductId).Remain -= 1;
-            context.SaveChanges();
-            return RedirectToAction("OrderDetail", new { id = createOrder.OrderId });
+                var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+                var product = (from p in context.Products where p.ProductId == model.ProductId select p).ToList().FirstOrDefault();
+                var customer = new Customer()
+                {
+                    CustomerName = model.Name,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    UserId = currentUser.Id
+                };
+                var createCustomer = customerRepository.Create(customer);
+                var order = new Order()
+                {
+                    CustomerId = createCustomer.CustomerId,
+                    OrderTime = DateTime.Now,
+                    Status = OrderStatus.Pending
+                };
+                var createOrder = orderRepository.Create(order);
+                var orderDetail = new OrderDetail()
+                {
+                    OrderId = createOrder.OrderId,
+                    ProductId = product.ProductId,
+                    Price = product.Price,
+                    Quantity = 1
+                };
+                var createOrderDetail = orderDetailRepository.Create(orderDetail);
+                context.Products.Find(model.ProductId).Remain -= 1;
+                context.SaveChanges();
+                return RedirectToAction("OrderDetail", new { id = createOrder.OrderId });
+            }
+            return View();
         }
         public IActionResult OrderDetail(string id)
         {
@@ -139,32 +142,36 @@ namespace TheGioiDienThoai.Controllers
         [HttpPost]
         public IActionResult AnonymousBuy(CustomerViewModel model)
         {
-            var product = (from p in context.Products where p.ProductId == model.ProductId select p).ToList().FirstOrDefault();
-            var customer = new Customer()
+            if (ModelState.IsValid)
             {
-                CustomerName = model.Name,
-                Address = model.Address,
-                PhoneNumber = model.PhoneNumber
-            };
-            var createCustomer = customerRepository.Create(customer);
-            var order = new Order()
-            {
-                CustomerId = createCustomer.CustomerId,
-                OrderTime = DateTime.Now,
-                Status = OrderStatus.Pending
-            };
-            var createOrder = orderRepository.Create(order);
-            var orderDetail = new OrderDetail()
-            {
-                OrderId = createOrder.OrderId,
-                ProductId = product.ProductId,
-                Price = product.Price,
-                Quantity = 1
-            };
-            var createOrderDetail = orderDetailRepository.Create(orderDetail);
-            context.Products.Find(model.ProductId).Remain -= 1;
-            context.SaveChanges();
-            return RedirectToAction("OrderDetail", new { id = createOrder.OrderId });
+                var product = (from p in context.Products where p.ProductId == model.ProductId select p).ToList().FirstOrDefault();
+                var customer = new Customer()
+                {
+                    CustomerName = model.Name,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber
+                };
+                var createCustomer = customerRepository.Create(customer);
+                var order = new Order()
+                {
+                    CustomerId = createCustomer.CustomerId,
+                    OrderTime = DateTime.Now,
+                    Status = OrderStatus.Pending
+                };
+                var createOrder = orderRepository.Create(order);
+                var orderDetail = new OrderDetail()
+                {
+                    OrderId = createOrder.OrderId,
+                    ProductId = product.ProductId,
+                    Price = product.Price,
+                    Quantity = 1
+                };
+                var createOrderDetail = orderDetailRepository.Create(orderDetail);
+                context.Products.Find(model.ProductId).Remain -= 1;
+                context.SaveChanges();
+                return RedirectToAction("OrderDetail", new { id = createOrder.OrderId });
+            }
+            return View();
         }
         public IActionResult Cancel(string id)
         {
@@ -182,7 +189,9 @@ namespace TheGioiDienThoai.Controllers
             var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
             if (userOrder.Id == currentUser.Id)
             {
-                context.Orders.Find(id).Status = OrderStatus.Canceled;
+                var editOrder = context.Orders.Find(id);
+                editOrder.Status = OrderStatus.Canceled;
+                editOrder.CompleteTime = DateTime.Now;
                 var productId = (from p in context.Products
                                join d in context.OrderDetails on p.ProductId equals d.ProductId
                                join o in context.Orders on d.OrderId equals o.OrderId
@@ -238,15 +247,19 @@ namespace TheGioiDienThoai.Controllers
         [HttpPost]
         public IActionResult Edit(OrderDetailViewModel model)
         {
-            var customer = (from c in context.Customers
-                              join o in context.Orders on c.CustomerId equals o.CustomerId
-                              where o.OrderId == model.OrderId
-                              select c).ToList().FirstOrDefault();
-            customer.Address = model.CustomerAddress;
-            customer.PhoneNumber = model.CustomerPhoneNumber;
-            customer.CustomerName = model.CustomerName;
-            context.SaveChanges();
-            return RedirectToAction("OrderDetail", "Order", new { id = model.OrderId });
+            if (ModelState.IsValid)
+            {
+                var customer = (from c in context.Customers
+                                join o in context.Orders on c.CustomerId equals o.CustomerId
+                                where o.OrderId == model.OrderId
+                                select c).ToList().FirstOrDefault();
+                customer.Address = model.CustomerAddress;
+                customer.PhoneNumber = model.CustomerPhoneNumber;
+                customer.CustomerName = model.CustomerName;
+                context.SaveChanges();
+                return RedirectToAction("OrderDetail", "Order", new { id = model.OrderId });
+            }
+            return View();
         }
     }
 }
