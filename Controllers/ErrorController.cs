@@ -11,7 +11,7 @@ namespace TheGioiDienThoai.Controllers
         [Route("Error/{StatusCode}")]
         public IActionResult PageNotFound(int StatusCode)
         {
-            ViewBag.ErrorMessage = "Bạn đang bị lạc!";
+            ViewBag.ErrorMessage = "Lỗi 404: không tìm thấy trang!";
             return View();
         }
         [Route("Error")]

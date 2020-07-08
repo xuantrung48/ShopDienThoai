@@ -1,33 +1,12 @@
 ﻿@{
     ViewBag.Title = "Lỗi hệ thống";
 }
-<div class="not-found parallax">
-    <div class="sky-bg"></div>
-    <div class="wave-7"></div>
-    <div class="wave-6"></div>
-    <a class="wave-island" asp-controller="Home" asp-action="Index">
-        <img src="~/images/island.svg" alt="Island" />
-    </a>
-    <div class="wave-5"></div>
-    <div class="wave-lost wrp">
-        <span>4</span>
-        <span>0</span>
-        <span>4</span>
-    </div>
-    <div class="wave-4"></div>
-    <div class="wave-boat">
-        <img src="~/images/boat.svg" alt="Boat" />
-    </div>
-    <div class="wave-3"></div>
-    <div class="wave-2"></div>
-    <div class="wave-1"></div>
-    <div class="wave-message">
-        <p> @ViewBag.ErrorMessage</p>
-        <p>Tìm hòn đảo để trở về!</p>
+<div id="main">
+    <div class="fof">
+        <h1>Lỗi: Không tìm thấy tài nguyên!</h1>
     </div>
 </div>
 @section PageNotFound
 {
-    <script src="~/lib/js/Home404.js"></script>
     <link href="~/lib/css/Home404.css" rel="stylesheet" />
 }

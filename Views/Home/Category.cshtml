@@ -16,7 +16,7 @@
         if (brands != null)
             productTitle += $" {(from e in brands where e.BrandId == product.BrandId select e).FirstOrDefault().Name}";
         productTitle += $" {product.Name} ({product.Ram} GB, {product.Rom} GB)";
-        <div class="col-md-6 col-lg-4 card-group">
+        <div class="col-md-4 col-lg-3 col-sm-6 card-group">
             <div class="card rounded my-3 bg-transparent py-2">
                 <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
                     @{
@@ -29,19 +29,19 @@
 
                         if (productImages.Count != 0)
                         {
-                            <img class="card-img-top" src="~/images/products/@productImages[0].ImageName" alt="@productTitle">
+                            <img src="~/images/products/@productImages[0].ImageName" alt="@productTitle" style="max-height:180px; max-width:140px" class="mx-auto d-block">
                         }
                     }
                 </a>
                 <div class="card-body">
-                    <h4 class="card-title text-center">
+                    <h5 class="card-title text-center">
                         <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
                             @productTitle
                         </a>
-                    </h4>
+                    </h5>
                 </div>
                 <div class="card-footer text-center text-danger bg-transparent">
-                    <h3>@product.Price.ToString("#,##0") ₫</h3>
+                    <h5>@product.Price.ToString("#,##0") ₫</h5>
                 </div>
             </div>
         </div>

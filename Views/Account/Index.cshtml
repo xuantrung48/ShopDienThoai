@@ -1,7 +1,7 @@
 ﻿@model UserViewModel
 @{
     ViewBag.Title = "Thông tin tài khoản";
-    var imagePath = !string.IsNullOrEmpty(Model.ProfilePicture) ? $"images/users/{Model.ProfilePicture}" : "images/users/0.png";
+    var imagePath = !string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png";
 }
 <h2 class="text-center">@ViewBag.Title</h2>
 <div class="col-sm-9 col-md-6 col-lg-4 mx-auto">
@@ -31,6 +31,11 @@
         <div class="form-label-group my-3">
             <input asp-for="Address" class="form-control" placeholder="Địa chỉ">
             <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-label-group my-3">
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Số điện thoại">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
 
         <div class="form-label-group row">

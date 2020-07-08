@@ -44,7 +44,8 @@ namespace TheGioiDienThoai.Controllers
                     Email = currentUser.Email,
                     Gender = currentUser.Gender,
                     Name = currentUser.Name,
-                    ProfilePicture = currentUser.ProfilePicture
+                    ProfilePicture = currentUser.ProfilePicture,
+                    PhoneNumber = currentUser.PhoneNumber
                 };
                 return View(userViewModel);
             }
@@ -57,18 +58,13 @@ namespace TheGioiDienThoai.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
-                    var user = new User()
-                    {
-                        Email = currentUser.Email,
-                        UserName = currentUser.Email,
-                        Address = currentUser.Address,
-                        Name = currentUser.Name,
-                        PhoneNumber = currentUser.PhoneNumber,
-                        Gender = currentUser.Gender,
-                        Id = currentUser.Id,
-                        ProfilePicture = currentUser.ProfilePicture
-                    };
+                    User user = userManager.FindByNameAsync(User.Identity.Name).Result;
+                    user.Email = model.Email;
+                    user.UserName = model.Email;
+                    user.Address = model.Address;
+                    user.Name = model.Name;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.Gender = model.Gender;
                     if (model.ImageFile != null)
                     {
                         string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images\\users");
@@ -77,7 +73,7 @@ namespace TheGioiDienThoai.Controllers
                         using var fs = new FileStream(filePath, FileMode.Create);
                         model.ImageFile.CopyTo(fs);
 
-                        currentUser.ProfilePicture = fileName;
+                        user.ProfilePicture = fileName;
                         if (!string.IsNullOrEmpty(model.ProfilePicture))
                         {
                             string delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\users", model.ProfilePicture);
@@ -86,13 +82,9 @@ namespace TheGioiDienThoai.Controllers
                     }
 
                     var editUser = userRepository.Edit(user);
-                    if (editUser != null)
-                    {
-                        return RedirectToAction("Index", "Account");
-                    }
                 }
             }
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Account");
         }
         [HttpGet]
         public IActionResult Login(string returnUrl)
@@ -242,6 +234,35 @@ namespace TheGioiDienThoai.Controllers
                 {
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("UserBuy", "Order", new { model.ProductId });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+            return View();
+        }
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            if (!signInManager.IsSignedIn(User))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await userManager.ChangePasswordAsync(userManager.FindByNameAsync(User.Identity.Name).Result, model.Password, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Account");
                 }
                 else
                 {
