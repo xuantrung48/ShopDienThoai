@@ -24,6 +24,7 @@ namespace TheGioiDienThoai.Controllers
         private readonly UserManager<User> userManager;
         private readonly ICustomerRepository customerRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
+
         public OrderController(IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository, IOrderDetailRepository orderDetailRepository)
         {
             this.context = context;
@@ -116,13 +117,12 @@ namespace TheGioiDienThoai.Controllers
                                    OrderStatus = o.Status
                                }).ToList().FirstOrDefault();
             ViewBag.OrderId = id;
-            ViewBag.OrderDetail = orderDetail;
             ViewBag.UserOrder = (from u in context.Users
                                  join c in context.Customers on u.Id equals c.UserId
                                  join o in context.Orders on c.CustomerId equals o.CustomerId
                                  where o.OrderId == id
                                  select u).ToList().FirstOrDefault();
-            return View();
+            return View(orderDetail);
         }
         [HttpGet]
         public IActionResult AnonymousBuy(string id)
@@ -197,6 +197,56 @@ namespace TheGioiDienThoai.Controllers
         public IActionResult CheckOrder()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            var order = (from o in context.Orders where o.OrderId == id select o).ToList().FirstOrDefault();
+            if (order == null)
+                return RedirectToAction("Index", "Home");
+            var userOrder = (from u in context.Users
+                             join c in context.Customers on u.Id equals c.UserId
+                             join o in context.Orders on c.CustomerId equals o.CustomerId
+                             where o.OrderId == id
+                             select u).ToList().FirstOrDefault();
+            if (!signInManager.IsSignedIn(User))
+                return RedirectToAction("Index", "Home");
+            var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+            if (currentUser.Id != userOrder.Id)
+                return RedirectToAction("Index", "Home");
+
+            var orderDetail = (from o in context.Orders
+                               where o.OrderId == id
+                               join d in context.OrderDetails on o.OrderId equals d.OrderId
+                               join c in context.Customers on o.CustomerId equals c.CustomerId
+                               join p in context.Products on d.ProductId equals p.ProductId
+                               select new OrderDetailViewModel()
+                               {
+                                   OrderId = o.OrderId,
+                                   ProductId = p.ProductId,
+                                   CustomerAddress = c.Address,
+                                   CustomerName = c.CustomerName,
+                                   CustomerPhoneNumber = c.PhoneNumber,
+                                   OrderTime = o.OrderTime,
+                                   CompleteTime = o.CompleteTime,
+                                   ProductName = p.Name,
+                                   ProductPrice = p.Price,
+                                   OrderStatus = o.Status
+                               }).ToList().FirstOrDefault();
+            return View(orderDetail);
+        }
+        [HttpPost]
+        public IActionResult Edit(OrderDetailViewModel model)
+        {
+            var customer = (from c in context.Customers
+                              join o in context.Orders on c.CustomerId equals o.CustomerId
+                              where o.OrderId == model.OrderId
+                              select c).ToList().FirstOrDefault();
+            customer.Address = model.CustomerAddress;
+            customer.PhoneNumber = model.CustomerPhoneNumber;
+            customer.CustomerName = model.CustomerName;
+            context.SaveChanges();
+            return RedirectToAction("OrderDetail", "Order", new { id = model.OrderId });
         }
     }
 }
