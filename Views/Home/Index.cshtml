@@ -1,0 +1,54 @@
+﻿@inject AppDbContext context
+@{
+    ViewBag.Title = "Thế giới điện thoại - Cửa hàng điện thoại, tablet, laptop lớn nhất Việt Nam";
+    var brands = ViewBag.Brands as List<Brand>;
+    var categories = ViewBag.Categories as List<Category>;
+    var products = ViewBag.Products as List<Product>;
+}
+
+@foreach (var category in categories)
+{
+    <h3 class="text-center text-light bg-info rounded py-2 px-2">@category.Name</h3>
+    <div class="row">
+        @{
+            var productInCategory = (from e in products
+                               where e.CategoryId == category.CategoryId && e.Remain > 0
+                               select e).Take(6);
+        }
+
+        @foreach (var product in productInCategory)
+        {
+            var productTitle = string.Empty;
+            if (categories != null)
+                productTitle += $" {(from e in categories where e.CategoryId == product.CategoryId select e).FirstOrDefault().Name}";
+            if (brands != null)
+                productTitle += $" {(from e in brands where e.BrandId == product.BrandId select e).FirstOrDefault().Name}";
+            productTitle += $" {product.Name} ({product.Ram} GB, {product.Rom} GB)";
+            <div class="col-md-6 col-lg-4 card-group">
+                <div class="card rounded my-3 bg-transparent py-2">
+                    <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                        @{
+                            var productImages = (from e in context.Images
+                                                 where e.ProductId == product.ProductId
+                                                 select e).ToList();
+                            if (productImages.Count != 0)
+                            {
+                                <img class="card-img-top" src="~/images/products/@productImages[0].ImageName" alt="@productTitle">
+                            }
+                        }
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title text-center">
+                            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                                @productTitle
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="card-footer text-center text-danger bg-transparent">
+                        <h3>@product.Price.ToString("#,##0") ₫</h3>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

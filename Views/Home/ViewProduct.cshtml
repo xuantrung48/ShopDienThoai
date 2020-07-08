@@ -1,0 +1,152 @@
+﻿@model ProductDetailViewModel
+@{
+    var brand = ViewBag.Brand;
+    var categorie = ViewBag.Category;
+    var images = ViewBag.Images as List<Image>;
+    ViewBag.Title = $"{Model.CategoryName} {Model.BrandName} {@Model.Name} ({@Model.Ram} GB, {@Model.Rom} GB)";
+}
+<div class="row">
+    <div>
+        <h2>@ViewBag.Title</h2>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+    <div>
+        &nbsp;<a asp-controller="ProductsManager" asp-action="Edit" asp-route-id="@Model.ProductId"><i class="fas fa-edit"></i></a>
+    </div>
+    }
+</div>
+<div class="row">
+    <div class="col-md-5 text-center">
+        @{
+            if (images.Count != 0)
+            {
+            <div>
+                <a href="~/images/products/@images[0].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình 1">
+                    <img src="~/images/products/@images[0].ImageName" class="img-fluid my-3" height="500" />
+                </a>
+            </div>
+            <div class="row">
+                <div class="mx-auto">
+                    @for (int i = 1; i < images.Count; i++)
+                        {
+                    <a class="my-2 mx-1" href="~/images/products/@images[i].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình @(i + 1)">
+                        <img src="~/images/products/@images[i].ImageName" height="60" />
+                    </a>
+                        }
+                </div>
+            </div>
+            }
+        }
+    </div>
+    <div class="col-md-7">
+        <div class="row">
+            <div class="col-md-7">
+                <h3 class="text-danger my-3">@Model.Price.ToString("#,##0") ₫</h3>
+                <p class="text-primary">Bạn đang xem phiên bản: @Model.Ram GB/@Model.Rom GB</p>
+            </div>
+            <div class="col-md-5 text-center my-3">
+                @{
+                    if (Model.Remain != 0)
+                    {
+                    <a class="btn btn-warning p-3" asp-controller="Order" asp-action="Buy" asp-route-id="@Model.ProductId">MUA NGAY! <i class="fas fa-cart-plus"></i></a>
+                    }
+                    else
+                    {
+                    <div class="btn btn-secondary p-3">Hết hàng!</div>
+                    }
+                }
+            </div>
+        </div>
+        <h4>Thông số kỹ thuật:</h4>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Màn hình:
+            </div>
+            <div class="col-7">
+                @Model.Screen
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Hệ điều hành:
+            </div>
+            <div class="col-7">
+                @Model.OS
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Camera sau:
+            </div>
+            <div class="col-7">
+                @Model.RearCamera
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Camera trước:
+            </div>
+            <div class="col-7">
+                @Model.FrontCamera
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                CPU:
+            </div>
+            <div class="col-7">
+                @Model.CPU
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Ram:
+            </div>
+            <div class="col-7">
+                @Model.Ram GB
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-5">
+                Bộ nhớ trong:
+            </div>
+            <div class="col-7">
+                @Model.Rom GB
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+<div>
+    @Model.Description
+</div>
+@section lightboxjs{
+    <environment include="Development">
+        <script src="~/lib/ekko-lightbox/ekko-lightbox.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+    </environment>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
+}
+@section lightboxcss{
+    <environment include="Development">
+        <link href="~/lib/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet" />
+    </environment>
+}

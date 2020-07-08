@@ -1,0 +1,75 @@
+﻿@inject AppDbContext context
+@model List<Product>
+@{
+    ViewBag.Title = "Kết quả tìm kiếm";
+    var categories = ViewBag.Categories as List<Category>;
+    var brands = ViewBag.Brands as List<Brand>;
+    var brandId = ViewBag.BrandId as int?;
+    var categoryId = ViewBag.CategoryId as int?;
+    var keyWord = ViewBag.KeyWord;
+    var minPrice = ViewBag.MinPrice;
+    var maxPrice = ViewBag.MaxPrice;
+    var sortByPrice = ViewBag.Sort;
+}
+@{
+    var categoryName = (categoryId != 0) ? (from c in context.Categories where c.CategoryId == categoryId select c).ToList().FirstOrDefault().Name : "Tất cả";
+    var brandName = (brandId != 0) ? (from b in context.Brands where b.BrandId == brandId select b).ToList().FirstOrDefault().Name : "Tất cả";
+}
+@if (keyWord != null)
+{
+    <h5 class="text-danger">Từ khóa: @keyWord</h5>
+}
+<h5 class="text-danger">Danh mục: @categoryName</h5>
+<h5 class="text-danger">Thương hiệu: @brandName</h5>
+@{
+    if (minPrice != 0 || maxPrice != 0)
+    {
+        <h5 class="text-danger">Mức giá: Từ @minPrice.ToString("#,##0") ₫ đến @maxPrice.ToString("#,##0") ₫</h5>
+    }
+    if (sortByPrice == "desc")
+    {
+        <h5 class="text-danger">Sắp xếp theo giá: Giảm dần</h5>
+    }
+    if (sortByPrice == "asc")
+    {
+        <h5 class="text-danger">Sắp xếp theo giá: Tăng dần</h5>
+    }
+}
+<div class="py-3">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            var productTitle = string.Empty;
+            if (categories != null)
+                productTitle += $" {(from e in categories where e.CategoryId == product.CategoryId select e).FirstOrDefault().Name}";
+            if (brands != null)
+                productTitle += $" {(from e in brands where e.BrandId == product.BrandId select e).FirstOrDefault().Name}";
+            productTitle += $" {product.Name} ({product.Ram} GB, {product.Rom} GB)";
+            <div class="col-md-6 col-lg-4 card-group">
+                <div class="card rounded my-3 bg-transparent py-2">
+                    <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                        @{
+                            var productImage = (from e in context.Images
+                                                where e.ProductId == product.ProductId
+                                                select new Image()
+                                                {
+                                                    ImageName = e.ImageName
+                                                }).ToList()[0].ImageName;
+                        }
+                        <img class="card-img-top" src="~/images/products/@productImage" alt="@productTitle">
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title text-center">
+                            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                                @productTitle
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="card-footer text-center text-danger bg-transparent">
+                        <h3>@product.Price.ToString("#,##0") ₫</h3>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

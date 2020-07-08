@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Brand>
+@{
+    ViewBag.Title = "Quản lý thương hiệu sản phẩm";
+}
+<a asp-controller="BrandsManager" asp-action="Create" class="btn btn-primary mb-3"><i class="fa fa-plus"></i> Thêm thương hiệu</a>
+<table class="table table-hover table-responsive table-bordered display w-100 d-block d-md-table">
+    <thead>
+        <tr class="thead-dark">
+            <th>ID</th>
+            <th>Tên thương hiệu</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var brand in Model)
+        {
+            <tr>
+                <td><a asp-controller="BrandsManager" asp-action="Edit" asp-route-id="@brand.BrandId">@brand.BrandId</a></td>
+                <td>@brand.Name</td>
+                <td>
+                    <a asp-controller="BrandsManager" asp-action="Edit" asp-route-id="@brand.BrandId" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

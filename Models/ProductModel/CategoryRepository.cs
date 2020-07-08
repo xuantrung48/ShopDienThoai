@@ -1,0 +1,55 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace TheGioiDienThoai.Models.ProductModel
+{
+    public class CategoryRepository : ICategoryRepository
+    {
+        private readonly AppDbContext context;
+        public CategoryRepository(AppDbContext context)
+        {
+            this.context = context;
+        }
+        public Category Create(Category category)
+        {
+            context.Categories.Add(category);
+            context.SaveChanges();
+            return category;
+        }
+
+        public Category Edit(Category category)
+        {
+            var editCategory = context.Categories.Attach(category);
+            editCategory.State = EntityState.Modified;
+            context.SaveChanges();
+            return category;
+        }
+
+        public IEnumerable<Category> Get()
+        {
+            return context.Categories;
+        }
+
+        public Category Get(int id)
+        {
+            var category = (from e in context.Categories
+                            where e.CategoryId == id
+                            select e).FirstOrDefault();
+            return category;
+        }
+
+        public bool Remove(int id)
+        {
+            var categoryToRemove = context.Categories.Find(id);
+            if (categoryToRemove != null)
+            {
+                context.Categories.Remove(categoryToRemove);
+                return context.SaveChanges() > 0;
+            }
+            return false;
+        }
+    }
+}

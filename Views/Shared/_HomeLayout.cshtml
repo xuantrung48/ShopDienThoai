@@ -1,0 +1,200 @@
+﻿@inject SignInManager<User> signInManager
+@inject UserManager<User> userManager
+@inject AppDbContext context
+@{
+    var categories = (from c in context.Categories select c).ToList();
+    var brands = (from b in context.Brands select b).ToList();
+    var maxRange = (from p in context.Products select p.Price).Max();
+    var minRange = (from p in context.Products select p.Price).Min();
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <environment include="Development">
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" />
+    </environment>
+    @RenderSection("PageNotFound", false)
+    @RenderSection("LoginCSS", false)
+    @RenderSection("lightboxcss", false)
+    <link rel="icon" href="~/images/logo.png" />
+</head>
+<body class="container">
+    <nav class="navbar navbar-expand-sm bg-warning navbar-light rounded-bottom mb-3 font-weight-bold">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+            <img src="~/images/logo.png" alt="logo" style="width:50px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Danh mục
+                    </a>
+                    <div class="dropdown-menu">
+                        @{
+                            foreach (var category in categories)
+                            {
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.Name</a>
+                            }
+                        }
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (signInManager.IsSignedIn(User))
+                {
+                    User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle" />&nbsp;
+                        @currentUser.Name
+                    </a>
+                    <div class="dropdown-menu ">
+                        @if (User.IsInRole("Admin"))
+                            {
+                        <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
+                        <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
+                            }
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Thoát</a>
+                    </div>
+                </li>
+                }
+                else
+                {
+                <li class="nav-item">
+                    <a asp-controller="Account" asp-action="Login" class="nav-link">Đăng nhập</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Account" asp-action="Register" class="nav-link">Đăng ký</a>
+                </li>
+                }
+            </ul>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-lg-3 col-md-5">
+            <h3 class="bg-secondary rounded text-light py-2 my-3 text-center">Tìm kiếm <i class="fas fa-search"></i></h3>
+            <form asp-controller="Home" asp-action="Search" class="form-group">
+                <div class="list-group-item" id="searchbox">
+                    <input type="text" name="keyWord" placeholder="Từ khoá" class="form-control" id="keyWord">
+                </div>
+                <div class="list-group-item">
+                    <select name="categoryId" class="custom-select form-control" id="categoryId">
+                        <option value="">Chọn danh mục</option>
+                        @if (categories.Any() && categories.Count() > 0)
+                        {
+                            foreach (var ctg in categories)
+                            {
+                        <option value="@ctg.CategoryId">@ctg.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="list-group-item">
+                    <select name="brandId" class="custom-select form-control" id="brandId">
+                        <option value="">Chọn thương hiệu</option>
+                        @if (brands.Any() && brands.Count() > 0)
+                        {
+                            foreach (var brand in brands)
+                            {
+                        <option value="@brand.BrandId">@brand.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="list-group-item">
+                    <h5>Mức giá:</h5>
+
+                    <p>
+                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                        <input hidden name="minPrice" id="minPrice" />
+                        <input hidden name="maxPrice" id="maxPrice" />
+                    </p>
+
+                    <div id="slider-range"></div>
+                </div>
+                <div class="list-group-item">
+                    <select name="sortByPrice" class="custom-select form-control" id="sortByPrice">
+                        <option value="">Sắp xếp theo giá</option>
+                        <option value="asc">Tăng dần</option>
+                        <option value="desc">Giảm dần</option>
+                    </select>
+                </div>
+                <div class="list-group-item text-center">
+                    <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-9 col-md-7 py-3">
+            @RenderBody()
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="page-footer font-small blue bg-dark text-white rounded-top mt-3">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">
+            © @DateTime.Now.Year Copyright by Trung Nguyen
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        <script src="~/lib/jqueryui/jquery-ui.js"></script>
+        <script src="~/lib/font-awesome/js/all.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script>
+    </environment>
+
+    <script>
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: @minRange,
+                max: @maxRange,
+                values: [@minRange, @maxRange],
+                slide: function (event, ui) {
+                    $("#amount").val(digitGrouping(ui.values[0]) + " ₫" + " - " + digitGrouping(ui.values[1]) + " ₫");
+                }
+            });
+            $("#amount").val(digitGrouping($("#slider-range").slider("values", 0)) + " ₫" + " - " + digitGrouping($("#slider-range").slider("values", 1)) + " ₫");
+        });
+        digitGrouping = function (number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        $(document).click(function () {
+            $("#minPrice").val($("#slider-range").slider("values", 0));
+            $("#maxPrice").val($("#slider-range").slider("values", 1));
+        })
+    </script>
+    @RenderSection("Scripts", false)
+    @RenderSection("ValidateScript", false)
+    @RenderSection("lightboxjs", false)
+</body>
+</html>

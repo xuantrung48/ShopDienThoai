@@ -1,0 +1,268 @@
+﻿@model EditProductViewModel
+@{
+    ViewBag.Title = "Sửa thông tin sản phẩm";
+    var categories = ViewBag.Categories as IEnumerable<Category>;
+    var brands = ViewBag.Brands as IEnumerable<Brand>;
+    var images = ViewBag.Images as List<Image>;
+}
+@*<div asp-validation-summary="All" class="text-danger"></div>*@
+<form enctype="multipart/form-data" asp-controller="ProductsManager" asp-action="Edit" method="post">
+    <input hidden asp-for="ProductId" value="@Model.ProductId" />
+    <input hidden asp-for="ImagesFileName" value="@Model.ImagesFileName" />
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            @foreach (var image in images)
+            {
+                <img src="~/images/products/@image.ImageName" height="200" class="mx-1 my-1" />
+                <a class="remove-image" asp-controller="ProductsManager" asp-action="RemoveImage" asp-route-id="@Model.ProductId" asp-route-imgId="@image.ImageId" style="display: inline;">&#215;</a>
+            }
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9 gallery">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="ImageFiles">Ảnh sản phẩm: </label>
+        </div>
+        <div class="col-md-9">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input selectImage" asp-for="ImageFiles" id="i_file" multiple>
+                <label class="custom-file-label selectImage" asp-for="ImageFiles">Chọn tập tin</label>
+            </div>
+            <span asp-validation-for="ImageFiles" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Name">Tên sản phẩm: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Name" class="form-control" placeholder="Tên sản phẩm">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="CategoryId">Danh mục: </label>
+        </div>
+        <div class="col-md-9">
+            <select asp-for="CategoryId" class="custom-select">
+                <option value="">Chọn loại sản phẩm</option>
+                @if (categories.Any() && categories.Count() > 0)
+                {
+                    foreach (var ctg in categories)
+                    {
+                        <option value="@ctg.CategoryId" selected="@(ctg.CategoryId == Model.CategoryId)">@ctg.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Price">Giá (₫): </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Price" class="form-control" placeholder="Giá sản phẩm (₫)">
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="BrandId">Thương hiệu: </label>
+        </div>
+        <div class="col-md-9">
+            <select asp-for="BrandId" class="custom-select">
+                <option value="">Chọn thương hiệu sản phẩm</option>
+                @if (brands.Any() && brands.Count() > 0)
+                {
+                    foreach (var brand in brands)
+                    {
+                        <option value="@brand.BrandId" selected="@(brand.BrandId == Model.BrandId)">@brand.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="BrandId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Remain">Số lượng (chiếc): </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Remain" class="form-control" placeholder="Số lượng trong kho">
+            <span asp-validation-for="Remain" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Screen">Màn hình: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Screen" class="form-control" placeholder="Kiểu màn hình">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="CPU">CPU: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="CPU" class="form-control" placeholder="Thông tin CPU">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="OS">Hệ điều hành: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="OS" class="form-control" placeholder="Thông tin hệ điều hành">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="RearCamera">Camera sau: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="RearCamera" class="form-control" placeholder="Thông tin Camera sau">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="FrontCamera">Camera trước: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="FrontCamera" class="form-control" placeholder="Thông tin Camera trước">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Ram">Ram (GB): </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Ram" class="form-control" placeholder="Dung lượng Ram (GB)">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Rom">Bộ nhớ trong (GB): </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Rom" class="form-control" placeholder="Dung lượng Bộ nhớ trong (GB)">
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Description">Bài viết mô tả: </label>
+        </div>
+        <div class="col-md-9">
+            <textarea asp-for="Description" class="form-control" placeholder="Viết bài mô tả sản phẩm"></textarea>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-danger mx-2" data-toggle="modal" data-target="#removeProductModal">
+                Xoá
+            </button>
+            <a asp-controller="ProductsManager" asp-action="Index" class="btn btn-secondary">Huỷ</a>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="removeProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn xóa thiết bị này khỏi cửa hàng?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                <a asp-controller="ProductsManager" asp-action="Remove" asp-route-id="@Model.ProductId" class="btn btn-danger">Xác nhận</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            var imagesPreview = function (input, placeToInsertImagePreview) {
+                if (input.files) {
+                    var filesAmount = input.files.length;
+                    for (i = 0; i < filesAmount; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            $($.parseHTML('<img>')).attr('src', event.target.result).attr('height', '200px').attr('class', 'mx-1 my-1').appendTo(placeToInsertImagePreview);
+                        }
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+            };
+
+            $('#i_file').on('change', function () {
+                $("div.gallery").empty();
+                imagesPreview(this, 'div.gallery');
+                var fileLabel = $(this).next('.custom-file-label');
+                var files = $(this)[0].files;
+                if (files.length > 1) {
+                    fileLabel.html(files.length + ' tập tin được chọn');
+                }
+                else if (files.length == 1) {
+                    fileLabel.html(files[0].name);
+                }
+            });
+        });
+    </script>
+}
+@section ValidateScript
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    </environment>
+}
+@section RemoveImageCss{
+    <style>
+        .remove-image {
+            display: none;
+            position: absolute;
+            border-radius: 10em;
+            padding: 2px 6px 3px;
+            text-decoration: none;
+            font: 700 21px/20px sans-serif;
+            background: #555;
+            border: 3px solid #fff;
+            color: #FFF;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            -webkit-transition: background 0.5s;
+            transition: background 0.5s;
+        }
+
+            .remove-image:hover {
+                background: #E54E4E;
+                padding: 3px 7px 5px;
+            }
+
+            .remove-image:active {
+                background: #E54E4E;
+            }
+    </style>
+}
