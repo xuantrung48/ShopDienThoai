@@ -36,7 +36,7 @@ namespace TheGioiDienThoai.Controllers
         {
             if (signInManager.IsSignedIn(User))
             {
-                User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+                var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
                 var userViewModel = new UserViewModel()
                 {
                     UserId = currentUser.Id,

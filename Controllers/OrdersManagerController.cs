@@ -17,128 +17,55 @@ namespace TheGioiDienThoai.Controllers
     public class OrdersManagerController : Controller
     {
         private readonly AppDbContext context;
+        private readonly List<OrderDetailViewModel> orders;
 
         public OrdersManagerController(AppDbContext context)
         {
             this.context = context;
+            orders = (from o in context.Orders
+                         join c in context.Customers on o.CustomerId equals c.CustomerId
+                         join u in context.Users on c.UserId equals u.Id
+                         join d in context.OrderDetails on o.OrderId equals d.OrderId
+                         join p in context.Products on d.ProductId equals p.ProductId
+                         select new OrderDetailViewModel()
+                         {
+                             CustomerAddress = c.Address,
+                             CustomerName = c.CustomerName,
+                             CustomerPhoneNumber = c.PhoneNumber,
+                             OrderId = o.OrderId,
+                             OrderStatus = o.Status,
+                             OrderTime = o.OrderTime,
+                             CompleteTime = o.CompleteTime,
+                             ProductId = d.ProductId,
+                             ProductName = p.Name,
+                             ProductPrice = p.Price,
+                             UserId = u.Id
+                         }).ToList();
         }
         public IActionResult PendingOrders()
         {
-            var orders = (from o in context.Orders
-                          join c in context.Customers on o.CustomerId equals c.CustomerId
-                          join u in context.Users on c.UserId equals u.Id
-                          join d in context.OrderDetails on o.OrderId equals d.OrderId
-                          join p in context.Products on d.ProductId equals p.ProductId
-                          where o.Status == OrderStatus.Pending
-                          select new OrderDetailViewModel()
-                          {
-                              CustomerAddress = c.Address,
-                              CustomerName = c.CustomerName,
-                              CustomerPhoneNumber = c.PhoneNumber,
-                              OrderId = o.OrderId,
-                              OrderStatus = o.Status,
-                              OrderTime = o.OrderTime,
-                              ProductId = d.ProductId,
-                              ProductName = p.Name,
-                              ProductPrice = p.Price,
-                              UserId = u.Id
-                          }).ToList();
-            return View(orders);
+            var pendingOrders = (from o in orders where o.OrderStatus == OrderStatus.Pending select o).ToList();
+            return View(pendingOrders);
         }
         public IActionResult ProcessingOrders()
         {
-            var orders = (from o in context.Orders
-                          join c in context.Customers on o.CustomerId equals c.CustomerId
-                          join u in context.Users on c.UserId equals u.Id
-                          join d in context.OrderDetails on o.OrderId equals d.OrderId
-                          join p in context.Products on d.ProductId equals p.ProductId
-                          where o.Status == OrderStatus.Processing
-                          select new OrderDetailViewModel()
-                          {
-                              CustomerAddress = c.Address,
-                              CustomerName = c.CustomerName,
-                              CustomerPhoneNumber = c.PhoneNumber,
-                              OrderId = o.OrderId,
-                              OrderStatus = o.Status,
-                              OrderTime = o.OrderTime,
-                              ProductId = d.ProductId,
-                              ProductName = p.Name,
-                              ProductPrice = p.Price,
-                              UserId = u.Id
-                          }).ToList();
-            return View(orders);
+            var processingOrders = (from o in orders where o.OrderStatus == OrderStatus.Processing select o).ToList();
+            return View(processingOrders);
         }
         public IActionResult CompletedOrders()
         {
-            var orders = (from o in context.Orders
-                          join c in context.Customers on o.CustomerId equals c.CustomerId
-                          join u in context.Users on c.UserId equals u.Id
-                          join d in context.OrderDetails on o.OrderId equals d.OrderId
-                          join p in context.Products on d.ProductId equals p.ProductId
-                          where o.Status == OrderStatus.Completed
-                          select new OrderDetailViewModel()
-                          {
-                              CustomerAddress = c.Address,
-                              CustomerName = c.CustomerName,
-                              CustomerPhoneNumber = c.PhoneNumber,
-                              OrderId = o.OrderId,
-                              OrderStatus = o.Status,
-                              OrderTime = o.OrderTime,
-                              CompleteTime = o.CompleteTime,
-                              ProductId = d.ProductId,
-                              ProductName = p.Name,
-                              ProductPrice = p.Price,
-                              UserId = u.Id
-                          }).ToList();
-            return View(orders);
+            var completedOrders = (from o in orders where o.OrderStatus == OrderStatus.Completed select o).ToList();
+            return View(completedOrders);
         }
         public IActionResult CanceledOrders()
         {
-            var orders = (from o in context.Orders
-                          join c in context.Customers on o.CustomerId equals c.CustomerId
-                          join u in context.Users on c.UserId equals u.Id
-                          join d in context.OrderDetails on o.OrderId equals d.OrderId
-                          join p in context.Products on d.ProductId equals p.ProductId
-                          where o.Status == OrderStatus.Canceled
-                          select new OrderDetailViewModel()
-                          {
-                              CustomerAddress = c.Address,
-                              CustomerName = c.CustomerName,
-                              CustomerPhoneNumber = c.PhoneNumber,
-                              OrderId = o.OrderId,
-                              OrderStatus = o.Status,
-                              OrderTime = o.OrderTime,
-                              CompleteTime = o.CompleteTime,
-                              ProductId = d.ProductId,
-                              ProductName = p.Name,
-                              ProductPrice = p.Price,
-                              UserId = u.Id
-                          }).ToList();
-            return View(orders);
+            var canceledOrders = (from o in orders where o.OrderStatus == OrderStatus.Canceled select o).ToList();
+            return View(canceledOrders);
         }
         [HttpGet]
         public IActionResult Edit(string id, string backAction)
         {
-            var order = (from o in context.Orders
-                          join c in context.Customers on o.CustomerId equals c.CustomerId
-                          join u in context.Users on c.UserId equals u.Id
-                          join d in context.OrderDetails on o.OrderId equals d.OrderId
-                          join p in context.Products on d.ProductId equals p.ProductId
-                          where o.OrderId == id
-                          select new OrderDetailViewModel()
-                          {
-                              CustomerAddress = c.Address,
-                              CustomerName = c.CustomerName,
-                              CustomerPhoneNumber = c.PhoneNumber,
-                              OrderId = o.OrderId,
-                              OrderStatus = o.Status,
-                              OrderTime = o.OrderTime,
-                              CompleteTime = o.CompleteTime,
-                              ProductId = d.ProductId,
-                              ProductName = p.Name,
-                              ProductPrice = p.Price,
-                              UserId = u.Id
-                          }).ToList().FirstOrDefault();
+            var order = (from o in orders where o.OrderId == id select o).ToList().FirstOrDefault();
             ViewBag.BackAction = backAction;
             return View(order);
         }
