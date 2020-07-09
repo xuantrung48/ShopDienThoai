@@ -16,24 +16,23 @@
     <tbody>
         @if (Model != null && Model.Any())
         {
-        @foreach (var user in Model)
+            @foreach (var user in Model)
             {
-        <tr>
-            <td>@user.Name</td>
-            <td><img src="~/images/users/@user.ProfilePicture" height="50" /></td>
-            <td>@user.Email</td>
-            <td>@user.RoleName</td>
-            <td>
-                <a asp-controller="UsersManager" asp-action="Edit" asp-route-id="@user.UserId" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
-            </td>
-        </tr>
+                <tr>
+                    <td>@user.Name</td>
+                    <td><img src="~/images/users/@user.ProfilePicture" height="50" /></td>
+                    <td>@user.Email</td>
+                    <td>@user.RoleName</td>
+                    <td>
+                        <a asp-controller="UsersManager" asp-action="Edit" asp-route-id="@user.UserId" title="Chỉnh sửa"><i class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
             }
         }
     </tbody>
 </table>
 
 @section datatablejs{
-
     <environment include="Development">
         <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
     </environment>

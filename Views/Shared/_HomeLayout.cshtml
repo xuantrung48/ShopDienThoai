@@ -26,6 +26,7 @@
     @RenderSection("PageNotFound", false)
     @RenderSection("LoginCSS", false)
     @RenderSection("lightboxcss", false)
+    @RenderSection("datatablecss", false)
     <link rel="icon" href="~/images/logo.png" />
 </head>
 <body class="container">
@@ -67,8 +68,8 @@
                     <div class="dropdown-menu ">
                         @if (User.IsInRole("Admin"))
                         {
-                            <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
-                            <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
+                        <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
+                        <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
                         }
                         <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
                         <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
@@ -197,5 +198,6 @@
     @RenderSection("Scripts", false)
     @RenderSection("ValidateScript", false)
     @RenderSection("lightboxjs", false)
+    @RenderSection("datatablejs", false)
 </body>
 </html>
