@@ -117,7 +117,8 @@ namespace TheGioiDienThoai.Controllers
                                    CompleteTime = o.CompleteTime,
                                    ProductName = p.Name,
                                    ProductPrice = p.Price,
-                                   OrderStatus = o.Status
+                                   OrderStatus = o.Status,
+                                   Note = o.Note
                                }).ToList().FirstOrDefault();
             ViewBag.OrderId = id;
             ViewBag.UserOrder = (from u in context.Users

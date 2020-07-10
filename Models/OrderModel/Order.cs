@@ -17,6 +17,6 @@ namespace TheGioiDienThoai.Models.OrderModel
         [Required]
         public DateTime OrderTime { get; set; }
         public DateTime CompleteTime { get; set; }
-
+        public string Note { get; set; }
     }
 }

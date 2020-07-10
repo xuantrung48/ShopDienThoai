@@ -102,6 +102,15 @@
         </div>
         <div class="row form-group">
             <div class="col-md-3">
+                <label asp-for="Note">Ghi chú: </label>
+            </div>
+            <div class="col-md-9">
+                <textarea asp-for="Note" class="form-control" placeholder="Nhập ghi chú của đơn hàng"></textarea>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3">
             </div>
             <div class="col-md-9">
                 <button type="submit" class="btn btn-primary">Lưu</button>

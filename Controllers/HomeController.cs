@@ -57,7 +57,7 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.Images = images;
             return View(product);
         }
-        public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice, string sortByPrice)
+        public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice, string sortByPrice, int page = 1)
         {
             string key = string.Empty;
             if (keyWord != null)
@@ -75,42 +75,32 @@ namespace TheGioiDienThoai.Controllers
                             select p).ToList();
 
             if (categoryId == 0 && brandId != 0)
-            {
                 products = (from p in products
                             where (p.BrandId == brandId)
                             select p).ToList();
-            }
+            
             if (categoryId != 0 && brandId == 0)
-            {
                 products = (from p in products
                             where (p.CategoryId == categoryId)
                             select p).ToList();
-            }
+            
             if (categoryId != 0 && brandId != 0)
-            {
                 products = (from p in products
                             where (p.CategoryId == categoryId) &&
                             (p.BrandId == brandId)
                             select p).ToList();
-            }
 
             if (minPrice != 0 && maxPrice != 0)
-            {
                 products = (from p in products
                             where (p.Price >= minPrice) &&
                             (p.Price <= maxPrice)
                             select p).ToList();
-            }
 
             if (sortByPrice == "desc")
-            {
                 products = products.OrderByDescending(x => x.Price).ToList();
-            }
 
             if (sortByPrice == "asc")
-            {
                 products = products.OrderBy(x => x.Price).ToList();
-            }
 
             ViewBag.Categories = (from c in context.Categories select c).ToList();
             ViewBag.Brands = (from b in context.Brands select b).ToList();
@@ -120,9 +110,11 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.MinPrice = minPrice;
             ViewBag.MaxPrice = maxPrice;
             ViewBag.Sort = sortByPrice;
-            return View(products);
+            ViewBag.Count = products.Count;
+            ViewBag.Page = page;
+            return View(products.Skip(page * 12 - 12).Take(12).ToList());
         }
-        public IActionResult Category(int id)
+        public IActionResult Category(int id, int page = 1)
         {
             var products = (from p in context.Products where p.CategoryId == id && p.Remain > 0 select p).ToList();
             ViewBag.Categories = (from c in context.Categories select c).ToList();
@@ -132,7 +124,11 @@ namespace TheGioiDienThoai.Controllers
                 ViewBag.title = categories.FirstOrDefault().Name;
             else
                 ViewBag.title = "Không có danh mục!";
-            return View(products);
+
+            ViewBag.CategoryId = id;
+            ViewBag.Count = products.Count;
+            ViewBag.Page = page;
+            return View(products.Skip(page * 12 - 12).Take(12).ToList());
         }
         private List<Category> GetCategories()
         {

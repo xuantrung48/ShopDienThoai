@@ -39,7 +39,8 @@ namespace TheGioiDienThoai.Controllers
                              ProductId = d.ProductId,
                              ProductName = p.Name,
                              ProductPrice = p.Price,
-                             UserId = u.Id
+                             UserId = u.Id,
+                             Note = o.Note
                          }).ToList();
         }
         public IActionResult PendingOrders()
@@ -88,6 +89,7 @@ namespace TheGioiDienThoai.Controllers
                 {
                     order.CompleteTime = DateTime.Now;
                 }
+                order.Note = model.Note;
                 var orderDetail = (from d in context.OrderDetails where d.OrderId == model.OrderId select d).ToList().FirstOrDefault();
                 orderDetail.Price = model.ProductPrice;
                 var customer = context.Customers.Find(order.CustomerId);
