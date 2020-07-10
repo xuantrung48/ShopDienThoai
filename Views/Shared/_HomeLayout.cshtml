@@ -1,18 +1,20 @@
 ﻿@inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
 @inject AppDbContext context
+
 @{
     var categories = (from c in context.Categories select c).ToList();
     var brands = (from b in context.Brands select b).ToList();
     var maxRange = (from p in context.Products select p.Price).Max();
     var minRange = (from p in context.Products select p.Price).Min();
+    var appSetting = (from s in context.AppSettings where s.Id == 1 select s).ToList().FirstOrDefault();
 }
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>@appSetting.Title - @appSetting.ShortDesc</title>
     <environment include="Development">
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
@@ -27,12 +29,12 @@
     @RenderSection("LoginCSS", false)
     @RenderSection("lightboxcss", false)
     @RenderSection("datatablecss", false)
-    <link rel="icon" href="~/images/logo.png" />
+    <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true"/>
 </head>
-<body class="container">
-    <nav class="navbar navbar-expand-sm bg-warning navbar-light rounded-bottom mb-3 font-weight-bold">
+<body>
+    <nav class="navbar navbar-expand-md bg-warning navbar-light rounded-bottom mb-3 font-weight-bold container">
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <img src="~/images/logo.png" alt="logo" style="width:50px;">
+            <img src="~/images/@appSetting.Logo" alt="logo" style="height:50px;" asp-append-version="true">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -54,6 +56,12 @@
                 </li>
                 <li class="nav-item">
                     <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
+                </li>
+                <li class="nav-item" style="padding:5px">
+                    <form asp-controller="Home" asp-action="Search" class="form-group">
+                        <input type="text" placeholder="Tìm sản phẩm..." name="keyWord">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -91,67 +99,11 @@
             </ul>
         </div>
     </nav>
-    <div class="row">
-        <div class="col-lg-3">
-            <h3 class="bg-secondary rounded text-light py-2 my-3 text-center">Tìm kiếm <i class="fas fa-search"></i></h3>
-            <form asp-controller="Home" asp-action="Search" class="form-group">
-                <div class="list-group-item" id="searchbox">
-                    <input type="text" name="keyWord" placeholder="Từ khoá" class="form-control" id="keyWord">
-                </div>
-                <div class="list-group-item">
-                    <select name="categoryId" class="custom-select form-control" id="categoryId">
-                        <option value="">Chọn danh mục</option>
-                        @if (categories.Any() && categories.Count() > 0)
-                        {
-                            foreach (var ctg in categories)
-                            {
-                        <option value="@ctg.CategoryId">@ctg.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="list-group-item">
-                    <select name="brandId" class="custom-select form-control" id="brandId">
-                        <option value="">Chọn thương hiệu</option>
-                        @if (brands.Any() && brands.Count() > 0)
-                        {
-                            foreach (var brand in brands)
-                            {
-                        <option value="@brand.BrandId">@brand.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="list-group-item">
-                    <h5>Mức giá:</h5>
-
-                    <p>
-                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                        <input hidden name="minPrice" id="minPrice" />
-                        <input hidden name="maxPrice" id="maxPrice" />
-                    </p>
-
-                    <div id="slider-range"></div>
-                </div>
-                <div class="list-group-item">
-                    <select name="sortByPrice" class="custom-select form-control" id="sortByPrice">
-                        <option value="">Sắp xếp theo giá</option>
-                        <option value="asc">Tăng dần</option>
-                        <option value="desc">Giảm dần</option>
-                    </select>
-                </div>
-                <div class="list-group-item text-center">
-                    <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
-                </div>
-            </form>
-        </div>
-
-        <div class="col-lg-9 py-3">
-            @RenderBody()
-        </div>
+    <div class="container">
+        @RenderBody()
     </div>
     <!-- Footer -->
-    <footer class="page-footer font-small blue bg-dark text-white rounded-top mt-3">
+    <footer class="page-footer font-small blue bg-dark text-white rounded-top mt-3 container">
 
         <!-- Copyright -->
         <div class="footer-copyright text-center py-3">

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheGioiDienThoai.Models;
 using TheGioiDienThoai.Models.ProductModel;
 
 namespace TheGioiDienThoai.Controllers
@@ -12,9 +13,11 @@ namespace TheGioiDienThoai.Controllers
     public class CategoriesManagerController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
-        public CategoriesManagerController(ICategoryRepository categoryRepository)
+        private readonly AppDbContext context;
+        public CategoriesManagerController(ICategoryRepository categoryRepository, AppDbContext context)
         {
             this.categoryRepository = categoryRepository;
+            this.context = context;
         }
         public IActionResult Index()
         {
@@ -41,6 +44,7 @@ namespace TheGioiDienThoai.Controllers
             var category = categoryRepository.Get(id);
             if (category == null)
                 return View("~/Views/Error/PageNotFound.cshtml");
+            ViewBag.NumberOfProducts = (from p in context.Products where p.CategoryId == id select p).ToList().Count;
             return View(category);
         }
         [HttpPost]
@@ -58,10 +62,8 @@ namespace TheGioiDienThoai.Controllers
             if (category == null)
                 return View("~/Views/Error/PageNotFound.cshtml");
             if (categoryRepository.Remove(id))
-            {
                 return RedirectToAction("Index", "CategoriesManager");
-            }
-            return View();
+            return RedirectToAction("Index", "CategoriesManager");
         }
     }
 }

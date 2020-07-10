@@ -1,0 +1,99 @@
+﻿@model AppSettingViewModel
+@{
+    ViewBag.Title = "Cài đặt trang web";
+}
+
+<form enctype="multipart/form-data" asp-controller="Dashboard" asp-action="AppSetting" method="post">
+    <input asp-for="Logo" value="@Model.Logo" hidden />
+    <input asp-for="Icon" value="@Model.Icon" hidden />
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <img id="logoImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Logo}" : "/images/0.png")" width="150" style="display:none;" class="mx-auto d-block my-3" asp-append-version="true"/>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="LogoFile">Logo: </label>
+        </div>
+        <div class="col-md-9">
+            <input type="file" class="custom-file-input selectImage mx-1" asp-for="LogoFile" id="i_file1">
+            <label class="custom-file-label selectImage mx-2" asp-for="LogoFile">Đổi Logo</label>
+            <span asp-validation-for="LogoFile" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <img id="iconImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Icon}" : "/images/0.png")" width="150" style="display:none;" class="mx-auto d-block my-3" asp-append-version="true"/>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="IconFile">Icon: </label>
+        </div>
+        <div class="col-md-9">
+            <input type="file" class="custom-file-input selectImage mx-1" asp-for="IconFile" id="i_file2">
+            <label class="custom-file-label selectImage mx-2" asp-for="IconFile">Đổi Icon</label>
+            <span asp-validation-for="IconFile" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Title">Tên trang web: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="Title" class="form-control" placeholder="Nhập tên trang web">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="ShortDesc">Mô tả ngắn: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="ShortDesc" class="form-control" placeholder="Nhập mô tả ngắn về trang web">
+            <span asp-validation-for="ShortDesc" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Huỷ</a>
+        </div>
+    </div>
+</form>
+
+@section ValidateScript
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    </environment>
+}
+
+@section Scripts{
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        $('#i_file1').change(function (event) {
+            $("#logoImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
+        });
+        $('#i_file2').change(function (event) {
+            $("#iconImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
+        });
+    </script>
+}

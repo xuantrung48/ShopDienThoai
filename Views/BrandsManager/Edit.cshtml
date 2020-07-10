@@ -1,6 +1,7 @@
 ﻿@model Brand
 @{
     ViewBag.Title = "Sửa danh mục sản phẩm";
+    var numberOfProducts = (int) ViewBag.NumberOfProducts;
 }
 <form asp-controller="BrandsManager" asp-action="Edit" method="post">
     <input asp-for="BrandId" hidden />
@@ -35,13 +36,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                Bạn có chắc chắn xóa thương hiệu này khỏi hệ thống?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
-                <a asp-controller="BrandsManager" asp-action="Remove" asp-route-id="@Model.BrandId" class="btn btn-danger">Xác nhận</a>
-            </div>
+            @if (numberOfProducts == 0)
+            {
+                <div class="modal-body">
+                    Bạn có chắc chắn xóa thương hiệu này khỏi hệ thống?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                    <a asp-controller="BrandsManager" asp-action="Remove" asp-route-id="@Model.BrandId" class="btn btn-danger">Xác nhận</a>
+                </div>
+            }
+            else
+            {
+                <div class="modal-body text-danger">
+                    Bạn không thể xoá thương hiệu này vì thương hiệu này vẫn còn sản phẩm trong hệ thống!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                </div>
+            }
         </div>
     </div>
 </div>

@@ -1,7 +1,9 @@
 ﻿@inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
-@{ 
+@inject AppDbContext context
+@{
     User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+    var appSetting = (from s in context.AppSettings where s.Id == 1 select s).ToList().FirstOrDefault();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +20,7 @@
     @RenderSection("datatablecss", false)
     @RenderSection("RemoveImageCss", false)
     <link href="~/lib/css/DashboardStyles.css" rel="stylesheet" />
-    <link rel="icon" href="~/images/logo.png" />
+    <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true" />
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -84,6 +86,13 @@
                         <a class="nav-link" asp-controller="UsersManager" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Thành viên
+                        </a>
+
+
+                        <div class="sb-sidenav-menu-heading">Trang web</div>
+                        <a class="nav-link" asp-controller="Dashboard" asp-action="AppSetting">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                            Cài đặt
                         </a>
                     </div>
                 </div>

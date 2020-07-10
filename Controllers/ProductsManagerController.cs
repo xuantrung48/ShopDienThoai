@@ -177,12 +177,8 @@ namespace TheGioiDienThoai.Controllers
         }
         public IActionResult Remove(string id)
         {
-            var product = productRepository.Get(id);
-            var productIsDeleted = productRepository.Remove(id);
-            if (productIsDeleted)
-            {
+            if (productRepository.Remove(id))
                 return RedirectToAction("Index", "ProductsManager");
-            }
             return View();
         }
         private List<Category> GetCategories()

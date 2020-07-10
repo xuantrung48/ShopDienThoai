@@ -5,26 +5,109 @@
     var categories = ViewBag.Categories as List<Category>;
     var products = ViewBag.Products as List<Product>;
 }
+<div class="row my-3">
+    <div class="col-lg-3">
+        <h5 class="bg-secondary rounded text-light py-2 text-center">Tìm kiếm <i class="fas fa-search"></i></h5>
+        <form asp-controller="Home" asp-action="Search" class="form-group">
+            <div class="list-group-item" id="searchbox">
+                <input type="text" name="keyWord" placeholder="Từ khoá" class="form-control" id="keyWord">
+            </div>
+            <div class="list-group-item">
+                <select name="categoryId" class="custom-select form-control" id="categoryId">
+                    <option value="">Chọn danh mục</option>
+                    @if (categories.Any() && categories.Count() > 0)
+                    {
+                        foreach (var ctg in categories)
+                        {
+                            <option value="@ctg.CategoryId">@ctg.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="list-group-item">
+                <select name="brandId" class="custom-select form-control" id="brandId">
+                    <option value="">Chọn thương hiệu</option>
+                    @if (brands.Any() && brands.Count() > 0)
+                    {
+                        foreach (var brand in brands)
+                        {
+                            <option value="@brand.BrandId">@brand.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="list-group-item">
+                <h5>Mức giá:</h5>
+
+                <p>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input hidden name="minPrice" id="minPrice" />
+                    <input hidden name="maxPrice" id="maxPrice" />
+                </p>
+
+                <div id="slider-range"></div>
+            </div>
+            <div class="list-group-item">
+                <select name="sortByPrice" class="custom-select form-control" id="sortByPrice">
+                    <option value="">Sắp xếp theo giá</option>
+                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Giảm dần</option>
+                </select>
+            </div>
+            <div class="list-group-item text-center">
+                <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-9">
+        <div id="demo" class="carousel slide" data-ride="carousel">
+
+            <!-- Indicators -->
+            <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1"></li>
+                <li data-target="#demo" data-slide-to="2"></li>
+            </ul>
+
+            <!-- The slideshow -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://img3.thuthuatphanmem.vn/uploads/2019/10/08/banner-quang-cao-dien-thoai-dep_103211368.jpg" style="width:100%; height:475px;">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2020/02/1200x628_dau.jpg" style="width:100%; height:475px;">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://i.ytimg.com/vi/CUB7yrrOhi0/maxresdefault.jpg" style="width:100%; height:475px;">
+                </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
 
 @foreach (var category in categories)
 {
-    <h3 class="text-center text-light bg-info rounded px-2"><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a></h3>
+    <h5 class="text-light bg-primary rounded"><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a></h5>
     <div class="row">
         @{
             var productInCategory = (from e in products
                                where e.CategoryId == category.CategoryId && e.Remain > 0
-                               select e).Take(8);
+                               select e).Take(12);
         }
 
         @foreach (var product in productInCategory)
         {
-            var productTitle = string.Empty;
-            if (categories != null)
-                productTitle += $" {(from e in categories where e.CategoryId == product.CategoryId select e).FirstOrDefault().Name}";
-            if (brands != null)
-                productTitle += $" {(from e in brands where e.BrandId == product.BrandId select e).FirstOrDefault().Name}";
-            productTitle += $" {product.Name} ({product.Ram} GB, {product.Rom} GB)";
-            <div class="col-md-4 col-lg-3 col-sm-6 card-group">
+            <div class="col-md-4 col-lg-3 col-sm-6 col-xl-2 col-6 card-group">
                 <div class="card rounded my-3 bg-transparent py-2">
                     <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
                         @{
@@ -33,20 +116,18 @@
                                                  select e).ToList();
                             if (productImages.Count != 0)
                             {
-                                <img src="~/images/products/@productImages[0].ImageName" alt="@productTitle" style="max-height:180px; max-width:140px" class="mx-auto d-block">
+                                <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
                             }
                         }
                     </a>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">
-                            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
-                                @productTitle
-                            </a>
-                        </h5>
-                    </div>
-                    <div class="card-footer text-center text-danger bg-transparent">
-                        <h5>@product.Price.ToString("#,##0") ₫</h5>
-                    </div>
+                    <h6 class="card-body text-center">
+                        <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" class="card-link">
+                            @product.Name
+                        </a>
+                    </h6>
+                    <h6 class="card-footer text-center text-danger bg-transparent">
+                        @product.Price.ToString("#,##0") ₫
+                    </h6>
                 </div>
             </div>
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheGioiDienThoai.Models;
 using TheGioiDienThoai.Models.ProductModel;
 
 namespace TheGioiDienThoai.Controllers
@@ -12,9 +13,11 @@ namespace TheGioiDienThoai.Controllers
     public class BrandsManagerController : Controller
     {
         private readonly IBrandRepository brandRepository;
-        public BrandsManagerController(IBrandRepository brandRepository)
+        private readonly AppDbContext context;
+        public BrandsManagerController(IBrandRepository brandRepository, AppDbContext context)
         {
             this.brandRepository = brandRepository;
+            this.context = context;
         }
         public IActionResult Index()
         {
@@ -41,6 +44,7 @@ namespace TheGioiDienThoai.Controllers
             var brand = brandRepository.Get(id);
             if (brand == null)
                 return View("~/Views/Error/PageNotFound.cshtml");
+            ViewBag.NumberOfProducts = (from p in context.Products where p.CategoryId == id select p).ToList().Count;
             return View(brand);
         }
         [HttpPost]
@@ -57,12 +61,9 @@ namespace TheGioiDienThoai.Controllers
             var brand = brandRepository.Get(id);
             if (brand == null)
                 return View("~/Views/Error/PageNotFound.cshtml");
-
             if (brandRepository.Remove(id))
-            {
                 return RedirectToAction("Index", "BrandsManager");
-            }
-            return View();
+            return RedirectToAction("Index", "BrandsManager");
         }
     }
 }

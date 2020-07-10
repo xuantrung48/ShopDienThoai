@@ -6,14 +6,12 @@
     ViewBag.Title = $"{Model.CategoryName} {Model.BrandName} {@Model.Name} ({@Model.Ram} GB, {@Model.Rom} GB)";
 }
 <div class="row">
-    <div>
-        <h2>@ViewBag.Title</h2>
-    </div>
+    <h2>@ViewBag.Title</h2>
     @if (User.IsInRole("Admin"))
     {
-    <div>
-        &nbsp;<a asp-controller="ProductsManager" asp-action="Edit" asp-route-id="@Model.ProductId"><i class="fas fa-edit"></i></a>
-    </div>
+        <div>
+            &nbsp;<a asp-controller="ProductsManager" asp-action="Edit" asp-route-id="@Model.ProductId"><i class="fas fa-edit"></i></a>
+        </div>
     }
 </div>
 <div class="row">
@@ -21,21 +19,21 @@
         @{
             if (images.Count != 0)
             {
-            <div>
-                <a href="~/images/products/@images[0].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình 1">
-                    <img src="~/images/products/@images[0].ImageName" class="img-fluid my-3" height="500" />
-                </a>
-            </div>
-            <div class="row">
-                <div class="mx-auto">
-                    @for (int i = 1; i < images.Count; i++)
-                        {
-                    <a class="my-2 mx-1" href="~/images/products/@images[i].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình @(i + 1)">
-                        <img src="~/images/products/@images[i].ImageName" height="60" />
+                <div>
+                    <a href="~/images/products/@images[0].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình 1">
+                        <img src="~/images/products/@images[0].ImageName" class="img-fluid my-3" height="500" />
                     </a>
-                        }
                 </div>
-            </div>
+                <div class="row">
+                    <div class="mx-auto">
+                        @for (int i = 1; i < images.Count; i++)
+                        {
+                            <a class="my-2 mx-1" href="~/images/products/@images[i].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình @(i + 1)">
+                                <img src="~/images/products/@images[i].ImageName" height="60" />
+                            </a>
+                        }
+                    </div>
+                </div>
             }
         }
     </div>
@@ -49,11 +47,11 @@
                 @{
                     if (Model.Remain != 0)
                     {
-                    <a class="btn btn-warning p-3" asp-controller="Order" asp-action="Buy" asp-route-id="@Model.ProductId">MUA NGAY! <i class="fas fa-cart-plus"></i></a>
+                        <a class="btn btn-warning p-3" asp-controller="Order" asp-action="Buy" asp-route-id="@Model.ProductId">MUA NGAY! <i class="fas fa-cart-plus"></i></a>
                     }
                     else
                     {
-                    <div class="btn btn-secondary p-3">Hết hàng!</div>
+                        <div class="btn btn-secondary p-3">Hết hàng!</div>
                     }
                 }
             </div>
