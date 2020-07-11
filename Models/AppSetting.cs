@@ -16,5 +16,7 @@ namespace TheGioiDienThoai.Models
         public string ShortDesc { get; set; }
         public string Logo { get; set; }
         public string Icon { get; set; }
+        [Required(ErrorMessage = "Chọn vai trò mặc định cho người dùng!")]
+        public string DefaultRoleId { get; set; }
     }
 }

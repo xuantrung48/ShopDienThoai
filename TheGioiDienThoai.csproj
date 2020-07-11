@@ -48,6 +48,14 @@
     <Compile Remove="Migrations\20200711123831_AddRoleIdToAppSettingTable.Designer.cs" />
     <Compile Remove="Migrations\20200711124323_asd.cs" />
     <Compile Remove="Migrations\20200711124323_asd.Designer.cs" />
+    <Compile Remove="Migrations\20200711130821_AddDefaultRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711130821_AddDefaultRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711131725_AddRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711131725_AddRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711133913_AddRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711133913_AddRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711134459_AddRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711134459_AddRoleIdToAppSettingTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

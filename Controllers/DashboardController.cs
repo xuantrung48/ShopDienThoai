@@ -34,14 +34,14 @@ namespace TheGioiDienThoai.Controllers
         [HttpGet]
         public IActionResult AppSetting()
         {
-            var setting = (from s in context.AppSettings select s).ToList().FirstOrDefault();
             var appSetting = (from s in context.AppSettings
                                select new AppSettingViewModel()
                                {
                                    Icon = s.Icon,
                                    Logo = s.Logo,
                                    ShortDesc = s.ShortDesc,
-                                   Title = s.Title
+                                   Title = s.Title,
+                                   DefaultRoleId = s.DefaultRoleId
                                }).ToList().FirstOrDefault();
             ViewBag.Roles = (from r in context.Roles select r).ToList();
             return View(appSetting);
@@ -84,6 +84,7 @@ namespace TheGioiDienThoai.Controllers
                         System.IO.File.Delete(delFile);
                     }
                 }
+                setting.DefaultRoleId = model.DefaultRoleId;
                 context.SaveChanges();
                 return RedirectToAction("AppSetting");
             }

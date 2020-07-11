@@ -62,6 +62,22 @@
                 <span asp-validation-for="ShortDesc" class="text-danger"></span>
             </div>
         </div>
+
+        <div class="row form-group">
+            <div class="col-md-3">
+                <label asp-for="DefaultRoleId">Vai trò người dùng mặc định: </label>
+            </div>
+            <div class="col-md-9">
+                <select asp-for="DefaultRoleId" class="custom-select">
+                    <option value="">Chọn vai trò mặc định</option>
+                    @foreach(var role in roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="DefaultRoleId" class="text-danger"></span>
+            </div>
+        </div>
         <div class="row form-group">
             <div class="col-md-3">
             </div>

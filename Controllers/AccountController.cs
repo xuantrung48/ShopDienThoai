@@ -138,7 +138,7 @@ namespace TheGioiDienThoai.Controllers
                     Address = model.Address,
                     Name = model.Name,
                     PhoneNumber = model.PhoneNumber,
-                    Gender = model.Gender,
+                    Gender = model.Gender
                 };
                 if (model.ImageFile != null)
                 {
@@ -152,16 +152,20 @@ namespace TheGioiDienThoai.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, false);
+                    var role = context.Roles.Find(context.AppSettings.FirstOrDefault().DefaultRoleId);
+                    var addRoleResult = await userManager.AddToRoleAsync(user, role.Name);
+                    if (addRoleResult.Succeeded)
+                    {
+                        await signInManager.SignInAsync(user, false);
+                        return RedirectToAction("Index", "Account");
+                    }
+                    foreach (var error in addRoleResult.Errors)
+                        ModelState.AddModelError("", error.Description);
                     return RedirectToAction("Index", "Account");
                 }
                 else
-                {
                     foreach(var error in result.Errors)
-                    {
                         ModelState.AddModelError("", error.Description);
-                    }
-                }
             }
             return View();
         }

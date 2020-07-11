@@ -28,5 +28,7 @@ namespace TheGioiDienThoai.ViewModels
         [AllowedExtensions(new string[] { ".jpg", ".png" })]
         [MaxFileSize(1 * 1024 * 1024)]
         public IFormFile IconFile { get; set; }
+        [Required(ErrorMessage = "Chọn vai trò mặc định cho người dùng!")]
+        public string DefaultRoleId { get; set; }
     }
 }
