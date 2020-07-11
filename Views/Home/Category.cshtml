@@ -10,48 +10,38 @@
     var pages = count / 12 + (count % 12 == 0 ? 0 : 1);
 
 }
-<h3 class="text-center text-light bg-info rounded py-2 px-2">@ViewBag.Title</h3>
+<h5 class="text-center text-light bg-primary rounded py-2">@ViewBag.Title</h5>
 <div class="row">
     @foreach (var product in Model)
     {
-        var productTitle = string.Empty;
-        if (categories != null)
-            productTitle += $" {(from e in categories where e.CategoryId == product.CategoryId select e).FirstOrDefault().Name}";
-        if (brands != null)
-            productTitle += $" {(from e in brands where e.BrandId == product.BrandId select e).FirstOrDefault().Name}";
-        productTitle += $" {product.Name} ({product.Ram} GB, {product.Rom} GB)";
-        <div class="col-md-4 col-lg-3 col-sm-6 card-group">
-            <div class="card rounded my-3 bg-transparent py-2">
-                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
-                    @{
-                        var productImages = (from e in context.Images
-                                             where e.ProductId == product.ProductId
-                                             select new Image()
-                                             {
-                                                 ImageName = e.ImageName
-                                             }).ToList();
-
-                        if (productImages.Count != 0)
-                        {
-                            <img src="~/images/products/@productImages[0].ImageName" alt="@productTitle" style="max-height:180px; max-width:140px" class="mx-auto d-block">
-                        }
+    <div class="col-md-4 col-lg-3 col-sm-6 col-xl-2 col-6 card-group">
+        <div class="card rounded my-3 bg-transparent py-2">
+            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                @{
+                    var productImages = (from e in context.Images
+                                         where e.ProductId == product.ProductId
+                                         select e).ToList();
+                    if (productImages.Count != 0)
+                    {
+                        <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
                     }
+                }
+            </a>
+            <h6 class="card-body text-center">
+                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" class="card-link">
+                    @product.Name
                 </a>
-                <div class="card-body">
-                    <h5 class="card-title text-center">
-                        <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
-                            @productTitle
-                        </a>
-                    </h5>
-                </div>
-                <div class="card-footer text-center text-danger bg-transparent">
-                    <h5>@product.Price.ToString("#,##0") ₫</h5>
-                </div>
-            </div>
+            </h6>
+            <h6 class="card-footer text-center text-danger bg-transparent">
+                @product.Price.ToString("#,##0") ₫
+            </h6>
         </div>
+    </div>
     }
 </div>
 
+@if (pages > 1)
+{
 <nav aria-label="Pages Navigation">
     <ul class="pagination justify-content-center">
         @if (pages <= 5)
@@ -77,15 +67,15 @@
         else
         {
             @*2 trang đầu*@
-            if (page > 3)
-            {
+        if (page > 3)
+        {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Home" asp-action="Category" asp-route-id="@id" asp-route-page="1">Trang đầu</a>
                 </li>
-            }
+        }
 
-            if (page > 3)
-            {
+        if (page > 3)
+        {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Home" asp-action="Category" asp-route-id="@id" asp-route-page="@(page - 1)">Trang trước</a>
                 </li>
@@ -153,14 +143,14 @@
             }
 
             @*2 trang cuối*@
-            if (page < pages - 2)
-            {
+        if (page < pages - 2)
+        {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Home" asp-action="Category" asp-route-id="@id" asp-route-page="@(page + 1)">Trang tiếp</a>
                 </li>
-            }
-            if (page < pages - 2)
-            {
+        }
+        if (page < pages - 2)
+        {
                 <li class="page-item">
                     <a class="page-link" asp-controller="Home" asp-action="Category" asp-route-id="@id" asp-route-page="@pages">Trang cuối</a>
                 </li>
@@ -168,3 +158,4 @@
         }
     </ul>
 </nav>
+}

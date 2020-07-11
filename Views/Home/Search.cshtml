@@ -128,119 +128,122 @@
     </div>
 </div>
 
-<nav aria-label="Pages Navigation">
-    <ul class="pagination justify-content-center">
-        @if (pages <= 5)
-        {
-            for (int i = 1; i <= pages; i++)
+@if (pages > 1)
+{
+    <nav aria-label="Pages Navigation">
+        <ul class="pagination justify-content-center">
+            @if (pages <= 5)
             {
-                if (page != i)
+                for (int i = 1; i <= pages; i++)
                 {
+                    if (page != i)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+
+                    if (page == i)
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">@i</a>
+                        </li>
+                    }
+                }
+            }
+
+            else
+            {
+                @*2 trang đầu*@
+            if (page > 3)
+            {
                     <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="1">Trang đầu</a>
                     </li>
-                }
-
-                if (page == i)
-                {
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">@i</a>
-                    </li>
-                }
-            }
-        }
-
-        else
-        {
-            @*2 trang đầu*@
-            if (page > 3)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="1">Trang đầu</a>
-                </li>
             }
 
             if (page > 3)
             {
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page - 1)">Trang trước</a>
-                </li>
-            }
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page - 1)">Trang trước</a>
+                    </li>
+                }
 
-            if (page <= 3)
-            {
-                for (int i = 1; i <= 5; i++)
+                if (page <= 3)
                 {
-                    if (page != i)
+                    for (int i = 1; i <= 5; i++)
                     {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                        </li>
-                    }
+                        if (page != i)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                            </li>
+                        }
 
-                    if (page == i)
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">@i</a>
-                        </li>
+                        if (page == i)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">@i</a>
+                            </li>
+                        }
                     }
                 }
-            }
 
-            if (page > 3 && page < pages - 2)
-            {
-                for (int i = page - 2; i <= page + 2; i++)
+                if (page > 3 && page < pages - 2)
                 {
-                    if (page != i)
+                    for (int i = page - 2; i <= page + 2; i++)
                     {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                        </li>
-                    }
+                        if (page != i)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                            </li>
+                        }
 
-                    if (page == i)
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">@i</a>
-                        </li>
+                        if (page == i)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">@i</a>
+                            </li>
+                        }
                     }
                 }
-            }
 
 
-            if (page >= pages - 2)
-            {
-                for (int i = pages - 4; i <= pages; i++)
+                if (page >= pages - 2)
                 {
-                    if (page != i)
+                    for (int i = pages - 4; i <= pages; i++)
                     {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                        </li>
-                    }
+                        if (page != i)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                            </li>
+                        }
 
-                    if (page == i)
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">@i</a>
-                        </li>
+                        if (page == i)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">@i</a>
+                            </li>
+                        }
                     }
                 }
-            }
 
-            @*2 trang cuối*@
+                @*2 trang cuối*@
             if (page < pages - 2)
             {
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page + 1)">Trang tiếp</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page + 1)">Trang tiếp</a>
+                    </li>
             }
             if (page < pages - 2)
             {
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@pages">Trang cuối</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@pages">Trang cuối</a>
+                    </li>
+                }
             }
-        }
-    </ul>
-</nav>
+        </ul>
+    </nav>
+}

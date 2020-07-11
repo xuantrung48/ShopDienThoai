@@ -6,7 +6,7 @@
     var products = ViewBag.Products as List<Product>;
 }
 <div class="row my-3">
-    <div class="col-lg-3">
+    <div class="col-lg-4 col-xl-3">
         <h5 class="bg-secondary rounded text-light py-2 text-center">Tìm kiếm <i class="fas fa-search"></i></h5>
         <form asp-controller="Home" asp-action="Search" class="form-group">
             <div class="list-group-item" id="searchbox">
@@ -60,7 +60,10 @@
         </form>
     </div>
 
-    <div class="col-lg-9">
+    <div class="col-lg-8 col-xl-9">
+
+
+
         <div id="demo" class="carousel slide" data-ride="carousel">
 
             <!-- Indicators -->
@@ -91,13 +94,19 @@
                 <span class="carousel-control-next-icon"></span>
             </a>
         </div>
+
+
+
+
+
+
     </div>
 </div>
 
 
 @foreach (var category in categories)
 {
-    <h5 class="text-light bg-primary rounded"><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a></h5>
+    <h5 class="text-light bg-primary rounded text-center"><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a></h5>
     <div class="row">
         @{
             var productInCategory = (from e in products
