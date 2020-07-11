@@ -4,6 +4,8 @@
     var brands = ViewBag.Brands as List<Brand>;
     var categories = ViewBag.Categories as List<Category>;
     var products = ViewBag.Products as List<Product>;
+    var carouselImages = ViewBag.CarouselImages as List<CarouselImage>;
+
 }
 <div class="row my-3">
     <div class="col-lg-4 col-xl-3">
@@ -61,45 +63,57 @@
     </div>
 
     <div class="col-lg-8 col-xl-9">
+        @if (carouselImages != null)
+        {
+            <div id="demo" class="carousel slide" data-ride="carousel">
 
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                    @for (int i = 0; i < carouselImages.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <li data-target="#demo" data-slide-to="@i" class="active"></li>
+                        }
+                        else
+                        {
+                            <li data-target="#demo" data-slide-to="@i"></li>
+                        }
+                    }
+                    @*<li data-target="#demo" data-slide-to="0" class="active"></li>*@
+                </ul>
 
-
-        <div id="demo" class="carousel slide" data-ride="carousel">
-
-            <!-- Indicators -->
-            <ul class="carousel-indicators">
-                <li data-target="#demo" data-slide-to="0" class="active"></li>
-                <li data-target="#demo" data-slide-to="1"></li>
-                <li data-target="#demo" data-slide-to="2"></li>
-            </ul>
-
-            <!-- The slideshow -->
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://img3.thuthuatphanmem.vn/uploads/2019/10/08/banner-quang-cao-dien-thoai-dep_103211368.jpg" style="width:100%; height:475px;">
+                <!-- The slideshow -->
+                <div class="carousel-inner">
+                    @for (int i = 0; i < carouselImages.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="carousel-item active">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="width:100%; height:475px;">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="width:100%; height:475px;">
+                            </div>
+                        }
+                    }
+                    @*<div class="carousel-item active">
+            <img src="https://img3.thuthuatphanmem.vn/uploads/2019/10/08/banner-quang-cao-dien-thoai-dep_103211368.jpg" style="width:100%; height:475px;">
+        </div>*@
                 </div>
-                <div class="carousel-item">
-                    <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2020/02/1200x628_dau.jpg" style="width:100%; height:475px;">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://i.ytimg.com/vi/CUB7yrrOhi0/maxresdefault.jpg" style="width:100%; height:475px;">
-                </div>
+
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
             </div>
-
-            <!-- Left and right controls -->
-            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </a>
-            <a class="carousel-control-next" href="#demo" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </a>
-        </div>
-
-
-
-
-
-
+        }
     </div>
 </div>
 

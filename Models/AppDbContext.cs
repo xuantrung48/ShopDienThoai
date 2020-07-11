@@ -24,6 +24,7 @@ namespace TheGioiDienThoai.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<AppSetting> AppSettings { get; set; }
+        public DbSet<CarouselImage> CarouselImages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

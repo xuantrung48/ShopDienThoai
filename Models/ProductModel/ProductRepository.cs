@@ -72,18 +72,18 @@ namespace TheGioiDienThoai.Models.ProductModel
         public bool Remove(string id)
         {
             var productToRemove = context.Products.Find(id);
-            var images = (from e in context.Images
-                          where e.ProductId == productToRemove.ProductId
-                          select e).ToList();
-            foreach(var image in images)
-            {
-                imageRepository.Remove(image.ImageId);
-
-                string delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\products", image.ImageName);
-                File.Delete(delFile);
-            }
             if (productToRemove != null)
             {
+                var images = (from e in context.Images
+                              where e.ProductId == productToRemove.ProductId
+                              select e).ToList();
+                foreach (var image in images)
+                {
+                    imageRepository.Remove(image.ImageId);
+
+                    string delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\products", image.ImageName);
+                    File.Delete(delFile);
+                }
                 context.Products.Remove(productToRemove);
                 return context.SaveChanges() > 0;
             }

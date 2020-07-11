@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
@@ -23,9 +28,30 @@
     <Compile Remove="Migrations\20200707023629_UpdateOrderDetailTable.Designer.cs" />
     <Compile Remove="Migrations\20200707023831_UpdateOrderDetailTable2.cs" />
     <Compile Remove="Migrations\20200707023831_UpdateOrderDetailTable2.Designer.cs" />
+    <Compile Remove="Migrations\20200711092849_AddDefaultRoleIdColumnToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711092849_AddDefaultRoleIdColumnToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711093754_UpdateAppSettingTable2.cs" />
+    <Compile Remove="Migrations\20200711093754_UpdateAppSettingTable2.Designer.cs" />
+    <Compile Remove="Migrations\20200711100547_AddRoleIdColumn.cs" />
+    <Compile Remove="Migrations\20200711100547_AddRoleIdColumn.Designer.cs" />
+    <Compile Remove="Migrations\20200711112139_UpdateAppSettingTable2.cs" />
+    <Compile Remove="Migrations\20200711112139_UpdateAppSettingTable2.Designer.cs" />
+    <Compile Remove="Migrations\20200711121527_UpdateAppSettingTable3.cs" />
+    <Compile Remove="Migrations\20200711121527_UpdateAppSettingTable3.Designer.cs" />
+    <Compile Remove="Migrations\20200711122930_AddDefaultRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711122930_AddDefaultRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711123119_AddDefaultRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711123119_AddDefaultRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711123305_AddRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711123305_AddRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711123831_AddRoleIdToAppSettingTable.cs" />
+    <Compile Remove="Migrations\20200711123831_AddRoleIdToAppSettingTable.Designer.cs" />
+    <Compile Remove="Migrations\20200711124323_asd.cs" />
+    <Compile Remove="Migrations\20200711124323_asd.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\carousel\" />
     <Folder Include="wwwroot\images\users\" />
   </ItemGroup>
 

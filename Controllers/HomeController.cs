@@ -25,7 +25,8 @@ namespace TheGioiDienThoai.Controllers
         private readonly UserManager<User> userManager;
         private readonly ICustomerRepository customerRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
-        public HomeController(IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository, IOrderDetailRepository orderDetailRepository)
+        private readonly ICarouselImageRepository carouselImageRepository;
+        public HomeController(IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository, IOrderDetailRepository orderDetailRepository, ICarouselImageRepository carouselImageRepository)
         {
             this.context = context;
             this.productRepository = productRepository;
@@ -36,12 +37,14 @@ namespace TheGioiDienThoai.Controllers
             this.orderRepository = orderRepository;
             this.customerRepository = customerRepository;
             this.orderDetailRepository = orderDetailRepository;
+            this.carouselImageRepository = carouselImageRepository;
         }
         public IActionResult Index()
         {
-            ViewBag.Brands = GetBrands();
-            ViewBag.Categories = GetCategories();
+            ViewBag.Brands = brandRepository.Get().ToList();
+            ViewBag.Categories = categoryRepository.Get().ToList();
             ViewBag.Products = productRepository.Get().ToList();
+            ViewBag.CarouselImages = carouselImageRepository.Get().ToList();
             return View();
         }
         public IActionResult ViewProduct(string id)
@@ -129,14 +132,6 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.Count = products.Count;
             ViewBag.Page = page;
             return View(products.Skip(page * 12 - 12).Take(12).ToList());
-        }
-        private List<Category> GetCategories()
-        {
-            return categoryRepository.Get().ToList();
-        }
-        private List<Brand> GetBrands()
-        {
-            return brandRepository.Get().ToList();
         }
     }
 }

@@ -7,7 +7,7 @@
     var brands = (from b in context.Brands select b).ToList();
     var maxRange = (from p in context.Products select p.Price).Max();
     var minRange = (from p in context.Products select p.Price).Min();
-    var appSetting = (from s in context.AppSettings where s.Id == 1 select s).ToList().FirstOrDefault();
+    var appSetting = (from s in context.AppSettings select s).ToList().FirstOrDefault();
 }
 <!DOCTYPE html>
 
@@ -32,7 +32,7 @@
     <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true"/>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md bg-warning navbar-light rounded-bottom mb-3 font-weight-bold container">
+    <nav class="navbar navbar-expand-md navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
             <img src="~/images/@appSetting.Logo" alt="logo" style="height:50px;" asp-append-version="true">
         </a>
@@ -40,7 +40,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                         Danh mục
@@ -57,13 +57,11 @@
                 <li class="nav-item">
                     <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
                 </li>
-                <li class="nav-item" style="padding:7px">
-                    <form asp-controller="Home" asp-action="Search" class="form-group">
-                        <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="border-0">
-                        <button type="submit" class="bg-transparent border-0"><i class="fa fa-search"></i></button>
-                    </form>
-                </li>
             </ul>
+            <form asp-controller="Home" asp-action="Search" class="form-inline">
+                <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control mr-sm-2">
+                <button type="submit" class="btn btn-outline-primary my-2 my-sm-0"><i class="fa fa-search"></i></button>
+            </form>
             <ul class="navbar-nav ml-auto">
                 @if (signInManager.IsSignedIn(User))
                 {
@@ -75,10 +73,10 @@
                     </a>
                     <div class="dropdown-menu ">
                         @if (User.IsInRole("Admin"))
-                        {
+                            {
                         <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
                         <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
-                        }
+                            }
                         <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
                         <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
                         <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>

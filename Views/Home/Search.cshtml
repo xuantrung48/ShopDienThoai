@@ -18,232 +18,230 @@
     var categoryName = (categoryId != 0) ? (from c in context.Categories where c.CategoryId == categoryId select c).ToList().FirstOrDefault().Name : "Tất cả";
     var brandName = (brandId != 0) ? (from b in context.Brands where b.BrandId == brandId select b).ToList().FirstOrDefault().Name : "Tất cả";
 }
-<div class="py-3">
-    <div class="row">
-        <div class="col-lg-3">
-            <h5 class="bg-secondary rounded text-light py-2 text-center">Tìm kiếm <i class="fas fa-search"></i></h5>
-            <form asp-controller="Home" asp-action="Search" class="form-group">
-                <div class="list-group-item" id="searchbox">
-                    <input type="text" name="keyWord" placeholder="Từ khoá" class="form-control" id="keyWord">
-                </div>
-                <div class="list-group-item">
-                    <select name="categoryId" class="custom-select form-control" id="categoryId">
-                        <option value="">Chọn danh mục</option>
-                        @if (categories.Any() && categories.Count() > 0)
-                        {
-                            foreach (var ctg in categories)
-                            {
-                                <option value="@ctg.CategoryId">@ctg.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="list-group-item">
-                    <select name="brandId" class="custom-select form-control" id="brandId">
-                        <option value="">Chọn thương hiệu</option>
-                        @if (brands.Any() && brands.Count() > 0)
-                        {
-                            foreach (var brand in brands)
-                            {
-                                <option value="@brand.BrandId">@brand.Name</option>
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="list-group-item">
-                    <h5>Mức giá:</h5>
-
-                    <p>
-                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                        <input hidden name="minPrice" id="minPrice" />
-                        <input hidden name="maxPrice" id="maxPrice" />
-                    </p>
-
-                    <div id="slider-range"></div>
-                </div>
-                <div class="list-group-item">
-                    <select name="sortByPrice" class="custom-select form-control" id="sortByPrice">
-                        <option value="">Sắp xếp theo giá</option>
-                        <option value="asc">Tăng dần</option>
-                        <option value="desc">Giảm dần</option>
-                    </select>
-                </div>
-                <div class="list-group-item text-center">
-                    <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
-                </div>
-            </form>
-        </div>
-        <div class="col-lg-9">
-            <div>
-                @if (keyWord != null)
-                {
-                    <h5 class="text-danger">Từ khóa: @keyWord</h5>
-                }
-                <h5 class="text-danger">Danh mục: @categoryName</h5>
-                <h5 class="text-danger">Thương hiệu: @brandName</h5>
-                @{
-                    if (minPrice != 0 || maxPrice != 0)
-                    {
-                        <h5 class="text-danger">Mức giá: Từ @minPrice.ToString("#,##0") ₫ đến @maxPrice.ToString("#,##0") ₫</h5>
-                    }
-                    if (sortByPrice == "desc")
-                    {
-                        <h5 class="text-danger">Sắp xếp theo giá: Giảm dần</h5>
-                    }
-                    if (sortByPrice == "asc")
-                    {
-                        <h5 class="text-danger">Sắp xếp theo giá: Tăng dần</h5>
-                    }
-                }
+<div class="row">
+    <div class="col-lg-3">
+        <h5 class="bg-secondary rounded text-light py-2 text-center">Tìm kiếm <i class="fas fa-search"></i></h5>
+        <form asp-controller="Home" asp-action="Search" class="form-group">
+            <div class="list-group-item" id="searchbox">
+                <input type="text" name="keyWord" placeholder="Từ khoá" class="form-control" id="keyWord">
             </div>
-            <div class="row">
-                @foreach (var product in Model)
-                {
-                    <div class="col-md-4 col-lg-3 col-sm-6 col-xl-3 col-6 card-group">
-                        <div class="card rounded my-3 bg-transparent py-2">
-                            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
-                                @{
-                                    var productImages = (from e in context.Images
-                                                         where e.ProductId == product.ProductId
-                                                         select e).ToList();
-                                    if (productImages.Count != 0)
-                                    {
-                                        <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
-                                    }
-                                }
-                            </a>
-                            <h6 class="card-body text-center">
-                                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" class="card-link">
-                                    @product.Name
-                                </a>
-                            </h6>
-                            <h6 class="card-footer text-center text-danger bg-transparent">
-                                @product.Price.ToString("#,##0") ₫
-                            </h6>
-                        </div>
-                    </div>
-                }
+            <div class="list-group-item">
+                <select name="categoryId" class="custom-select form-control" id="categoryId">
+                    <option value="">Chọn danh mục</option>
+                    @if (categories.Any() && categories.Count() > 0)
+                    {
+                        foreach (var ctg in categories)
+                        {
+                            <option value="@ctg.CategoryId">@ctg.Name</option>
+                        }
+                    }
+                </select>
             </div>
+            <div class="list-group-item">
+                <select name="brandId" class="custom-select form-control" id="brandId">
+                    <option value="">Chọn thương hiệu</option>
+                    @if (brands.Any() && brands.Count() > 0)
+                    {
+                        foreach (var brand in brands)
+                        {
+                            <option value="@brand.BrandId">@brand.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="list-group-item">
+                <h5>Mức giá:</h5>
+
+                <p>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input hidden name="minPrice" id="minPrice" />
+                    <input hidden name="maxPrice" id="maxPrice" />
+                </p>
+
+                <div id="slider-range"></div>
+            </div>
+            <div class="list-group-item">
+                <select name="sortByPrice" class="custom-select form-control" id="sortByPrice">
+                    <option value="">Sắp xếp theo giá</option>
+                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Giảm dần</option>
+                </select>
+            </div>
+            <div class="list-group-item text-center">
+                <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
+            </div>
+        </form>
+        <div>
+            @if (keyWord != null)
+            {
+                <p class="text-danger">Từ khóa: @keyWord</p>
+            }
+            <p class="text-danger">Danh mục: @categoryName</p>
+            <p class="text-danger">Thương hiệu: @brandName</p>
+            @{
+                if (minPrice != 0 || maxPrice != 0)
+                {
+                    <p class="text-danger">Mức giá: Từ @minPrice.ToString("#,##0") ₫ đến @maxPrice.ToString("#,##0") ₫</p>
+                }
+                if (sortByPrice == "desc")
+                {
+                    <p class="text-danger">Sắp xếp theo giá: Giảm dần</p>
+                }
+                if (sortByPrice == "asc")
+                {
+                    <p class="text-danger">Sắp xếp theo giá: Tăng dần</p>
+                }
+            }
         </div>
     </div>
+    <div class="col-lg-9">
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 col-lg-3 col-sm-6 col-xl-3 col-6 card-group">
+                    <div class="card rounded my-3 bg-transparent py-2">
+                        <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
+                            @{
+                                var productImages = (from e in context.Images
+                                                        where e.ProductId == product.ProductId
+                                                        select e).ToList();
+                                if (productImages.Count != 0)
+                                {
+                                    <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
+                                }
+                            }
+                        </a>
+                        <h6 class="card-body text-center">
+                            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" class="card-link">
+                                @product.Name
+                            </a>
+                        </h6>
+                        <h6 class="card-footer text-center text-danger bg-transparent">
+                            @product.Price.ToString("#,##0") ₫
+                        </h6>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (pages > 1)
+        {
+            <nav aria-label="Pages Navigation">
+                <ul class="pagination justify-content-center">
+                    @if (pages <= 5)
+                    {
+                        for (int i = 1; i <= pages; i++)
+                        {
+                            if (page != i)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                                </li>
+                            }
+
+                            if (page == i)
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">@i</a>
+                                </li>
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        @*2 trang đầu*@
+                        if (page > 3)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="1">Trang đầu</a>
+                            </li>
+                        }
+
+                        if (page > 3)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page - 1)">Trang trước</a>
+                            </li>
+                        }
+
+                        if (page <= 3)
+                        {
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                if (page != i)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+
+                                if (page == i)
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">@i</a>
+                                    </li>
+                                }
+                            }
+                        }
+
+                        if (page > 3 && page < pages - 2)
+                        {
+                            for (int i = page - 2; i <= page + 2; i++)
+                            {
+                                if (page != i)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+
+                                if (page == i)
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">@i</a>
+                                    </li>
+                                }
+                            }
+                        }
+
+
+                        if (page >= pages - 2)
+                        {
+                            for (int i = pages - 4; i <= pages; i++)
+                            {
+                                if (page != i)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+
+                                if (page == i)
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">@i</a>
+                                    </li>
+                                }
+                            }
+                        }
+
+                        @*2 trang cuối*@
+                        if (page < pages - 2)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page + 1)">Trang tiếp</a>
+                            </li>
+                        }
+                        if (page < pages - 2)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@pages">Trang cuối</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
 </div>
-
-@if (pages > 1)
-{
-    <nav aria-label="Pages Navigation">
-        <ul class="pagination justify-content-center">
-            @if (pages <= 5)
-            {
-                for (int i = 1; i <= pages; i++)
-                {
-                    if (page != i)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                        </li>
-                    }
-
-                    if (page == i)
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">@i</a>
-                        </li>
-                    }
-                }
-            }
-
-            else
-            {
-                @*2 trang đầu*@
-            if (page > 3)
-            {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="1">Trang đầu</a>
-                    </li>
-            }
-
-            if (page > 3)
-            {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page - 1)">Trang trước</a>
-                    </li>
-                }
-
-                if (page <= 3)
-                {
-                    for (int i = 1; i <= 5; i++)
-                    {
-                        if (page != i)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-
-                        if (page == i)
-                        {
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">@i</a>
-                            </li>
-                        }
-                    }
-                }
-
-                if (page > 3 && page < pages - 2)
-                {
-                    for (int i = page - 2; i <= page + 2; i++)
-                    {
-                        if (page != i)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-
-                        if (page == i)
-                        {
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">@i</a>
-                            </li>
-                        }
-                    }
-                }
-
-
-                if (page >= pages - 2)
-                {
-                    for (int i = pages - 4; i <= pages; i++)
-                    {
-                        if (page != i)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-
-                        if (page == i)
-                        {
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">@i</a>
-                            </li>
-                        }
-                    }
-                }
-
-                @*2 trang cuối*@
-            if (page < pages - 2)
-            {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@(page + 1)">Trang tiếp</a>
-                    </li>
-            }
-            if (page < pages - 2)
-            {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="Home" asp-action="Search" asp-route-categoryId="@categoryId" asp-route-brandId="@brandId" asp-route-keyWord="@keyWord" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" asp-route-sortByPrice="@sortByPrice" asp-route-page="@pages">Trang cuối</a>
-                    </li>
-                }
-            }
-        </ul>
-    </nav>
-}

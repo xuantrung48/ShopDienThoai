@@ -37,6 +37,7 @@ namespace TheGioiDienThoai
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<ICarouselImageRepository, CarouselImageRepository>();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("OnlineShopDatabase")));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
         }
