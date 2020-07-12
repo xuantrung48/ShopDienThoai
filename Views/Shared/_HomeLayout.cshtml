@@ -36,7 +36,11 @@
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
             <img src="~/images/@appSetting.Logo" alt="logo" style="height:50px;" asp-append-version="true">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <form asp-controller="Home" asp-action="Search" class="form-inline">
+            <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control" style="padding-right: 50px;">
+            <button type="submit" class="btn" style="margin-left: -45px;"><i class="fa fa-search"></i></button>
+        </form>
+        <button class="navbar-toggler mt-2" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
@@ -58,11 +62,7 @@
                     <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
                 </li>
             </ul>
-            <form asp-controller="Home" asp-action="Search" class="form-inline">
-                <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control mr-sm-2">
-                <button type="submit" class="btn btn-outline-primary my-2 my-sm-0"><i class="fa fa-search"></i></button>
-            </form>
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
                 @if (signInManager.IsSignedIn(User))
                 {
                     User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
