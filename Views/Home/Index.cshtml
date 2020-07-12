@@ -89,13 +89,13 @@
                         if (i == 0)
                         {
                             <div class="carousel-item active">
-                                <img src="~/images/carousel/@carouselImages[i].Name" style="width:100%; height:475px;">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="max-width:100%; height:475px;">
                             </div>
                         }
                         else
                         {
                             <div class="carousel-item">
-                                <img src="~/images/carousel/@carouselImages[i].Name" style="width:100%; height:475px;">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="max-width:100%; height:475px;">
                             </div>
                         }
                     }
@@ -135,7 +135,7 @@
                                                  select e).ToList();
                             if (productImages.Count != 0)
                             {
-                                <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
+                                <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:90%;" class="mx-auto d-block">
                             }
                         }
                     </a>

@@ -32,18 +32,18 @@
     <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true"/>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
             <img src="~/images/@appSetting.Logo" alt="logo" style="height:50px;" asp-append-version="true">
         </a>
-        <form asp-controller="Home" asp-action="Search" class="form-inline">
-            <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control" style="padding-right: 50px;">
-            <button type="submit" class="btn" style="margin-left: -45px;"><i class="fa fa-search"></i></button>
-        </form>
-        <button class="navbar-toggler mt-2" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <button class="navbar-toggler mt-2 ml-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <form asp-controller="Home" asp-action="Search" class="form-inline">
+                <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control" style="padding-right: 50px;">
+                <button type="submit" class="btn" style="margin-left: -45px;"><i class="fa fa-search"></i></button>
+            </form>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -53,7 +53,7 @@
                         @{
                             foreach (var category in categories)
                             {
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.Name</a>
+                                <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.Name</a>
                             }
                         }
                     </div>
@@ -66,33 +66,33 @@
                 @if (signInManager.IsSignedIn(User))
                 {
                     User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle" />&nbsp;
-                        @currentUser.Name
-                    </a>
-                    <div class="dropdown-menu ">
-                        @if (User.IsInRole("Admin"))
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle" />&nbsp;
+                            @currentUser.Name
+                        </a>
+                        <div class="dropdown-menu ">
+                            @if (User.IsInRole("Admin"))
                             {
-                        <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
-                        <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
+                                <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
+                                <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
                             }
-                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
-                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
-                        <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Thoát</a>
-                    </div>
-                </li>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Thoát</a>
+                        </div>
+                    </li>
                 }
                 else
                 {
-                <li class="nav-item">
-                    <a asp-controller="Account" asp-action="Login" class="nav-link">Đăng nhập</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-controller="Account" asp-action="Register" class="nav-link">Đăng ký</a>
-                </li>
+                    <li class="nav-item">
+                        <a asp-controller="Account" asp-action="Login" class="nav-link">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Account" asp-action="Register" class="nav-link">Đăng ký</a>
+                    </li>
                 }
             </ul>
         </div>
