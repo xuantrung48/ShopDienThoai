@@ -1,7 +1,7 @@
 ﻿@inject AppDbContext context
 @model List<Product>
 @{
-    ViewBag.Title = "Kết quả tìm kiếm";
+    ViewBag.Title = $"Kết quả tìm kiếm: {ViewBag.KeyWord} - ";
     var categories = ViewBag.Categories as List<Category>;
     var brands = ViewBag.Brands as List<Brand>;
     var brandId = ViewBag.BrandId as int?;
@@ -105,7 +105,7 @@
                                 var productImages = (from e in context.Images
                                                         where e.ProductId == product.ProductId
                                                         select e).ToList();
-                                if (productImages.Count != 0)
+                                if (productImages != null)
                                 {
                                     <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:140px;" class="mx-auto d-block">
                                 }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Mua sản phẩm";
+    ViewBag.Title = "Mua sản phẩm - ";
     var product = ViewBag.Product as Product;
 }
 <h4 class="alert alert-success">Sản phẩm đặt hàng: <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" target="_blank" class="alert-link">@product.Name</a></h4>

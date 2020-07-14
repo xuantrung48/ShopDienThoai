@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@appSetting.Title - @appSetting.ShortDesc</title>
+    <title>@ViewBag.Title@appSetting.Title - @appSetting.ShortDesc</title>
     <environment include="Development">
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
@@ -149,5 +149,6 @@
     @RenderSection("ValidateScript", false)
     @RenderSection("lightboxjs", false)
     @RenderSection("datatablejs", false)
+    @RenderSection("tinyMCE", false)
 </body>
 </html>

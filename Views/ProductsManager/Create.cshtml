@@ -44,7 +44,7 @@
                 {
                     foreach (var ctg in categories)
                     {
-                <option value="@ctg.CategoryId">@ctg.Name</option>
+                        <option value="@ctg.CategoryId">@ctg.Name</option>
                     }
                 }
             </select>
@@ -71,7 +71,7 @@
                 {
                     foreach (var brand in brands)
                     {
-                <option value="@brand.BrandId">@brand.Name</option>
+                        <option value="@brand.BrandId">@brand.Name</option>
                     }
                 }
             </select>
@@ -148,7 +148,7 @@
             <label asp-for="Description">Bài viết mô tả: </label>
         </div>
         <div class="col-md-9">
-            <textarea asp-for="Description" class="form-control" placeholder="Viết bài mô tả sản phẩm"></textarea>
+            <textarea asp-for="Description" class="form-control" placeholder="Viết bài mô tả sản phẩm" rows="15"></textarea>
         </div>
     </div>
     <div class="row form-group">
@@ -190,6 +190,28 @@
             });
         });
     </script>
+}
+@section tinyMCE{
+    <environment include="Development">
+        <script src="~/lib/tinymce/tinymce.min.js"></script>
+        <script>
+            tinymce.init({
+                selector: "textarea",
+                plugins: ["image", "link"]
+            });
+        </script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/plugins/link/plugin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/plugins/image/plugin.min.js"></script>
+        <script>
+            tinymce.init({
+                selector: "textarea",
+                plugins: ["image", "link"]
+            });
+        </script>
+    </environment>
 }
 @section ValidateScript
 {

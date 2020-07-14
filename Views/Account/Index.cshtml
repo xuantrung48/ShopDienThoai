@@ -1,6 +1,6 @@
 ﻿@model UserViewModel
 @{
-    ViewBag.Title = "Thông tin tài khoản";
+    ViewBag.Title = "Thông tin tài khoản - ";
     var imagePath = !string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png";
 }
 <h2 class="text-center">@ViewBag.Title</h2>

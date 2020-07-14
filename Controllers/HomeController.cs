@@ -55,9 +55,17 @@ namespace TheGioiDienThoai.Controllers
                 ViewBag.ErrorMessage = "Không tìm thấy sản phẩm!";
                 return View("~/Views/Error/PageNotFound.cshtml");
             }
-            var images = (from e in context.Images where e.ProductId == product.ProductId
-                          select e).ToList();
-            ViewBag.Images = images;
+            ViewBag.Images = (from e in context.Images
+                              where e.ProductId == product.ProductId
+                              select e).ToList();
+            var relatedProducts = (from p in context.Products
+                                   where p.CategoryId == product.CategoryId ||
+                                   p.BrandId == product.BrandId
+                                   select p).ToList();
+            relatedProducts.Remove(context.Products.Find(id));
+            ViewBag.Brands = brandRepository.Get().ToList();
+            ViewBag.Categories = categoryRepository.Get().ToList();
+            ViewBag.RelatedProducts = relatedProducts.Take(6);
             return View(product);
         }
         public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice, string sortByPrice, int page = 1)
