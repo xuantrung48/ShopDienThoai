@@ -7,11 +7,10 @@
     var categorie = ViewBag.Category;
     var images = ViewBag.Images as List<Image>;
     var relatedProducts = ViewBag.RelatedProducts as IEnumerable<Product>;
-    var productName = $"{Model.CategoryName} {Model.BrandName} {@Model.Name} ({@Model.Ram} GB, {@Model.Rom} GB)";
-    ViewBag.Title = $"{productName} - ";
+    ViewBag.Title = $"{Model.CategoryName} {Model.BrandName} {@Model.Name} ({@Model.Ram} GB, {@Model.Rom} GB)";
 }
 <div class="row">
-    <h2>@productName</h2>
+    <h2>@ViewBag.Title</h2>
     @if (User.IsInRole("Admin"))
     {
         <div>

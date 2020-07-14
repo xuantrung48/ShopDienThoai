@@ -1,7 +1,7 @@
 ﻿@inject AppDbContext context
 @model List<Product>
 @{
-    ViewBag.Title = $"Danh mục {ViewBag.title} - ";
+    ViewBag.Title = $"Danh mục {ViewBag.title}";
     var brands = ViewBag.Brands as IEnumerable<Brand>;
     var categories = ViewBag.Categories as IEnumerable<Category>;
     var id = ViewBag.CategoryId;

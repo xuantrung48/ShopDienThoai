@@ -1,7 +1,7 @@
 ﻿@inject AppDbContext context
 @model List<Product>
 @{
-    ViewBag.Title = $"Kết quả tìm kiếm: {ViewBag.KeyWord} - ";
+    ViewBag.Title = $"Kết quả tìm kiếm: {ViewBag.KeyWord}";
     var categories = ViewBag.Categories as List<Category>;
     var brands = ViewBag.Brands as List<Brand>;
     var brandId = ViewBag.BrandId as int?;

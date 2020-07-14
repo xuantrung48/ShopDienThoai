@@ -8,13 +8,14 @@
     var maxRange = (from p in context.Products select p.Price).Max();
     var minRange = (from p in context.Products select p.Price).Min();
     var appSetting = (from s in context.AppSettings select s).ToList().FirstOrDefault();
+    var title = (string) ViewBag.Title;
 }
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title@appSetting.Title - @appSetting.ShortDesc</title>
+    <title>@(String.IsNullOrEmpty(title) ? $"{title}" : $"{title} - ")@appSetting.Title - @appSetting.ShortDesc</title>
     <environment include="Development">
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
