@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace TheGioiDienThoai.Models.OrderModel
+namespace ShopDienThoai.Models.OrderModel
 {
     public class OrderDetailRepository : IOrderDetailRepository
     {
         private readonly AppDbContext context;
+
         public OrderDetailRepository(AppDbContext context)
         {
             this.context = context;
         }
+
         public OrderDetail Create(OrderDetail orderDetail)
         {
             orderDetail.OrderDetailId = Guid.NewGuid().ToString();
@@ -45,14 +46,16 @@ namespace TheGioiDienThoai.Models.OrderModel
             var orderDetailsToRemove = (from o in context.OrderDetails where o.OrderId == orderId select o).ToList();
             if (orderDetailsToRemove.Count > 0)
             {
-                foreach(var o in orderDetailsToRemove)
+                foreach (var o in orderDetailsToRemove)
                 {
                     context.OrderDetails.Remove(o);
                     context.Products.Find(o.ProductId).Remain += o.Quantity;
                 }
+
                 context.SaveChanges();
                 return true;
             }
+
             return false;
         }
     }

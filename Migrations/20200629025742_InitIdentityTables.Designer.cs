@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TheGioiDienThoai.Models;
+using ShopDienThoai.Models;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20200629025742_InitIdentityTables")]
@@ -217,7 +217,7 @@ namespace TheGioiDienThoai.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Brand", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Brand", b =>
                 {
                     b.Property<int>("BrandId")
                         .ValueGeneratedOnAdd()
@@ -259,7 +259,7 @@ namespace TheGioiDienThoai.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Category", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -293,7 +293,7 @@ namespace TheGioiDienThoai.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Product", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Product", b =>
                 {
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
@@ -422,13 +422,13 @@ namespace TheGioiDienThoai.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Product", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Product", b =>
                 {
-                    b.HasOne("TheGioiDienThoai.Models.ProductModel.Brand", "Brand")
+                    b.HasOne("ShopDienThoai.Models.ProductModel.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("TheGioiDienThoai.Models.ProductModel.Category", "Category")
+                    b.HasOne("ShopDienThoai.Models.ProductModel.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
                 });

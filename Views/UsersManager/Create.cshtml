@@ -7,7 +7,7 @@
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="form-label-group">
-        <img id="profilePicture" src="" width="200" style="display:none;" class="mx-auto d-block my-3" />
+        <img id="profilePicture" src="" width="200" style="display: none;" class="mx-auto d-block my-3"/>
     </div>
 
     <div class="row form-group">
@@ -86,7 +86,7 @@
                 {
                     foreach (var role in roles)
                     {
-                <option value="@role.Id">@role.Name</option>
+                        <option value="@role.Id">@role.Name</option>
                     }
                 }
             </select>
@@ -121,6 +121,7 @@
         </div>
     </div>
 </form>
+
 @section ValidateScript
 {
     <environment include="Development">
@@ -132,13 +133,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     </environment>
 }
+
 @section Scripts{
     <script>
-        $(".custom-file-input").on("change", function () {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-        $('#i_file').change(function (event) {
+        $(".custom-file-input").on("change",
+            function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        $('#i_file').change(function(event) {
             $("#profilePicture").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
     </script>

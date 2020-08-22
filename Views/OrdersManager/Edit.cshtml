@@ -2,122 +2,122 @@
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
 }
-    <form asp-controller="OrdersManager" asp-action="Edit" method="post">
-        <input hidden asp-for="OrderId" value="@Model.OrderId" />
-        <input hidden asp-for="ProductId" value="@Model.ProductId" />
-        <input hidden asp-for="ProductName" value="@Model.ProductName" />
-        <input hidden asp-for="UserId" value="@Model.UserId" />
+<form asp-controller="OrdersManager" asp-action="Edit" method="post">
+    <input hidden asp-for="OrderId" value="@Model.OrderId"/>
+    <input hidden asp-for="ProductId" value="@Model.ProductId"/>
+    <input hidden asp-for="ProductName" value="@Model.ProductName"/>
+    <input hidden asp-for="UserId" value="@Model.UserId"/>
+    <div class="row form-group">
+        <div class="col-md-3">
+            ID Đơn hàng
+        </div>
+        <div class="col-md-9">
+            @Model.OrderId
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="OrderStatus">Trạng thái đơn hàng: </label>
+        </div>
+        <div class="col-md-9">
+            <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="form-control">
+                <option value="">Chọn trạng thái</option>
+            </select>
+            <span asp-validation-for="OrderStatus" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            Ngày đặt hàng:
+        </div>
+        <div class="col-md-9">
+            @Model.OrderTime.ToString("dd/MM/yyyy hh:mm tt")
+        </div>
+    </div>
+    @if (Model.OrderStatus == OrderStatus.Completed)
+    {
         <div class="row form-group">
             <div class="col-md-3">
-                ID Đơn hàng
+                Ngày hoàn thành:
             </div>
             <div class="col-md-9">
-                @Model.OrderId
+                @Model.CompleteTime.ToString("dd/MM/yyyy hh:mm tt")
             </div>
         </div>
+    }
+    @if (Model.OrderStatus == OrderStatus.Canceled)
+    {
         <div class="row form-group">
             <div class="col-md-3">
-                <label asp-for="OrderStatus">Trạng thái đơn hàng: </label>
+                Ngày huỷ đơn:
             </div>
             <div class="col-md-9">
-                <select asp-for="OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()" class="form-control">
-                    <option value="">Chọn trạng thái</option>
-                </select>
-                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+                @Model.CompleteTime.ToString("dd/MM/yyyy hh:mm tt")
             </div>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                Ngày đặt hàng:
-            </div>
-            <div class="col-md-9">
-                @Model.OrderTime.ToString("dd/MM/yyyy hh:mm tt")
-            </div>
+    }
+    <div class="row form-group">
+        <div class="col-md-3">
+            Sản phẩm:
         </div>
-        @if (Model.OrderStatus == OrderStatus.Completed)
-        {
-            <div class="row form-group">
-                <div class="col-md-3">
-                    Ngày hoàn thành:
-                </div>
-                <div class="col-md-9">
-                    @Model.CompleteTime.ToString("dd/MM/yyyy hh:mm tt")
-                </div>
-            </div>
-        }
-        @if (Model.OrderStatus == OrderStatus.Canceled)
-        {
-            <div class="row form-group">
-                <div class="col-md-3">
-                    Ngày huỷ đơn:
-                </div>
-                <div class="col-md-9">
-                    @Model.CompleteTime.ToString("dd/MM/yyyy hh:mm tt")
-                </div>
-            </div>
-        }
-        <div class="row form-group">
-            <div class="col-md-3">
-                Sản phẩm:
-            </div>
-            <div class="col-md-9">
-                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@Model.ProductId" target="_blank">@Model.ProductName</a>
-            </div>
+        <div class="col-md-9">
+            <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@Model.ProductId" target="_blank">@Model.ProductName</a>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="ProductPrice">Giá sản phẩm: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="ProductPrice" class="form-control" placeholder="Nhập giá sản phẩm">
-                <span asp-validation-for="ProductPrice" class="text-danger"></span>
-            </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="ProductPrice">Giá sản phẩm: </label>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="CustomerName">Tên khách hàng: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="CustomerName" class="form-control" placeholder="Nhập tên khách hàng">
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
-            </div>
+        <div class="col-md-9">
+            <input asp-for="ProductPrice" class="form-control" placeholder="Nhập giá sản phẩm">
+            <span asp-validation-for="ProductPrice" class="text-danger"></span>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="CustomerAddress">Địa chỉ giao hàng: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="CustomerAddress" class="form-control" placeholder="Nhập địa chỉ khách hàng">
-                <span asp-validation-for="CustomerAddress" class="text-danger"></span>
-            </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="CustomerName">Tên khách hàng: </label>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="CustomerPhoneNumber">Số điện thoại khách hàng: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="CustomerPhoneNumber" class="form-control" placeholder="Nhập số điện thoại khách hàng">
-                <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
-            </div>
+        <div class="col-md-9">
+            <input asp-for="CustomerName" class="form-control" placeholder="Nhập tên khách hàng">
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="Note">Ghi chú: </label>
-            </div>
-            <div class="col-md-9">
-                <textarea asp-for="Note" class="form-control" placeholder="Nhập ghi chú của đơn hàng"></textarea>
-                <span asp-validation-for="Note" class="text-danger"></span>
-            </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="CustomerAddress">Địa chỉ giao hàng: </label>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-9">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <a asp-controller="OrdersManager" asp-action="@(ViewBag.BackAction ??= "PendingOrders")" class="btn btn-secondary mx-3">Huỷ</a>
-            </div>
+        <div class="col-md-9">
+            <input asp-for="CustomerAddress" class="form-control" placeholder="Nhập địa chỉ khách hàng">
+            <span asp-validation-for="CustomerAddress" class="text-danger"></span>
         </div>
-    </form>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="CustomerPhoneNumber">Số điện thoại khách hàng: </label>
+        </div>
+        <div class="col-md-9">
+            <input asp-for="CustomerPhoneNumber" class="form-control" placeholder="Nhập số điện thoại khách hàng">
+            <span asp-validation-for="CustomerPhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Note">Ghi chú: </label>
+        </div>
+        <div class="col-md-9">
+            <textarea asp-for="Note" class="form-control" placeholder="Nhập ghi chú của đơn hàng"></textarea>
+            <span asp-validation-for="Note" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a asp-controller="OrdersManager" asp-action="@(ViewBag.BackAction ??= "PendingOrders")" class="btn btn-secondary mx-3">Huỷ</a>
+        </div>
+    </div>
+</form>
 
 @section ValidateScript
 {

@@ -1,22 +1,22 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
-namespace TheGioiDienThoai.Models
+namespace ShopDienThoai.Models
 {
     public class CarouselImageRepository : ICarouselImageRepository
     {
         private readonly AppDbContext context;
         private readonly IWebHostEnvironment webHostEnvironment;
+
         public CarouselImageRepository(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
             this.webHostEnvironment = webHostEnvironment;
         }
+
         public CarouselImage Create(CarouselImage image)
         {
             context.CarouselImages.Add(image);
@@ -40,8 +40,8 @@ namespace TheGioiDienThoai.Models
         public CarouselImage Get(int id)
         {
             var image = (from e in context.CarouselImages
-                         where e.Id == id
-                         select e).FirstOrDefault();
+                where e.Id == id
+                select e).FirstOrDefault();
             return image;
         }
 
@@ -50,11 +50,12 @@ namespace TheGioiDienThoai.Models
             var imageToRemove = context.CarouselImages.Find(id);
             if (imageToRemove != null)
             {
-                string delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\carousel", imageToRemove.Name);
+                var delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\carousel", imageToRemove.Name);
                 File.Delete(delFile);
                 context.CarouselImages.Remove(imageToRemove);
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

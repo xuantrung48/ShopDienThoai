@@ -1,20 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace TheGioiDienThoai.Models.ProductModel
+namespace ShopDienThoai.Models.ProductModel
 {
     public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext context;
+
         public CategoryRepository(AppDbContext context)
         {
             this.context = context;
         }
+
         public Category Create(Category category)
         {
+            category.IsDeleted = false;
             context.Categories.Add(category);
             context.SaveChanges();
             return category;
@@ -30,14 +31,15 @@ namespace TheGioiDienThoai.Models.ProductModel
 
         public IEnumerable<Category> Get()
         {
-            return context.Categories;
+            return from c in context.Categories where c.IsDeleted == false select c;
         }
 
         public Category Get(int id)
         {
             var category = (from e in context.Categories
-                            where e.CategoryId == id
-                            select e).FirstOrDefault();
+                where e.IsDeleted == false
+                      && e.CategoryId == id
+                select e).FirstOrDefault();
             return category;
         }
 
@@ -46,14 +48,13 @@ namespace TheGioiDienThoai.Models.ProductModel
             var categoryToRemove = context.Categories.Find(id);
             if (categoryToRemove != null)
             {
-                var productsInCategory = (from p in context.Products where p.CategoryId == id select p).ToList();
-                if (productsInCategory.Count > 0)
-                {
+                var productsInCategory = from p in context.Products where p.CategoryId == id select p;
+                if (productsInCategory.ToList().Count > 0)
                     return false;
-                }
                 context.Categories.Remove(categoryToRemove);
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

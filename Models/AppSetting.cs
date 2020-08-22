@@ -1,13 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using TheGioiDienThoai.Models.UserModel;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace TheGioiDienThoai.Models
+namespace ShopDienThoai.Models
 {
     public class AppSetting
     {
@@ -16,6 +9,7 @@ namespace TheGioiDienThoai.Models
         public string ShortDesc { get; set; }
         public string Logo { get; set; }
         public string Icon { get; set; }
+
         [Required(ErrorMessage = "Chọn vai trò mặc định cho người dùng!")]
         public string DefaultRoleId { get; set; }
     }

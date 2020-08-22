@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TheGioiDienThoai.Models;
+using ShopDienThoai.Models;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20200701021806_AddNameColumnToUserTable")]
@@ -152,7 +152,7 @@ namespace TheGioiDienThoai.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Brand", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Brand", b =>
                 {
                     b.Property<int>("BrandId")
                         .ValueGeneratedOnAdd()
@@ -194,7 +194,7 @@ namespace TheGioiDienThoai.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Category", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -228,7 +228,7 @@ namespace TheGioiDienThoai.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Product", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Product", b =>
                 {
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
@@ -308,7 +308,7 @@ namespace TheGioiDienThoai.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.UserModel.User", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.UserModel.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -398,7 +398,7 @@ namespace TheGioiDienThoai.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TheGioiDienThoai.Models.UserModel.User", null)
+                    b.HasOne("ShopDienThoai.Models.UserModel.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -407,7 +407,7 @@ namespace TheGioiDienThoai.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TheGioiDienThoai.Models.UserModel.User", null)
+                    b.HasOne("ShopDienThoai.Models.UserModel.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -422,7 +422,7 @@ namespace TheGioiDienThoai.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheGioiDienThoai.Models.UserModel.User", null)
+                    b.HasOne("ShopDienThoai.Models.UserModel.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -431,22 +431,22 @@ namespace TheGioiDienThoai.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TheGioiDienThoai.Models.UserModel.User", null)
+                    b.HasOne("ShopDienThoai.Models.UserModel.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheGioiDienThoai.Models.ProductModel.Product", b =>
+            modelBuilder.Entity("ShopDienThoai.Models.ProductModel.Product", b =>
                 {
-                    b.HasOne("TheGioiDienThoai.Models.ProductModel.Brand", null)
+                    b.HasOne("ShopDienThoai.Models.ProductModel.Brand", null)
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheGioiDienThoai.Models.ProductModel.Category", null)
+                    b.HasOne("ShopDienThoai.Models.ProductModel.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

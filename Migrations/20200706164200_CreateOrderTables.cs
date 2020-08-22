@@ -1,109 +1,109 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     public partial class CreateOrderTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
+                "Customers",
+                table => new
                 {
-                    CustomerId = table.Column<string>(nullable: false),
+                    CustomerId = table.Column<string>(),
                     UserId = table.Column<string>(nullable: true),
                     CustomerName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: false),
-                    Address = table.Column<string>(nullable: false)
+                    PhoneNumber = table.Column<string>(),
+                    Address = table.Column<string>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
                     table.ForeignKey(
-                        name: "FK_Customers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Customers_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
+                "Orders",
+                table => new
                 {
-                    OrderId = table.Column<string>(nullable: false),
+                    OrderId = table.Column<string>(),
                     CustomerId = table.Column<string>(nullable: true),
-                    OrderTime = table.Column<DateTime>(nullable: false),
-                    CompleteTime = table.Column<DateTime>(nullable: false)
+                    OrderTime = table.Column<DateTime>(),
+                    CompleteTime = table.Column<DateTime>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerId",
+                        "FK_Orders_Customers_CustomerId",
+                        x => x.CustomerId,
+                        "Customers",
+                        "CustomerId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
+                "OrderDetails",
+                table => new
                 {
-                    OrderId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
+                    OrderId = table.Column<string>(),
+                    ProductId = table.Column<string>(),
+                    Price = table.Column<int>(),
+                    Quantity = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        "FK_OrderDetails_Orders_OrderId",
+                        x => x.OrderId,
+                        "Orders",
+                        "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
+                        "FK_OrderDetails_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_UserId",
-                table: "Customers",
-                column: "UserId");
+                "IX_Customers_UserId",
+                "Customers",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrderId",
-                table: "OrderDetails",
-                column: "OrderId");
+                "IX_OrderDetails_OrderId",
+                "OrderDetails",
+                "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_ProductId",
-                table: "OrderDetails",
-                column: "ProductId");
+                "IX_OrderDetails_ProductId",
+                "OrderDetails",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId",
-                table: "Orders",
-                column: "CustomerId");
+                "IX_Orders_CustomerId",
+                "Orders",
+                "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderDetails");
+                "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                "Orders");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                "Customers");
         }
     }
 }

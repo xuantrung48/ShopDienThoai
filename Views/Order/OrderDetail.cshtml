@@ -1,5 +1,4 @@
-﻿@inject AppDbContext context
-@inject SignInManager<User> signInManager
+﻿@inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
 @model OrderDetailViewModel
 @{
@@ -13,9 +12,9 @@
 else
 {
     @if (Model.OrderStatus == OrderStatus.Pending)
-    {
-        <h3 class="text-success">Cám ơn quý khách đã đặt hàng, chúng tôi đã nhận được đơn hàng và sẽ giao hàng trong thời gian nhanh nhất!</h3>
-    }
+     {
+         <h3 class="text-success">Cám ơn quý khách đã đặt hàng, chúng tôi đã nhận được đơn hàng và sẽ giao hàng trong thời gian nhanh nhất!</h3>
+     }
     <h2>@ViewBag.Title</h2>
     <p></p>
     <div class="container">
@@ -124,37 +123,37 @@ else
         </div>
     </div>
     @if (signInManager.IsSignedIn(User))
-    {
-        User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
-        if (currentUser.Id == userOrder.Id && Model.OrderStatus == OrderStatus.Pending)
-        {
-            <a class="btn btn-warning mx-3 my-4" asp-controller="Order" asp-action="Edit" asp-route-id="@ViewBag.OrderId">
-                Chỉnh sửa
-            </a>
+     {
+         var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
+         if (currentUser.Id == userOrder.Id && Model.OrderStatus == OrderStatus.Pending)
+         {
+             <a class="btn btn-warning mx-3 my-4" asp-controller="Order" asp-action="Edit" asp-route-id="@ViewBag.OrderId">
+                 Chỉnh sửa
+             </a>
 
-            <button type="button" class="btn btn-secondary mx-3 my-4" data-toggle="modal" data-target="#cancelOrder">
-                Huỷ đơn hàng!
-            </button>
+             <button type="button" class="btn btn-secondary mx-3 my-4" data-toggle="modal" data-target="#cancelOrder">
+                 Huỷ đơn hàng!
+             </button>
 
-            <div class="modal fade" id="cancelOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Huỷ đơn hàng!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Bạn có chắc chắn huỷ đơn đặt hàng này?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
-                            <a asp-controller="Order" asp-action="Cancel" asp-route-id="@Model.OrderId" class="btn btn-danger">Xác nhận</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+             <div class="modal fade" id="cancelOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h5 class="modal-title" id="exampleModalLabel">Huỷ đơn hàng!</h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                             </button>
+                         </div>
+                         <div class="modal-body">
+                             Bạn có chắc chắn huỷ đơn đặt hàng này?
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
+                             <a asp-controller="Order" asp-action="Cancel" asp-route-id="@Model.OrderId" class="btn btn-danger">Xác nhận</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         }
+     }
 }

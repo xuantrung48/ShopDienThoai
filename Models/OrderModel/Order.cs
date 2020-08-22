@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using TheGioiDienThoai.Models.UserModel;
 
-namespace TheGioiDienThoai.Models.OrderModel
+namespace ShopDienThoai.Models.OrderModel
 {
     public class Order
     {
-        [Required]
-        public string OrderId { get; set; }
+        [Required] public string OrderId { get; set; }
+
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
         public OrderStatus Status { get; set; }
-        [Required]
-        public DateTime OrderTime { get; set; }
+
+        [Required] public DateTime OrderTime { get; set; }
+
         public DateTime CompleteTime { get; set; }
         public string Note { get; set; }
     }

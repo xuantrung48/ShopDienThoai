@@ -1,46 +1,40 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     public partial class CreateBrandsCategoriesProductsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Brands",
-                columns: table => new
+                "Brands",
+                table => new
                 {
-                    BrandId = table.Column<int>(nullable: false)
+                    BrandId = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Brands", x => x.BrandId);
-                });
+                constraints: table => { table.PrimaryKey("PK_Brands", x => x.BrandId); });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
+                "Categories",
+                table => new
                 {
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 20, nullable: false)
+                    Name = table.Column<string>(maxLength: 20)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
-                });
+                constraints: table => { table.PrimaryKey("PK_Categories", x => x.CategoryId); });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
+                "Products",
+                table => new
                 {
-                    ProductId = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Price = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(),
+                    Name = table.Column<string>(maxLength: 50),
+                    Price = table.Column<int>(),
                     BrandId = table.Column<int>(nullable: true),
-                    Remain = table.Column<int>(nullable: false),
+                    Remain = table.Column<int>(),
                     CategoryId = table.Column<int>(nullable: true),
                     ImageFileName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -56,40 +50,40 @@ namespace TheGioiDienThoai.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Products_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        "FK_Products_Brands_BrandId",
+                        x => x.BrandId,
+                        "Brands",
+                        "BrandId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "CategoryId",
+                        "FK_Products_Categories_CategoryId",
+                        x => x.CategoryId,
+                        "Categories",
+                        "CategoryId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandId",
-                table: "Products",
-                column: "BrandId");
+                "IX_Products_BrandId",
+                "Products",
+                "BrandId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
-                table: "Products",
-                column: "CategoryId");
+                "IX_Products_CategoryId",
+                "Products",
+                "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                "Products");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                "Brands");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                "Categories");
         }
     }
 }

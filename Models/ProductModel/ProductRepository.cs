@@ -1,27 +1,30 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using TheGioiDienThoai.ViewModels.Product;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using ShopDienThoai.ViewModels.Product;
 
-namespace TheGioiDienThoai.Models.ProductModel
+namespace ShopDienThoai.Models.ProductModel
 {
     public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext context;
         private readonly IImageRepository imageRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ProductRepository(AppDbContext context, IImageRepository imageRepository, IWebHostEnvironment webHostEnvironment)
+
+        public ProductRepository(AppDbContext context, IImageRepository imageRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
             this.imageRepository = imageRepository;
             this.webHostEnvironment = webHostEnvironment;
         }
+
         public Product Create(Product product)
         {
+            product.IsDeleted = false;
+            product.CreatedTime = DateTime.Now;
             product.ProductId = Guid.NewGuid().ToString();
             context.Products.Add(product);
             context.SaveChanges();
@@ -38,34 +41,36 @@ namespace TheGioiDienThoai.Models.ProductModel
 
         public IEnumerable<Product> Get()
         {
-            return context.Products;
+            return (from p in context.Products where p.IsDeleted == false select p).OrderByDescending(
+                p => p.CreatedTime);
         }
 
         public ProductDetailViewModel Get(string id)
         {
             var data = (from e in context.Products
-                        join d in context.Categories on e.CategoryId equals d.CategoryId
-                        join f in context.Brands on e.BrandId equals f.BrandId
-                        where e.ProductId == id
-                        select new ProductDetailViewModel()
-                        {
-                            ProductId = e.ProductId,
-                            BrandId = e.BrandId,
-                            BrandName = f.Name,
-                            CategoryId = e.CategoryId,
-                            CategoryName = d.Name,
-                            CPU = e.CPU,
-                            Description = e.Description,
-                            FrontCamera = e.FrontCamera,
-                            Name = e.Name,
-                            OS = e.OS,
-                            Price = e.Price,
-                            Ram = e.Ram,
-                            RearCamera = e.RearCamera,
-                            Remain = e.Remain,
-                            Rom = e.Rom,
-                            Screen = e.Screen
-                        }).FirstOrDefault();
+                where e.IsDeleted == false
+                join d in context.Categories on e.CategoryId equals d.CategoryId
+                join f in context.Brands on e.BrandId equals f.BrandId
+                where e.ProductId == id
+                select new ProductDetailViewModel
+                {
+                    ProductId = e.ProductId,
+                    BrandId = e.BrandId,
+                    BrandName = f.Name,
+                    CategoryId = e.CategoryId,
+                    CategoryName = d.Name,
+                    CPU = e.CPU,
+                    Description = e.Description,
+                    FrontCamera = e.FrontCamera,
+                    Name = e.Name,
+                    OS = e.OS,
+                    Price = e.Price,
+                    Ram = e.Ram,
+                    RearCamera = e.RearCamera,
+                    Remain = e.Remain,
+                    Rom = e.Rom,
+                    Screen = e.Screen
+                }).FirstOrDefault();
             return data;
         }
 
@@ -74,7 +79,7 @@ namespace TheGioiDienThoai.Models.ProductModel
             var productToRemove = context.Products.Find(id);
             if (productToRemove != null)
             {
-                var images = (from e in context.Images
+                /*var images = (from e in context.Images
                               where e.ProductId == productToRemove.ProductId
                               select e).ToList();
                 foreach (var image in images)
@@ -83,10 +88,11 @@ namespace TheGioiDienThoai.Models.ProductModel
 
                     string delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\products", image.ImageName);
                     File.Delete(delFile);
-                }
-                context.Products.Remove(productToRemove);
+                }*/
+                productToRemove.IsDeleted = true;
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

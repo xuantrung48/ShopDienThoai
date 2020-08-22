@@ -1,29 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     public partial class AddCarouselImagesTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CarouselImages",
-                columns: table => new
+                "CarouselImages",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarouselImages", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_CarouselImages", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CarouselImages");
+                "CarouselImages");
         }
     }
 }

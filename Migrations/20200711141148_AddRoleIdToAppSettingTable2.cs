@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     public partial class AddRoleIdToAppSettingTable2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "DefaultRoleId",
-                table: "AppSettings",
+                "DefaultRoleId",
+                "AppSettings",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
@@ -18,9 +18,9 @@ namespace TheGioiDienThoai.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "DefaultRoleId",
-                table: "AppSettings",
-                type: "nvarchar(max)",
+                "DefaultRoleId",
+                "AppSettings",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string));
         }

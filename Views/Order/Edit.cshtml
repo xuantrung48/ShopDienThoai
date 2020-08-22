@@ -10,7 +10,7 @@
 else
 {
     <form enctype="multipart/form-data" asp-controller="Order" asp-action="Edit" method="post">
-        <input hidden asp-for="OrderId" value="@Model.OrderId" />
+        <input hidden asp-for="OrderId" value="@Model.OrderId"/>
         <div class="row form-group">
             <div class="col-md-3">
                 Sản phẩm:
@@ -58,15 +58,14 @@ else
         </div>
     </form>
 
-    @section ValidateScript
-    {
-        <environment include="Development">
-            <script src="~/lib/jquery-validate/jquery.validate.js"></script>
-            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        </environment>
-        <environment exclude="Development">
-            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-        </environment>
-    }
-}
+@section ValidateScript
+{
+    <environment include="Development">
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    </environment>
+}}

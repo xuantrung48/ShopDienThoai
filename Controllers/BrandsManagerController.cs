@@ -1,33 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TheGioiDienThoai.Models;
-using TheGioiDienThoai.Models.ProductModel;
+using ShopDienThoai.Models;
+using ShopDienThoai.Models.ProductModel;
 
-namespace TheGioiDienThoai.Controllers
+namespace ShopDienThoai.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class BrandsManagerController : Controller
     {
         private readonly IBrandRepository brandRepository;
         private readonly AppDbContext context;
+
         public BrandsManagerController(IBrandRepository brandRepository, AppDbContext context)
         {
             this.brandRepository = brandRepository;
             this.context = context;
         }
+
         public IActionResult Index()
         {
             return View(brandRepository.Get());
         }
+
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Create(Brand newBrand)
         {
@@ -36,8 +37,10 @@ namespace TheGioiDienThoai.Controllers
                 brandRepository.Create(newBrand);
                 return RedirectToAction("Index", "BrandsManager");
             }
+
             return View();
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -47,15 +50,14 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.NumberOfProducts = (from p in context.Products where p.CategoryId == id select p).ToList().Count;
             return View(brand);
         }
+
         [HttpPost]
         public IActionResult Edit(Brand brand)
         {
-            if (brandRepository.Edit(brand) != null)
-            {
-                return RedirectToAction("Index", "BrandsManager");
-            }
+            if (brandRepository.Edit(brand) != null) return RedirectToAction("Index", "BrandsManager");
             return View();
         }
+
         public IActionResult Remove(int id)
         {
             var brand = brandRepository.Get(id);

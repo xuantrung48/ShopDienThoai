@@ -1,32 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TheGioiDienThoai.Models;
-using TheGioiDienThoai.Models.OrderModel;
-using TheGioiDienThoai.Models.ProductModel;
-using TheGioiDienThoai.Models.UserModel;
-using TheGioiDienThoai.ViewModels.Order;
+using ShopDienThoai.Models;
+using ShopDienThoai.Models.OrderModel;
+using ShopDienThoai.Models.ProductModel;
+using ShopDienThoai.Models.UserModel;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TheGioiDienThoai.Controllers
+namespace ShopDienThoai.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext context;
-        private readonly IProductRepository productRepository;
         private readonly IBrandRepository brandRepository;
+        private readonly IEnumerable<Brand> brands;
+        private readonly ICarouselImageRepository carouselImageRepository;
+        private readonly IEnumerable<Category> categories;
         private readonly ICategoryRepository categoryRepository;
-        private readonly IOrderRepository orderRepository;
-        private readonly SignInManager<User> signInManager;
-        private readonly UserManager<User> userManager;
+        private readonly AppDbContext context;
         private readonly ICustomerRepository customerRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
-        private readonly ICarouselImageRepository carouselImageRepository;
-        public HomeController(IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository, IOrderDetailRepository orderDetailRepository, ICarouselImageRepository carouselImageRepository)
+        private readonly IOrderRepository orderRepository;
+        private readonly IProductRepository productRepository;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+
+        public HomeController(IProductRepository productRepository, IBrandRepository brandRepository,
+            ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager,
+            UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository,
+            IOrderDetailRepository orderDetailRepository, ICarouselImageRepository carouselImageRepository)
         {
             this.context = context;
             this.productRepository = productRepository;
@@ -38,15 +41,19 @@ namespace TheGioiDienThoai.Controllers
             this.customerRepository = customerRepository;
             this.orderDetailRepository = orderDetailRepository;
             this.carouselImageRepository = carouselImageRepository;
+            categories = categoryRepository.Get().ToList();
+            brands = brandRepository.Get().ToList();
         }
+
         public IActionResult Index()
         {
-            ViewBag.Brands = brandRepository.Get().ToList();
-            ViewBag.Categories = categoryRepository.Get().ToList();
+            ViewBag.Brands = brands;
+            ViewBag.Categories = categories;
             ViewBag.Products = productRepository.Get().ToList();
             ViewBag.CarouselImages = carouselImageRepository.Get().ToList();
             return View();
         }
+
         public IActionResult ViewProduct(string id)
         {
             var product = productRepository.Get(id);
@@ -55,49 +62,61 @@ namespace TheGioiDienThoai.Controllers
                 ViewBag.ErrorMessage = "Không tìm thấy sản phẩm!";
                 return View("~/Views/Error/PageNotFound.cshtml");
             }
-            var images = (from e in context.Images where e.ProductId == product.ProductId
-                          select e).ToList();
-            ViewBag.Images = images;
+
+            ViewBag.Images = (from e in context.Images
+                where e.ProductId == product.ProductId
+                select e).ToList();
+            var relatedProducts = (from p in context.Products
+                where p.CategoryId == product.CategoryId ||
+                      p.BrandId == product.BrandId
+                select p).ToList();
+            relatedProducts.Remove(context.Products.Find(id));
+            ViewBag.Brands = brands;
+            ViewBag.Categories = categories;
+            ViewBag.RelatedProducts = relatedProducts.Take(6);
             return View(product);
         }
-        public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice, string sortByPrice, int page = 1)
+
+        public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice,
+            string sortByPrice, int page = 1)
         {
-            string key = string.Empty;
+            var key = string.Empty;
             if (keyWord != null)
                 key = keyWord.ToLower();
-            var products = (from p in context.Products where p.Remain > 0
-                            join c in context.Categories on p.CategoryId equals c.CategoryId
-                            join b in context.Brands on p.BrandId equals b.BrandId
-                            where ((p.FrontCamera.ToLower().Contains(key) ||
-                             p.RearCamera.ToLower().Contains(key) ||
-                             p.Screen.ToLower().Contains(key)) ||
-                             c.Name.ToLower().Contains(key) ||
-                             b.Name.ToLower().Contains(key) ||
-                             p.Name.ToLower().Contains(key) ||
-                             p.CPU.ToLower().Contains(key))
-                            select p).ToList();
+            var products = (from p in context.Products
+                where p.IsDeleted == false && p.Remain > 0
+                join c in context.Categories on p.CategoryId equals c.CategoryId
+                join b in context.Brands on p.BrandId equals b.BrandId
+                where p.FrontCamera.ToLower().Contains(key) ||
+                      p.RearCamera.ToLower().Contains(key) ||
+                      p.Screen.ToLower().Contains(key) ||
+                      c.Name.ToLower().Contains(key) ||
+                      b.Name.ToLower().Contains(key) ||
+                      p.Name.ToLower().Contains(key) ||
+                      p.CPU.ToLower().Contains(key)
+                select p).ToList();
 
             if (categoryId == 0 && brandId != 0)
                 products = (from p in products
-                            where (p.BrandId == brandId)
-                            select p).ToList();
-            
+                    where p.BrandId == brandId
+                    select p).ToList();
+
             if (categoryId != 0 && brandId == 0)
                 products = (from p in products
-                            where (p.CategoryId == categoryId)
-                            select p).ToList();
-            
+                    where p.CategoryId == categoryId
+                    select p).ToList();
+
             if (categoryId != 0 && brandId != 0)
                 products = (from p in products
-                            where (p.CategoryId == categoryId) &&
-                            (p.BrandId == brandId)
-                            select p).ToList();
+                    where p.CategoryId == categoryId &&
+                          p.BrandId == brandId
+                    select p).ToList();
 
             if (minPrice != 0 && maxPrice != 0)
                 products = (from p in products
-                            where (p.Price >= minPrice) &&
-                            (p.Price <= maxPrice)
-                            select p).ToList();
+                    where p.Price >= minPrice &&
+                          p.Price <= maxPrice
+                    select p).ToList();
 
             if (sortByPrice == "desc")
                 products = products.OrderByDescending(x => x.Price).ToList();
@@ -105,8 +124,8 @@ namespace TheGioiDienThoai.Controllers
             if (sortByPrice == "asc")
                 products = products.OrderBy(x => x.Price).ToList();
 
-            ViewBag.Categories = (from c in context.Categories select c).ToList();
-            ViewBag.Brands = (from b in context.Brands select b).ToList();
+            ViewBag.Categories = categories;
+            ViewBag.Brands = brands;
             ViewBag.CategoryId = categoryId;
             ViewBag.BrandId = brandId;
             ViewBag.KeyWord = keyWord;
@@ -117,9 +136,12 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.Page = page;
             return View(products.Skip(page * 12 - 12).Take(12).ToList());
         }
+
         public IActionResult Category(int id, int page = 1)
         {
-            var products = (from p in context.Products where p.CategoryId == id && p.Remain > 0 select p).ToList();
+            var products =
+                (from p in context.Products where p.IsDeleted == false && p.CategoryId == id && p.Remain > 0 select p)
+                .OrderByDescending(p => p.CreatedTime).ToList();
             ViewBag.Categories = (from c in context.Categories select c).ToList();
             ViewBag.Brands = (from b in context.Brands select b).ToList();
             var categories = (from c in context.Categories where c.CategoryId == id select c).ToList();

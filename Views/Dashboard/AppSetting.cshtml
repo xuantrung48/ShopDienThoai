@@ -4,89 +4,89 @@
     var roles = ViewBag.Roles as List<IdentityRole>;
 }
 
-    <form enctype="multipart/form-data" asp-controller="Dashboard" asp-action="AppSetting" method="post">
-        <input asp-for="Logo" value="@Model.Logo" hidden />
-        <input asp-for="Icon" value="@Model.Icon" hidden />
-        <div class="row form-group">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-9">
-                <img id="logoImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Logo}" : "/images/0.png")" width="150" style="display:none;" class="mx-auto d-block my-3" asp-append-version="true" />
-            </div>
+<form enctype="multipart/form-data" asp-controller="Dashboard" asp-action="AppSetting" method="post">
+    <input asp-for="Logo" value="@Model.Logo" hidden/>
+    <input asp-for="Icon" value="@Model.Icon" hidden/>
+    <div class="row form-group">
+        <div class="col-md-3">
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="LogoFile">Logo: </label>
-            </div>
-            <div class="col-md-9">
-                <input type="file" class="custom-file-input selectImage mx-1" asp-for="LogoFile" id="i_file1">
-                <label class="custom-file-label selectImage mx-2" asp-for="LogoFile">Đổi Logo</label>
-                <span asp-validation-for="LogoFile" class="text-danger"></span>
-            </div>
+        <div class="col-md-9">
+            <img id="logoImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Logo}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true"/>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-9">
-                <img id="iconImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Icon}" : "/images/0.png")" width="150" style="display:none;" class="mx-auto d-block my-3" asp-append-version="true" />
-            </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="LogoFile">Logo: </label>
         </div>
+        <div class="col-md-9">
+            <input type="file" class="custom-file-input selectImage mx-1" asp-for="LogoFile" id="i_file1">
+            <label class="custom-file-label selectImage mx-2" asp-for="LogoFile">Đổi Logo</label>
+            <span asp-validation-for="LogoFile" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <img id="iconImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Icon}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true"/>
+        </div>
+    </div>
 
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="IconFile">Icon: </label>
-            </div>
-            <div class="col-md-9">
-                <input type="file" class="custom-file-input selectImage mx-1" asp-for="IconFile" id="i_file2">
-                <label class="custom-file-label selectImage mx-2" asp-for="IconFile">Đổi Icon</label>
-                <span asp-validation-for="IconFile" class="text-danger"></span>
-            </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="IconFile">Icon: </label>
         </div>
+        <div class="col-md-9">
+            <input type="file" class="custom-file-input selectImage mx-1" asp-for="IconFile" id="i_file2">
+            <label class="custom-file-label selectImage mx-2" asp-for="IconFile">Đổi Icon</label>
+            <span asp-validation-for="IconFile" class="text-danger"></span>
+        </div>
+    </div>
 
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="Title">Tên trang web: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="Title" class="form-control" placeholder="Nhập tên trang web">
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="Title">Tên trang web: </label>
         </div>
+        <div class="col-md-9">
+            <input asp-for="Title" class="form-control" placeholder="Nhập tên trang web">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
 
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="ShortDesc">Mô tả ngắn: </label>
-            </div>
-            <div class="col-md-9">
-                <input asp-for="ShortDesc" class="form-control" placeholder="Nhập mô tả ngắn về trang web">
-                <span asp-validation-for="ShortDesc" class="text-danger"></span>
-            </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="ShortDesc">Mô tả ngắn: </label>
         </div>
+        <div class="col-md-9">
+            <input asp-for="ShortDesc" class="form-control" placeholder="Nhập mô tả ngắn về trang web">
+            <span asp-validation-for="ShortDesc" class="text-danger"></span>
+        </div>
+    </div>
 
-        <div class="row form-group">
-            <div class="col-md-3">
-                <label asp-for="DefaultRoleId">Vai trò người dùng mặc định: </label>
-            </div>
-            <div class="col-md-9">
-                <select asp-for="DefaultRoleId" class="custom-select">
-                    <option value="">Chọn vai trò mặc định</option>
-                    @foreach(var role in roles)
-                    {
-                        <option value="@role.Id">@role.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="DefaultRoleId" class="text-danger"></span>
-            </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+            <label asp-for="DefaultRoleId">Vai trò người dùng mặc định: </label>
         </div>
-        <div class="row form-group">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-9">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Huỷ</a>
-            </div>
+        <div class="col-md-9">
+            <select asp-for="DefaultRoleId" class="custom-select">
+                <option value="">Chọn vai trò mặc định</option>
+                @foreach (var role in roles)
+                {
+                    <option value="@role.Id">@role.Name</option>
+                }
+            </select>
+            <span asp-validation-for="DefaultRoleId" class="text-danger"></span>
         </div>
-    </form>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Huỷ</a>
+        </div>
+    </div>
+</form>
 
 @section ValidateScript
 {
@@ -102,14 +102,15 @@
 
 @section Scripts{
     <script>
-        $(".custom-file-input").on("change", function () {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-        $('#i_file1').change(function (event) {
+        $(".custom-file-input").on("change",
+            function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        $('#i_file1').change(function(event) {
             $("#logoImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
-        $('#i_file2').change(function (event) {
+        $('#i_file2').change(function(event) {
             $("#iconImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
     </script>

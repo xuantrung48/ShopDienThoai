@@ -1,10 +1,10 @@
 ﻿@model Category
 @{
     ViewBag.Title = "Sửa danh mục sản phẩm";
-    var numberOfProducts = (int)ViewBag.NumberOfProducts;
+    var numberOfProducts = (int) ViewBag.NumberOfProducts;
 }
 <form asp-controller="CategoriesManager" asp-action="Edit" method="post">
-    <input asp-for="CategoryId" hidden />
+    <input asp-for="CategoryId" hidden/>
     <div class="row form-group">
         <div class="col-md-3">
             <label asp-for="Name">Tên danh mục: </label>

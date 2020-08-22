@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TheGioiDienThoai.ViewModels.Product;
+﻿using System.Collections.Generic;
+using ShopDienThoai.ViewModels.Product;
 
-namespace TheGioiDienThoai.Models.ProductModel
+namespace ShopDienThoai.Models.ProductModel
 {
     public interface IProductRepository
     {

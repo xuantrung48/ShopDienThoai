@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace TheGioiDienThoai.Models.OrderModel
+namespace ShopDienThoai.Models.OrderModel
 {
     public class OrderRepository : IOrderRepository
     {
         private readonly AppDbContext context;
+
         public OrderRepository(AppDbContext context)
         {
             this.context = context;
         }
+
         public Order Create(Order order)
         {
             order.OrderId = Guid.NewGuid().ToString();
@@ -37,8 +38,8 @@ namespace TheGioiDienThoai.Models.OrderModel
         public Order Get(string id)
         {
             var order = (from e in context.Orders
-                            where e.OrderId == id
-                            select e).FirstOrDefault();
+                where e.OrderId == id
+                select e).FirstOrDefault();
             return order;
         }
 
@@ -50,6 +51,7 @@ namespace TheGioiDienThoai.Models.OrderModel
                 context.Orders.Remove(orderToRemove);
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

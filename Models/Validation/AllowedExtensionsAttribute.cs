@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace TheGioiDienThoai.Models.Validation
+namespace ShopDienThoai.Models.Validation
 {
     public class AllowedExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] _extensions;
+
         public AllowedExtensionsAttribute(string[] extensions)
         {
             _extensions = extensions;
@@ -21,10 +19,7 @@ namespace TheGioiDienThoai.Models.Validation
             if (value is IFormFile file)
             {
                 var extension = Path.GetExtension(file.FileName);
-                if (!_extensions.Contains(extension.ToLower()))
-                {
-                    return new ValidationResult(GetErrorMessage());
-                }
+                if (!_extensions.Contains(extension.ToLower())) return new ValidationResult(GetErrorMessage());
             }
 
             return ValidationResult.Success;
@@ -32,7 +27,7 @@ namespace TheGioiDienThoai.Models.Validation
 
         public string GetErrorMessage()
         {
-            return $"Tập tin hình ảnh không hợp lệ!";
+            return "Tập tin hình ảnh không hợp lệ!";
         }
     }
 }

@@ -5,10 +5,10 @@
 }
 <form class="form-signin" enctype="multipart/form-data" asp-controller="UsersManager" asp-action="Edit" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input hidden asp-for="UserId" value="@Model.UserId" />
-    <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture" />
+    <input hidden asp-for="UserId" value="@Model.UserId"/>
+    <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture"/>
     <div class="form-label-group">
-        <img id="profilePicture" src="@(!string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png")" width="100" style="display:none;" class="mx-auto d-block my-3" />
+        <img id="profilePicture" src="@(!string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png")" width="100" style="display: none;" class="mx-auto d-block my-3"/>
     </div>
 
     <div class="row form-group">
@@ -83,11 +83,11 @@
         <div class="col-md-9">
             <select asp-for="RoleId" class="custom-select">
                 <option value="">Chọn vai trò</option>
-                @if(roles != null && roles.Any())
+                @if (roles != null && roles.Any())
                 {
-                    foreach(var role in roles)
+                    foreach (var role in roles)
                     {
-                <option value="@role.Id" selected="@(role.Id == Model.RoleId)">@role.Name</option>
+                        <option value="@role.Id" selected="@(role.Id == Model.RoleId)">@role.Name</option>
                     }
                 }
             </select>
@@ -138,13 +138,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     </environment>
 }
+
 @section Scripts{
     <script>
-        $(".custom-file-input").on("change", function () {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-        $('#i_file').change(function (event) {
+        $(".custom-file-input").on("change",
+            function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        $('#i_file').change(function(event) {
             $("#profilePicture").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
     </script>

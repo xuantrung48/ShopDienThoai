@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace TheGioiDienThoai.Models.OrderModel
+namespace ShopDienThoai.Models.OrderModel
 {
     public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext context;
+
         public CustomerRepository(AppDbContext context)
         {
             this.context = context;
         }
+
         public Customer Create(Customer customer)
         {
             customer.CustomerId = Guid.NewGuid().ToString();
@@ -37,8 +38,8 @@ namespace TheGioiDienThoai.Models.OrderModel
         public Customer Get(string id)
         {
             var customer = (from e in context.Customers
-                         where e.CustomerId == id
-                         select e).FirstOrDefault();
+                where e.CustomerId == id
+                select e).FirstOrDefault();
             return customer;
         }
 
@@ -50,6 +51,7 @@ namespace TheGioiDienThoai.Models.OrderModel
                 context.Customers.Remove(customerToRemove);
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

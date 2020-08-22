@@ -1,11 +1,9 @@
 ﻿@inject AppDbContext context
 @{
-    ViewBag.Title = "Thế giới điện thoại - Cửa hàng điện thoại, tablet, laptop lớn nhất Việt Nam";
     var brands = ViewBag.Brands as List<Brand>;
     var categories = ViewBag.Categories as List<Category>;
     var products = ViewBag.Products as List<Product>;
     var carouselImages = ViewBag.CarouselImages as List<CarouselImage>;
-
 }
 <div class="row my-3">
     <div class="col-lg-4 col-xl-3">
@@ -42,9 +40,9 @@
                 <h5>Mức giá:</h5>
 
                 <p>
-                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                    <input hidden name="minPrice" id="minPrice" />
-                    <input hidden name="maxPrice" id="maxPrice" />
+                    <input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;">
+                    <input hidden name="minPrice" id="minPrice"/>
+                    <input hidden name="maxPrice" id="maxPrice"/>
                 </p>
 
                 <div id="slider-range"></div>
@@ -57,7 +55,7 @@
                 </select>
             </div>
             <div class="list-group-item text-center">
-                <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
+                <input class="btn btn-primary" type="submit" value="Tìm kiếm"/>
             </div>
         </form>
     </div>
@@ -69,7 +67,7 @@
 
                 <!-- Indicators -->
                 <ul class="carousel-indicators">
-                    @for (int i = 0; i < carouselImages.Count; i++)
+                    @for (var i = 0; i < carouselImages.Count; i++)
                     {
                         if (i == 0)
                         {
@@ -84,18 +82,18 @@
 
                 <!-- The slideshow -->
                 <div class="carousel-inner">
-                    @for (int i = 0; i < carouselImages.Count; i++)
+                    @for (var i = 0; i < carouselImages.Count; i++)
                     {
                         if (i == 0)
                         {
                             <div class="carousel-item active">
-                                <img src="~/images/carousel/@carouselImages[i].Name" style="max-width:100%; height:475px;">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="height: 475px; max-width: 100%;">
                             </div>
                         }
                         else
                         {
                             <div class="carousel-item">
-                                <img src="~/images/carousel/@carouselImages[i].Name" style="max-width:100%; height:475px;">
+                                <img src="~/images/carousel/@carouselImages[i].Name" style="height: 475px; max-width: 100%;">
                             </div>
                         }
                     }
@@ -116,12 +114,14 @@
 
 @foreach (var category in categories)
 {
-    <h5 class="text-light bg-primary rounded text-center"><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a></h5>
+    <h5 class="text-light bg-primary rounded text-center">
+        <a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId" class="nav-link text-light">@category.Name</a>
+    </h5>
     <div class="row">
         @{
             var productInCategory = (from e in products
-                               where e.CategoryId == category.CategoryId && e.Remain > 0
-                               select e).Take(12);
+                where e.CategoryId == category.CategoryId && e.Remain > 0
+                select e).Take(12);
         }
 
         @foreach (var product in productInCategory)
@@ -131,11 +131,11 @@
                     <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId">
                         @{
                             var productImages = (from e in context.Images
-                                                 where e.ProductId == product.ProductId
-                                                 select e).ToList();
+                                where e.ProductId == product.ProductId
+                                select e).ToList();
                             if (productImages.Count != 0)
                             {
-                                <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height:150px; max-width:90%;" class="mx-auto d-block">
+                                <img src="~/images/products/@productImages[0].ImageName" alt="@product.Name" style="height: 150px; max-width: 90%;" class="mx-auto d-block">
                             }
                         }
                     </a>

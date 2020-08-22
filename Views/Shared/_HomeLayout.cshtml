@@ -3,27 +3,29 @@
 @inject AppDbContext context
 
 @{
-    var categories = (from c in context.Categories select c).ToList();
-    var brands = (from b in context.Brands select b).ToList();
+    var categories = (from c in context.Categories where c.IsDeleted == false select c).ToList();
+    var brands = (from b in context.Brands where b.IsDeleted == false select b).ToList();
     var maxRange = (from p in context.Products select p.Price).Max();
     var minRange = (from p in context.Products select p.Price).Min();
     var appSetting = (from s in context.AppSettings select s).ToList().FirstOrDefault();
+    var title = (string) ViewBag.Title;
 }
 <!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@appSetting.Title - @appSetting.ShortDesc</title>
+    <meta name="viewport" content="width=device-width"/>
+    <meta charset="UTF-8">
+    <title>@(string.IsNullOrEmpty(title) ? $"{title}" : $"{title} - ")@appSetting.Title - @appSetting.ShortDesc</title>
     <environment include="Development">
-        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
-        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet"/>
+        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet"/>
     </environment>
     <environment exclude="Development">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" />
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet"/>
     </environment>
     @RenderSection("PageNotFound", false)
     @RenderSection("LoginCSS", false)
@@ -32,122 +34,129 @@
     <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true"/>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <img src="~/images/@appSetting.Logo" alt="logo" style="height:50px;" asp-append-version="true">
-        </a>
-        <button class="navbar-toggler mt-2 ml-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <form asp-controller="Home" asp-action="Search" class="form-inline">
-                <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control" style="padding-right: 50px;">
-                <button type="submit" class="btn" style="margin-left: -45px;"><i class="fa fa-search"></i></button>
-            </form>
-            <ul class="navbar-nav mr-auto">
+<nav class="navbar navbar-expand-lg navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
+    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+        <img src="~/images/@appSetting.Logo" alt="logo" style="height: 50px;" asp-append-version="true">
+    </a>
+    <button class="navbar-toggler mt-2 ml-auto" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <form asp-controller="Home" asp-action="Search" class="form-inline">
+            <input type="text" placeholder="Tìm sản phẩm..." name="keyWord" class="form-control" style="padding-right: 50px;">
+            <button type="submit" class="btn" style="margin-left: -45px;">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    Danh mục
+                </a>
+                <div class="dropdown-menu">
+                    @{
+                        foreach (var category in categories)
+                        {
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.Name</a>
+                        }
+                    }
+                </div>
+            </li>
+            <li class="nav-item">
+                <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            @if (signInManager.IsSignedIn(User))
+            {
+                var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        Danh mục
+                        <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle"/>&nbsp;
+                        @currentUser.Name
                     </a>
-                    <div class="dropdown-menu">
-                        @{
-                            foreach (var category in categories)
-                            {
-                                <a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.Name</a>
-                            }
+                    <div class="dropdown-menu ">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
+                            <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
                         }
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Thoát</a>
                     </div>
                 </li>
+            }
+            else
+            {
                 <li class="nav-item">
-                    <a asp-controller="Order" asp-action="CheckOrder" class="nav-link">Kiểm tra đơn hàng</a>
+                    <a asp-controller="Account" asp-action="Login" class="nav-link">Đăng nhập</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
-                @if (signInManager.IsSignedIn(User))
-                {
-                    User currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle" />&nbsp;
-                            @currentUser.Name
-                        </a>
-                        <div class="dropdown-menu ">
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">Trang quản trị</a>
-                                <a class="dropdown-item" asp-controller="ProductsManager" asp-action="Create">Thêm sản phẩm</a>
-                            }
-                            <a class="dropdown-item" asp-controller="Account" asp-action="Index">Tài khoản</a>
-                            <a class="dropdown-item" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
-                            <a class="dropdown-item" asp-controller="Account" asp-action="Orders">Đơn hàng</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Thoát</a>
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a asp-controller="Account" asp-action="Login" class="nav-link">Đăng nhập</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-controller="Account" asp-action="Register" class="nav-link">Đăng ký</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-        @RenderBody()
+                <li class="nav-item">
+                    <a asp-controller="Account" asp-action="Register" class="nav-link">Đăng ký</a>
+                </li>
+            }
+        </ul>
     </div>
-    <!-- Footer -->
-    <footer class="page-footer font-small blue bg-dark text-white rounded-top mt-3 container">
+</nav>
+<div class="container">
+    @RenderBody()
+</div>
+<!-- Footer -->
+<footer class="page-footer font-small blue bg-dark text-white rounded-top mt-3 container">
 
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">
-            © @DateTime.Now.Year Copyright by Trung Nguyen
-        </div>
-        <!-- Copyright -->
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">
+        © @DateTime.Now.Year Copyright by Trung Nguyen
+    </div>
+    <!-- Copyright -->
 
-    </footer>
-    <!-- Footer -->
-    <environment include="Development">
-        <script src="~/lib/jquery/jquery.js"></script>
-        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
-        <script src="~/lib/jqueryui/jquery-ui.js"></script>
-        <script src="~/lib/font-awesome/js/all.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script>
-    </environment>
+</footer>
+<!-- Footer -->
+<environment include="Development">
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+    <script src="~/lib/font-awesome/js/all.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script>
+</environment>
 
-    <script>
-        $(function () {
-            $("#slider-range").slider({
-                range: true,
-                min: @minRange,
-                max: @maxRange,
-                values: [@minRange, @maxRange],
-                slide: function (event, ui) {
-                    $("#amount").val(digitGrouping(ui.values[0]) + " ₫" + " - " + digitGrouping(ui.values[1]) + " ₫");
-                }
-            });
-            $("#amount").val(digitGrouping($("#slider-range").slider("values", 0)) + " ₫" + " - " + digitGrouping($("#slider-range").slider("values", 1)) + " ₫");
+<script>
+    $(function() {
+        $("#slider-range").slider({
+            range: true,
+            min: @minRange,
+            max: @maxRange,
+            values: [@minRange, @maxRange],
+            slide: function(event, ui) {
+                $("#amount").val(digitGrouping(ui.values[0]) + " ₫" + " - " + digitGrouping(ui.values[1]) + " ₫");
+            }
         });
-        digitGrouping = function (number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        $(document).click(function () {
-            $("#minPrice").val($("#slider-range").slider("values", 0));
-            $("#maxPrice").val($("#slider-range").slider("values", 1));
-        })
-    </script>
-    @RenderSection("Scripts", false)
-    @RenderSection("ValidateScript", false)
-    @RenderSection("lightboxjs", false)
-    @RenderSection("datatablejs", false)
+        $("#amount").val(digitGrouping($("#slider-range").slider("values", 0)) +
+            " ₫" +
+            " - " +
+            digitGrouping($("#slider-range").slider("values", 1)) +
+            " ₫");
+    });
+    digitGrouping = function(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+    $(document).click(function() {
+        $("#minPrice").val($("#slider-range").slider("values", 0));
+        $("#maxPrice").val($("#slider-range").slider("values", 1));
+    });
+</script>
+@RenderSection("Scripts", false)
+@RenderSection("ValidateScript", false)
+@RenderSection("lightboxjs", false)
+@RenderSection("datatablejs", false)
+@RenderSection("tinyMCE", false)
 </body>
 </html>

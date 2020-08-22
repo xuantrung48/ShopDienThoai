@@ -1,18 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ShopDienThoai.Models;
+using ShopDienThoai.Models.UserModel;
+using ShopDienThoai.ViewModels.Order;
+using ShopDienThoai.ViewModels.User;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using TheGioiDienThoai.Models;
-using TheGioiDienThoai.Models.UserModel;
-using TheGioiDienThoai.ViewModels;
-using TheGioiDienThoai.ViewModels.Order;
-using TheGioiDienThoai.ViewModels.User;
 
-namespace TheGioiDienThoai.Controllers
+namespace ShopDienThoai.Controllers
 {
     public class AccountController : Controller
     {
@@ -87,13 +86,15 @@ namespace TheGioiDienThoai.Controllers
             return RedirectToAction("Index", "Account");
         }
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string returnUrl, string productId)
         {
             if (signInManager.IsSignedIn(User))
             {
                 return RedirectToAction("Index", "Account");
             }
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.ProductId = productId;
+            ViewBag.Product = (from p in context.Products where p.ProductId == productId select p).ToList().FirstOrDefault();
             return View();
         }
         [HttpPost]
@@ -101,29 +102,34 @@ namespace TheGioiDienThoai.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
+                var user = (from u in context.Users where u.Email == model.Email select u).FirstOrDefault();
+                if (user.IsDeleted == false)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl))
-                        return Redirect(model.ReturnUrl);
-                    return RedirectToAction("Index", "Home");
+                    var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        if (model.ProductId != null)
+                            return RedirectToAction("Order", "Order", new { model.ProductId });
+                        if (!string.IsNullOrEmpty(model.ReturnUrl))
+                            return Redirect(model.ReturnUrl);
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Sai email hoặc mật khẩu!");
-                    //if (!string.IsNullOrEmpty(model.ReturnUrl))
-                    //    return Redirect(model.ReturnUrl);
-                }
+                ModelState.AddModelError("", "Sai email hoặc mật khẩu!");
+                //if (!string.IsNullOrEmpty(model.ReturnUrl))
+                //    return Redirect(model.ReturnUrl);
             }
             return View();
         }
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string productId)
         {
             if (signInManager.IsSignedIn(User))
             {
-                return RedirectToAction("Index", "Account");
+                RedirectToAction("UserBuy", "Order", new { productId });
             }
+            ViewBag.ProductId = productId;
+            ViewBag.Product = (from p in context.Products where p.ProductId == productId select p).ToList().FirstOrDefault();
             return View();
         }
         [HttpPost]
@@ -157,6 +163,8 @@ namespace TheGioiDienThoai.Controllers
                     if (addRoleResult.Succeeded)
                     {
                         await signInManager.SignInAsync(user, false);
+                        if (model.ProductId != null)
+                            return RedirectToAction("Order", "Order", new { model.ProductId });
                         return RedirectToAction("Index", "Account");
                     }
                     foreach (var error in addRoleResult.Errors)
@@ -164,88 +172,8 @@ namespace TheGioiDienThoai.Controllers
                     return RedirectToAction("Index", "Account");
                 }
                 else
-                    foreach(var error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
-            }
-            return View();
-        }
-        [HttpGet]
-        public IActionResult LoginAndBuy(string id)
-        {
-            if (signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction("Index", "Account");
-            }
-            ViewBag.ProductId = id;
-            ViewBag.Product = (from p in context.Products where p.ProductId == id select p).ToList().FirstOrDefault();
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> LoginAndBuy(LoginAndBuyViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("UserBuy", "Order", new { model.ProductId });
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Sai email hoặc mật khẩu!");
-                    //if (!string.IsNullOrEmpty(model.ReturnUrl))
-                    //    return Redirect(model.ReturnUrl);
-                }
-            }
-            return View();
-        }
-        [HttpGet]
-        public IActionResult RegisterAndBuy(string id)
-        {
-            if (signInManager.IsSignedIn(User))
-            {
-                RedirectToAction("UserBuy", "Order", new { id });
-            }
-            ViewBag.ProductId = id;
-            ViewBag.Product = (from p in context.Products where p.ProductId == id select p).ToList().FirstOrDefault();
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> RegisterAndBuy(RegisterAndBuyViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new User()
-                {
-                    Email = model.Email,
-                    UserName = model.Email,
-                    Address = model.Address,
-                    Name = model.Name,
-                    PhoneNumber = model.PhoneNumber,
-                    Gender = model.Gender,
-                };
-                if (model.ImageFile != null)
-                {
-                    string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "images\\users");
-                    string fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.ImageFile.FileName)}";
-                    var filePath = Path.Combine(uploadFolder, fileName);
-                    using var fs = new FileStream(filePath, FileMode.Create);
-                    model.ImageFile.CopyTo(fs);
-                    user.ProfilePicture = fileName;
-                }
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("UserBuy", "Order", new { model.ProductId });
-                }
-                else
-                {
                     foreach (var error in result.Errors)
-                    {
                         ModelState.AddModelError("", error.Description);
-                    }
-                }
             }
             return View();
         }
@@ -293,7 +221,7 @@ namespace TheGioiDienThoai.Controllers
             {
                 var userId = userManager.FindByNameAsync(User.Identity.Name).Result.Id;
 
-                var orders = (from o in context.Orders 
+                var orders = (from o in context.Orders
                               join d in context.OrderDetails on o.OrderId equals d.OrderId
                               join c in context.Customers on o.CustomerId equals c.CustomerId
                               join p in context.Products on d.ProductId equals p.ProductId

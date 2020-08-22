@@ -1,21 +1,22 @@
 ﻿@model LoginViewModel
 @{
     ViewBag.Title = "Đăng nhập";
+    var product = ViewBag.Product as Product;
+}
+@if (product != null)
+{
+    <h4 class="alert alert-success">Sản phẩm đặt hàng: <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@product.ProductId" target="_blank" class="alert-link">@product.Name</a></h4>
 }
 <div class="row">
     <div class="col-md-8 col-lg-6 mx-auto">
         <div class="card card-signin my-5">
             <div class="card-body rounded bg-light">
-                <div class="row my-4">
-                    <div class="col-2 mx-auto">
-                        <img src="~/images/logo.png" alt="Thế giới điện thoại" width="40" />
-                    </div>
-                    <div class="col-10">
-                        <h3 class="card-title text-center">@ViewBag.Title</h3>
-                    </div>
+                <div class="text-center mb-5">
+                    <h3 class="card-title">@ViewBag.Title</h3>
                 </div>
                 <form class="form-signin" asp-controller="Account" asp-action="Login" method="post">
-                    <input hidden asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                    <input hidden asp-for="ReturnUrl" value="@ViewBag.ReturnUrl"/>
+                    <input hidden asp-for="ProductId" value="@ViewBag.ProductId"/>
                     <div class="form-label-group">
                         <input asp-for="Email" class="form-control" placeholder="Email">
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -43,8 +44,9 @@
 
 @section LoginCSS
 {
-    <link href="~/lib/css/LoginCSS.css" rel="stylesheet" />
+    <link href="~/lib/css/LoginCSS.css" rel="stylesheet"/>
 }
+
 @section ValidateScript
 {
     <environment include="Development">

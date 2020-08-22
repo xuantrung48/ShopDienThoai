@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
-namespace TheGioiDienThoai.Models.ProductModel
+namespace ShopDienThoai.Models.ProductModel
 {
     public class ImageRepository : IImageRepository
     {
         private readonly AppDbContext context;
+
         public ImageRepository(AppDbContext context)
         {
             this.context = context;
         }
+
         public Image Create(Image image)
         {
             context.Images.Add(image);
@@ -22,8 +21,8 @@ namespace TheGioiDienThoai.Models.ProductModel
         public Image Get(string id)
         {
             var image = (from e in context.Images
-                         where e.ImageId == id
-                         select e).FirstOrDefault();
+                where e.ImageId == id
+                select e).FirstOrDefault();
             return image;
         }
 
@@ -35,6 +34,7 @@ namespace TheGioiDienThoai.Models.ProductModel
                 context.Images.Remove(imageToRemove);
                 return context.SaveChanges() > 0;
             }
+
             return false;
         }
     }

@@ -1,20 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TheGioiDienThoai.Migrations
+namespace ShopDienThoai.Migrations
 {
     public partial class CreateImageTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ImageFileName",
-                table: "Products");
+                "ImageFileName",
+                "Products");
 
             migrationBuilder.CreateTable(
-                name: "Images",
-                columns: table => new
+                "Images",
+                table => new
                 {
-                    ImageId = table.Column<string>(nullable: false),
+                    ImageId = table.Column<string>(),
                     ImageName = table.Column<string>(nullable: true),
                     ProductId = table.Column<string>(nullable: true)
                 },
@@ -22,37 +22,37 @@ namespace TheGioiDienThoai.Migrations
                 {
                     table.PrimaryKey("PK_Images", x => x.ImageId);
                     table.ForeignKey(
-                        name: "FK_Images_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "ProductId",
+                        "FK_Images_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "ProductId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_ProductId",
-                table: "Images",
-                column: "ProductId");
+                "IX_Images_ProductId",
+                "Images",
+                "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Images");
+                "Images");
 
             migrationBuilder.AddColumn<string>(
-                name: "ImageFileName",
-                table: "Products",
-                type: "nvarchar(max)",
+                "ImageFileName",
+                "Products",
+                "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.UpdateData(
-                table: "Products",
-                keyColumn: "ProductId",
-                keyValue: "1",
-                column: "ImageFileName",
-                value: "samsung-galaxy-a51-8gb-blue.png");
+                "Products",
+                "ProductId",
+                "1",
+                "ImageFileName",
+                "samsung-galaxy-a51-8gb-blue.png");
         }
     }
 }
