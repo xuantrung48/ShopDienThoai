@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ShopDienThoai.ViewModels.Product;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopDienThoai.Models.ProductModel
 {
@@ -48,29 +48,29 @@ namespace ShopDienThoai.Models.ProductModel
         public ProductDetailViewModel Get(string id)
         {
             var data = (from e in context.Products
-                where e.IsDeleted == false
-                join d in context.Categories on e.CategoryId equals d.CategoryId
-                join f in context.Brands on e.BrandId equals f.BrandId
-                where e.ProductId == id
-                select new ProductDetailViewModel
-                {
-                    ProductId = e.ProductId,
-                    BrandId = e.BrandId,
-                    BrandName = f.Name,
-                    CategoryId = e.CategoryId,
-                    CategoryName = d.Name,
-                    CPU = e.CPU,
-                    Description = e.Description,
-                    FrontCamera = e.FrontCamera,
-                    Name = e.Name,
-                    OS = e.OS,
-                    Price = e.Price,
-                    Ram = e.Ram,
-                    RearCamera = e.RearCamera,
-                    Remain = e.Remain,
-                    Rom = e.Rom,
-                    Screen = e.Screen
-                }).FirstOrDefault();
+                        where e.IsDeleted == false
+                        join d in context.Categories on e.CategoryId equals d.CategoryId
+                        join f in context.Brands on e.BrandId equals f.BrandId
+                        where e.ProductId == id
+                        select new ProductDetailViewModel
+                        {
+                            ProductId = e.ProductId,
+                            BrandId = e.BrandId,
+                            BrandName = f.Name,
+                            CategoryId = e.CategoryId,
+                            CategoryName = d.Name,
+                            CPU = e.CPU,
+                            Description = e.Description,
+                            FrontCamera = e.FrontCamera,
+                            Name = e.Name,
+                            OS = e.OS,
+                            Price = e.Price,
+                            Ram = e.Ram,
+                            RearCamera = e.RearCamera,
+                            Remain = e.Remain,
+                            Rom = e.Rom,
+                            Screen = e.Screen
+                        }).FirstOrDefault();
             return data;
         }
 

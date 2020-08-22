@@ -12,7 +12,7 @@
             {
                 @foreach (var image in images)
                  {
-                     <img src="~/images/carousel/@image.Name" height="200" class="mx-1 my-1"/>
+                     <img src="~/images/carousel/@image.Name" height="200" class="mx-1 my-1" />
                      <a class="remove-image" asp-controller="Dashboard" asp-action="RemoveCarouselImage" asp-route-id="@image.Id" style="display: inline;">&#215;</a>
                  }
             }
@@ -45,7 +45,6 @@
         </div>
     </div>
 </form>
-
 
 @section Scripts{
     <script>

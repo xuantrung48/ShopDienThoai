@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using ShopDienThoai.Models.UserModel;
 using ShopDienThoai.Models.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopDienThoai.ViewModels.User
 {
@@ -10,7 +10,7 @@ namespace ShopDienThoai.ViewModels.User
         public string UserId { get; set; }
 
         [DataType(DataType.Upload)]
-        [AllowedExtensions(new[] {".jpg", ".png"})]
+        [AllowedExtensions(new[] { ".jpg", ".png" })]
         [MaxFileSize(1 * 1024 * 1024)]
         public IFormFile ImageFile { get; set; }
 

@@ -6,10 +6,10 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <div class="col-md-10 col-lg-8 col-xl-6 mx-auto">
     <form class="form-signin" enctype="multipart/form-data" asp-controller="Account" asp-action="Index" method="post">
-        <input hidden asp-for="UserId" value="@Model.UserId"/>
-        <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture"/>
+        <input hidden asp-for="UserId" value="@Model.UserId" />
+        <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture" />
         <div class="form-label-group my-3">
-            <img id="profilePicture" src="@imagePath" width="100" style="display: none;" class="mx-auto d-block"/>
+            <img id="profilePicture" src="@imagePath" width="100" style="display: none;" class="mx-auto d-block" />
         </div>
         <div class="row my-3">
             <div class="col-4">

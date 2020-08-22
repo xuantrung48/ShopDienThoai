@@ -28,7 +28,7 @@
             {
                 <div>
                     <a href="~/images/products/@images[0].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình 1">
-                        <img src="~/images/products/@images[0].ImageName" class="img-fluid my-3" style="max-height: 450px; max-width: 100%"/>
+                        <img src="~/images/products/@images[0].ImageName" class="img-fluid my-3" style="max-height: 450px; max-width: 100%" />
                     </a>
                 </div>
                 <div class="row">
@@ -36,7 +36,7 @@
                         @for (var i = 1; i < images.Count; i++)
                         {
                             <a class="my-2 mx-1" href="~/images/products/@images[i].ImageName" data-toggle="lightbox" data-gallery="productImages" data-title="@Model.Name hình @(i + 1)">
-                                <img src="~/images/products/@images[i].ImageName" height="60"/>
+                                <img src="~/images/products/@images[i].ImageName" height="60" />
                             </a>
                         }
                     </div>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <h4>Thông số kỹ thuật:</h4>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Màn hình:
@@ -73,7 +73,7 @@
                 @Model.Screen
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Hệ điều hành:
@@ -82,7 +82,7 @@
                 @Model.OS
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Camera sau:
@@ -91,7 +91,7 @@
                 @Model.RearCamera
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Camera trước:
@@ -100,7 +100,7 @@
                 @Model.FrontCamera
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 CPU:
@@ -109,7 +109,7 @@
                 @Model.CPU
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Ram:
@@ -118,7 +118,7 @@
                 @Model.Ram GB
             </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-5">
                 Bộ nhớ trong:
@@ -127,7 +127,7 @@
                 @Model.Rom GB
             </div>
         </div>
-        <hr/>
+        <hr />
     </div>
 </div>
 <div class="row my-3">
@@ -169,8 +169,8 @@
 
                 <p>
                     <input type="text" id="amount" readonly style="border: 0; color: #f6931f; font-weight: bold;">
-                    <input hidden name="minPrice" id="minPrice"/>
-                    <input hidden name="maxPrice" id="maxPrice"/>
+                    <input hidden name="minPrice" id="minPrice" />
+                    <input hidden name="maxPrice" id="maxPrice" />
                 </p>
 
                 <div id="slider-range"></div>
@@ -183,7 +183,7 @@
                 </select>
             </div>
             <div class="list-group-item text-center">
-                <input class="btn btn-primary" type="submit" value="Tìm kiếm"/>
+                <input class="btn btn-primary" type="submit" value="Tìm kiếm" />
             </div>
         </form>
         <h5 class="bg-warning rounded text-center mt-1 py-2">Có thể bạn sẽ thích?</h5>
@@ -240,9 +240,9 @@
 
 @section lightboxcss{
     <environment include="Development">
-        <link href="~/lib/ekko-lightbox/ekko-lightbox.css" rel="stylesheet"/>
+        <link href="~/lib/ekko-lightbox/ekko-lightbox.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet" />
     </environment>
 }

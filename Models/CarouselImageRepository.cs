@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShopDienThoai.Models
 {
@@ -40,8 +40,8 @@ namespace ShopDienThoai.Models
         public CarouselImage Get(int id)
         {
             var image = (from e in context.CarouselImages
-                where e.Id == id
-                select e).FirstOrDefault();
+                         where e.Id == id
+                         select e).FirstOrDefault();
             return image;
         }
 

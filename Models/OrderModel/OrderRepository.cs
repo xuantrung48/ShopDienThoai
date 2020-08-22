@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShopDienThoai.Models.OrderModel
 {
@@ -38,8 +38,8 @@ namespace ShopDienThoai.Models.OrderModel
         public Order Get(string id)
         {
             var order = (from e in context.Orders
-                where e.OrderId == id
-                select e).FirstOrDefault();
+                         where e.OrderId == id
+                         select e).FirstOrDefault();
             return order;
         }
 

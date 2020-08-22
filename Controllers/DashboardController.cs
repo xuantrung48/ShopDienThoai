@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ShopDienThoai.Models;
 using ShopDienThoai.ViewModels;
+using System;
+using System.IO;
+using System.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,14 +35,14 @@ namespace ShopDienThoai.Controllers
         public IActionResult AppSetting()
         {
             var appSetting = (from s in context.AppSettings
-                select new AppSettingViewModel
-                {
-                    Icon = s.Icon,
-                    Logo = s.Logo,
-                    ShortDesc = s.ShortDesc,
-                    Title = s.Title,
-                    DefaultRoleId = s.DefaultRoleId
-                }).ToList().FirstOrDefault();
+                              select new AppSettingViewModel
+                              {
+                                  Icon = s.Icon,
+                                  Logo = s.Logo,
+                                  ShortDesc = s.ShortDesc,
+                                  Title = s.Title,
+                                  DefaultRoleId = s.DefaultRoleId
+                              }).ToList().FirstOrDefault();
             ViewBag.Roles = (from r in context.Roles select r).ToList();
             return View(appSetting);
         }

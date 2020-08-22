@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace ShopDienThoai.Models.ProductModel
 {
@@ -37,9 +37,9 @@ namespace ShopDienThoai.Models.ProductModel
         public Brand Get(int id)
         {
             var brand = (from e in context.Brands
-                where e.IsDeleted == false
-                      && e.BrandId == id
-                select e).FirstOrDefault();
+                         where e.IsDeleted == false
+                               && e.BrandId == id
+                         select e).FirstOrDefault();
             return brand;
         }
 

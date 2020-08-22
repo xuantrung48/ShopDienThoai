@@ -14,24 +14,24 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width" />
     <meta charset="UTF-8">
     <title>@(string.IsNullOrEmpty(title) ? $"{title}" : $"{title} - ")@appSetting.Title - @appSetting.ShortDesc</title>
     <environment include="Development">
-        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet"/>
-        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet"/>
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
+        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet"/>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet" />
     </environment>
     @RenderSection("PageNotFound", false)
     @RenderSection("LoginCSS", false)
     @RenderSection("lightboxcss", false)
     @RenderSection("datatablecss", false)
-    <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true"/>
+    <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true" />
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-warning rounded-bottom mb-3 container font-weight-bold">
@@ -72,7 +72,7 @@
                 var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle"/>&nbsp;
+                        <img src="@(!string.IsNullOrEmpty(currentUser.ProfilePicture) ? $"/images/users/{currentUser.ProfilePicture}" : "/images/users/0.png")" width="30 " height="30" class="rounded-circle" />&nbsp;
                         @currentUser.Name
                     </a>
                     <div class="dropdown-menu ">
@@ -112,7 +112,6 @@
         © @DateTime.Now.Year Copyright by Trung Nguyen
     </div>
     <!-- Copyright -->
-
 </footer>
 <!-- Footer -->
 <environment include="Development">

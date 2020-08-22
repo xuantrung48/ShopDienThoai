@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopDienThoai.Models;
 using ShopDienThoai.Models.OrderModel;
 using ShopDienThoai.ViewModels.Order;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ShopDienThoai.Controllers
 {
@@ -19,25 +19,25 @@ namespace ShopDienThoai.Controllers
         {
             this.context = context;
             orders = (from o in context.Orders
-                join c in context.Customers on o.CustomerId equals c.CustomerId
-                join u in context.Users on c.UserId equals u.Id
-                join d in context.OrderDetails on o.OrderId equals d.OrderId
-                join p in context.Products on d.ProductId equals p.ProductId
-                select new OrderDetailViewModel
-                {
-                    CustomerAddress = c.Address,
-                    CustomerName = c.CustomerName,
-                    CustomerPhoneNumber = c.PhoneNumber,
-                    OrderId = o.OrderId,
-                    OrderStatus = o.Status,
-                    OrderTime = o.OrderTime,
-                    CompleteTime = o.CompleteTime,
-                    ProductId = d.ProductId,
-                    ProductName = p.Name,
-                    ProductPrice = p.Price,
-                    UserId = u.Id,
-                    Note = o.Note
-                }).ToList();
+                      join c in context.Customers on o.CustomerId equals c.CustomerId
+                      join u in context.Users on c.UserId equals u.Id
+                      join d in context.OrderDetails on o.OrderId equals d.OrderId
+                      join p in context.Products on d.ProductId equals p.ProductId
+                      select new OrderDetailViewModel
+                      {
+                          CustomerAddress = c.Address,
+                          CustomerName = c.CustomerName,
+                          CustomerPhoneNumber = c.PhoneNumber,
+                          OrderId = o.OrderId,
+                          OrderStatus = o.Status,
+                          OrderTime = o.OrderTime,
+                          CompleteTime = o.CompleteTime,
+                          ProductId = d.ProductId,
+                          ProductName = p.Name,
+                          ProductPrice = p.Price,
+                          UserId = u.Id,
+                          Note = o.Note
+                      }).ToList();
         }
 
         public IActionResult PendingOrders()
@@ -96,7 +96,7 @@ namespace ShopDienThoai.Controllers
                 customer.CustomerName = model.CustomerName;
                 customer.PhoneNumber = model.CustomerPhoneNumber;
                 context.SaveChanges();
-                return RedirectToAction("Edit", "OrdersManager", new {id = model.OrderId});
+                return RedirectToAction("Edit", "OrdersManager", new { id = model.OrderId });
             }
 
             return View();

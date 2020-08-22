@@ -5,10 +5,10 @@
 }
 <form class="form-signin" enctype="multipart/form-data" asp-controller="UsersManager" asp-action="Edit" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input hidden asp-for="UserId" value="@Model.UserId"/>
-    <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture"/>
+    <input hidden asp-for="UserId" value="@Model.UserId" />
+    <input hidden asp-for="ProfilePicture" value="@Model.ProfilePicture" />
     <div class="form-label-group">
-        <img id="profilePicture" src="@(!string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png")" width="100" style="display: none;" class="mx-auto d-block my-3"/>
+        <img id="profilePicture" src="@(!string.IsNullOrEmpty(Model.ProfilePicture) ? $"/images/users/{Model.ProfilePicture}" : "/images/users/0.png")" width="100" style="display: none;" class="mx-auto d-block my-3" />
     </div>
 
     <div class="row form-group">

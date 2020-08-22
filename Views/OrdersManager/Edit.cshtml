@@ -3,10 +3,10 @@
     ViewBag.Title = "Chi tiết đơn hàng";
 }
 <form asp-controller="OrdersManager" asp-action="Edit" method="post">
-    <input hidden asp-for="OrderId" value="@Model.OrderId"/>
-    <input hidden asp-for="ProductId" value="@Model.ProductId"/>
-    <input hidden asp-for="ProductName" value="@Model.ProductName"/>
-    <input hidden asp-for="UserId" value="@Model.UserId"/>
+    <input hidden asp-for="OrderId" value="@Model.OrderId" />
+    <input hidden asp-for="ProductId" value="@Model.ProductId" />
+    <input hidden asp-for="ProductName" value="@Model.ProductName" />
+    <input hidden asp-for="UserId" value="@Model.UserId" />
     <div class="row form-group">
         <div class="col-md-3">
             ID Đơn hàng

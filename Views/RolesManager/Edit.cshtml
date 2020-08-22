@@ -5,7 +5,7 @@
 }
 <form asp-controller="RolesManager" asp-action="Edit" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <input asp-for="RoleId" hidden/>
+    <input asp-for="RoleId" hidden />
     <div class="row form-group">
         <div class="col-md-3">
             <label asp-for="Name">Tên vai trò: </label>
@@ -38,7 +38,6 @@
                 </button>
             </div>
 
-
             @if (usersCount == 0)
             {
                 <div class="modal-body">
@@ -58,9 +57,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ</button>
                 </div>
             }
-
-
-
         </div>
     </div>
 </div>

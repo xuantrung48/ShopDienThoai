@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ShopDienThoai.Models.ProductModel;
+﻿using ShopDienThoai.Models.ProductModel;
+using System.Collections.Generic;
 
 namespace ShopDienThoai.ViewModels.Product
 {

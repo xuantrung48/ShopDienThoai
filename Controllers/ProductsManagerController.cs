@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ShopDienThoai.Models;
 using ShopDienThoai.Models.ProductModel;
 using ShopDienThoai.ViewModels.Product;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ShopDienThoai.Controllers
 {
@@ -91,7 +91,7 @@ namespace ShopDienThoai.Controllers
                     }
                 }
 
-                return RedirectToAction("ViewProduct", "Home", new {id = createProduct.ProductId});
+                return RedirectToAction("ViewProduct", "Home", new { id = createProduct.ProductId });
             }
 
             ViewBag.Categories = categoryRepository.Get();
@@ -106,8 +106,8 @@ namespace ShopDienThoai.Controllers
             ViewBag.Brands = brandRepository.Get();
             var product = productRepository.Get(id);
             ViewBag.Images = (from e in context.Images
-                where e.ProductId == product.ProductId
-                select e).ToList();
+                              where e.ProductId == product.ProductId
+                              select e).ToList();
             if (product == null) return View("~/Views/Error/PageNotFound.cshtml");
             var editProduct = new EditProductViewModel
             {
@@ -200,12 +200,12 @@ namespace ShopDienThoai.Controllers
         public IActionResult RemoveImage(string id, string imgId)
         {
             var fileName = (from e in context.Images
-                where e.ImageId == imgId
-                select e).ToList().FirstOrDefault().ImageName;
+                            where e.ImageId == imgId
+                            select e).ToList().FirstOrDefault().ImageName;
             imageRepository.Remove(imgId);
             var delFile = Path.Combine(webHostEnvironment.WebRootPath, "images\\products", fileName);
             System.IO.File.Delete(delFile);
-            return RedirectToAction("Edit", new {id});
+            return RedirectToAction("Edit", new { id });
         }
     }
 }

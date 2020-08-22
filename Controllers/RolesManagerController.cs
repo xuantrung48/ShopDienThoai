@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopDienThoai.Models;
 using ShopDienThoai.Models.UserModel;
 using ShopDienThoai.ViewModels.Role;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopDienThoai.Controllers
 {
@@ -69,9 +69,9 @@ namespace ShopDienThoai.Controllers
                     Name = role.Name
                 };
                 ViewBag.UsersCount = (from u in context.Users
-                    join r in context.UserRoles on u.Id equals r.UserId
-                    where r.RoleId == id
-                    select u).ToList().Count;
+                                      join r in context.UserRoles on u.Id equals r.UserId
+                                      where r.RoleId == id
+                                      select u).ToList().Count;
                 return View(model);
             }
 
@@ -103,9 +103,9 @@ namespace ShopDienThoai.Controllers
             if (delRole != null)
             {
                 var usersCount = (from u in context.Users
-                    join r in context.UserRoles on u.Id equals r.UserId
-                    where r.RoleId == id
-                    select u).ToList().Count;
+                                  join r in context.UserRoles on u.Id equals r.UserId
+                                  where r.RoleId == id
+                                  select u).ToList().Count;
                 if (usersCount == 0)
                 {
                     var result = await roleManager.DeleteAsync(delRole);

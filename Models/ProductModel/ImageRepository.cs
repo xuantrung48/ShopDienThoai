@@ -21,8 +21,8 @@ namespace ShopDienThoai.Models.ProductModel
         public Image Get(string id)
         {
             var image = (from e in context.Images
-                where e.ImageId == id
-                select e).FirstOrDefault();
+                         where e.ImageId == id
+                         select e).FirstOrDefault();
             return image;
         }
 

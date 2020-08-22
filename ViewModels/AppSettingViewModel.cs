@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using ShopDienThoai.Models.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopDienThoai.ViewModels
 {
@@ -16,12 +16,12 @@ namespace ShopDienThoai.ViewModels
         public string Icon { get; set; }
 
         [DataType(DataType.Upload)]
-        [AllowedExtensions(new[] {".jpg", ".png"})]
+        [AllowedExtensions(new[] { ".jpg", ".png" })]
         [MaxFileSize(1 * 1024 * 1024)]
         public IFormFile LogoFile { get; set; }
 
         [DataType(DataType.Upload)]
-        [AllowedExtensions(new[] {".jpg", ".png"})]
+        [AllowedExtensions(new[] { ".jpg", ".png" })]
         [MaxFileSize(1 * 1024 * 1024)]
         public IFormFile IconFile { get; set; }
 

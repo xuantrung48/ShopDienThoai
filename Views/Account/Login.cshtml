@@ -15,8 +15,8 @@
                     <h3 class="card-title">@ViewBag.Title</h3>
                 </div>
                 <form class="form-signin" asp-controller="Account" asp-action="Login" method="post">
-                    <input hidden asp-for="ReturnUrl" value="@ViewBag.ReturnUrl"/>
-                    <input hidden asp-for="ProductId" value="@ViewBag.ProductId"/>
+                    <input hidden asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                    <input hidden asp-for="ProductId" value="@ViewBag.ProductId" />
                     <div class="form-label-group">
                         <input asp-for="Email" class="form-control" placeholder="Email">
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -44,7 +44,7 @@
 
 @section LoginCSS
 {
-    <link href="~/lib/css/LoginCSS.css" rel="stylesheet"/>
+    <link href="~/lib/css/LoginCSS.css" rel="stylesheet" />
 }
 
 @section ValidateScript

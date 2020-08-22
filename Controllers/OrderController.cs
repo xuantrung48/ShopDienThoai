@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopDienThoai.Models;
 using ShopDienThoai.Models.OrderModel;
 using ShopDienThoai.Models.ProductModel;
 using ShopDienThoai.Models.UserModel;
 using ShopDienThoai.ViewModels.Order;
+using System;
+using System.Linq;
 
 namespace ShopDienThoai.Controllers
 {
@@ -41,7 +41,7 @@ namespace ShopDienThoai.Controllers
         public IActionResult Buy(string id)
         {
             if (signInManager.IsSignedIn(User))
-                return RedirectToAction("UserBuy", new {ProductId = id});
+                return RedirectToAction("UserBuy", new { ProductId = id });
             ViewBag.ProductId = id;
             ViewBag.Product = (from p in context.Products where p.IsDeleted == false && p.ProductId == id select p)
                 .ToList().FirstOrDefault();
@@ -108,7 +108,7 @@ namespace ShopDienThoai.Controllers
                 var createOrderDetail = orderDetailRepository.Create(orderDetail);
                 context.Products.Find(model.ProductId).Remain -= 1;
                 context.SaveChanges();
-                return RedirectToAction("OrderDetail", new {id = createOrder.OrderId});
+                return RedirectToAction("OrderDetail", new { id = createOrder.OrderId });
             }
 
             return View();
@@ -117,30 +117,30 @@ namespace ShopDienThoai.Controllers
         public IActionResult OrderDetail(string id)
         {
             var orderDetail = (from o in context.Orders
-                where o.OrderId == id
-                join d in context.OrderDetails on o.OrderId equals d.OrderId
-                join c in context.Customers on o.CustomerId equals c.CustomerId
-                join p in context.Products on d.ProductId equals p.ProductId
-                select new OrderDetailViewModel
-                {
-                    OrderId = o.OrderId,
-                    ProductId = p.ProductId,
-                    CustomerAddress = c.Address,
-                    CustomerName = c.CustomerName,
-                    CustomerPhoneNumber = c.PhoneNumber,
-                    OrderTime = o.OrderTime,
-                    CompleteTime = o.CompleteTime,
-                    ProductName = p.Name,
-                    ProductPrice = p.Price,
-                    OrderStatus = o.Status,
-                    Note = o.Note
-                }).ToList().FirstOrDefault();
+                               where o.OrderId == id
+                               join d in context.OrderDetails on o.OrderId equals d.OrderId
+                               join c in context.Customers on o.CustomerId equals c.CustomerId
+                               join p in context.Products on d.ProductId equals p.ProductId
+                               select new OrderDetailViewModel
+                               {
+                                   OrderId = o.OrderId,
+                                   ProductId = p.ProductId,
+                                   CustomerAddress = c.Address,
+                                   CustomerName = c.CustomerName,
+                                   CustomerPhoneNumber = c.PhoneNumber,
+                                   OrderTime = o.OrderTime,
+                                   CompleteTime = o.CompleteTime,
+                                   ProductName = p.Name,
+                                   ProductPrice = p.Price,
+                                   OrderStatus = o.Status,
+                                   Note = o.Note
+                               }).ToList().FirstOrDefault();
             ViewBag.OrderId = id;
             ViewBag.UserOrder = (from u in context.Users
-                join c in context.Customers on u.Id equals c.UserId
-                join o in context.Orders on c.CustomerId equals o.CustomerId
-                where o.OrderId == id
-                select u).ToList().FirstOrDefault();
+                                 join c in context.Customers on u.Id equals c.UserId
+                                 join o in context.Orders on c.CustomerId equals o.CustomerId
+                                 where o.OrderId == id
+                                 select u).ToList().FirstOrDefault();
             return View(orderDetail);
         }
 
@@ -149,10 +149,10 @@ namespace ShopDienThoai.Controllers
             var order = (from o in context.Orders where o.OrderId == id select o).ToList().FirstOrDefault();
             if (order.Status != OrderStatus.Pending) return RedirectToAction("Index", "Home");
             var userOrder = (from u in context.Users
-                join c in context.Customers on u.Id equals c.UserId
-                join o in context.Orders on c.CustomerId equals o.CustomerId
-                where o.OrderId == id
-                select u).ToList().FirstOrDefault();
+                             join c in context.Customers on u.Id equals c.UserId
+                             join o in context.Orders on c.CustomerId equals o.CustomerId
+                             where o.OrderId == id
+                             select u).ToList().FirstOrDefault();
 
             var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
             if (userOrder.Id == currentUser.Id)
@@ -161,10 +161,10 @@ namespace ShopDienThoai.Controllers
                 editOrder.Status = OrderStatus.Canceled;
                 editOrder.CompleteTime = DateTime.Now;
                 var productId = (from p in context.Products
-                    join d in context.OrderDetails on p.ProductId equals d.ProductId
-                    join o in context.Orders on d.OrderId equals o.OrderId
-                    where d.OrderId == id
-                    select p).ToList().FirstOrDefault().ProductId;
+                                 join d in context.OrderDetails on p.ProductId equals d.ProductId
+                                 join o in context.Orders on d.OrderId equals o.OrderId
+                                 where d.OrderId == id
+                                 select p).ToList().FirstOrDefault().ProductId;
                 context.Products.Find(productId).Remain += 1;
                 context.SaveChanges();
                 return RedirectToAction("Orders", "Account");
@@ -185,10 +185,10 @@ namespace ShopDienThoai.Controllers
             if (order == null)
                 return RedirectToAction("Index", "Home");
             var userOrder = (from u in context.Users
-                join c in context.Customers on u.Id equals c.UserId
-                join o in context.Orders on c.CustomerId equals o.CustomerId
-                where o.OrderId == id
-                select u).ToList().FirstOrDefault();
+                             join c in context.Customers on u.Id equals c.UserId
+                             join o in context.Orders on c.CustomerId equals o.CustomerId
+                             where o.OrderId == id
+                             select u).ToList().FirstOrDefault();
             if (!signInManager.IsSignedIn(User))
                 return RedirectToAction("Index", "Home");
             var currentUser = userManager.FindByNameAsync(User.Identity.Name).Result;
@@ -196,23 +196,23 @@ namespace ShopDienThoai.Controllers
                 return RedirectToAction("Index", "Home");
 
             var orderDetail = (from o in context.Orders
-                where o.OrderId == id
-                join d in context.OrderDetails on o.OrderId equals d.OrderId
-                join c in context.Customers on o.CustomerId equals c.CustomerId
-                join p in context.Products on d.ProductId equals p.ProductId
-                select new OrderDetailViewModel
-                {
-                    OrderId = o.OrderId,
-                    ProductId = p.ProductId,
-                    CustomerAddress = c.Address,
-                    CustomerName = c.CustomerName,
-                    CustomerPhoneNumber = c.PhoneNumber,
-                    OrderTime = o.OrderTime,
-                    CompleteTime = o.CompleteTime,
-                    ProductName = p.Name,
-                    ProductPrice = p.Price,
-                    OrderStatus = o.Status
-                }).ToList().FirstOrDefault();
+                               where o.OrderId == id
+                               join d in context.OrderDetails on o.OrderId equals d.OrderId
+                               join c in context.Customers on o.CustomerId equals c.CustomerId
+                               join p in context.Products on d.ProductId equals p.ProductId
+                               select new OrderDetailViewModel
+                               {
+                                   OrderId = o.OrderId,
+                                   ProductId = p.ProductId,
+                                   CustomerAddress = c.Address,
+                                   CustomerName = c.CustomerName,
+                                   CustomerPhoneNumber = c.PhoneNumber,
+                                   OrderTime = o.OrderTime,
+                                   CompleteTime = o.CompleteTime,
+                                   ProductName = p.Name,
+                                   ProductPrice = p.Price,
+                                   OrderStatus = o.Status
+                               }).ToList().FirstOrDefault();
             return View(orderDetail);
         }
 
@@ -222,14 +222,14 @@ namespace ShopDienThoai.Controllers
             if (ModelState.IsValid)
             {
                 var customer = (from c in context.Customers
-                    join o in context.Orders on c.CustomerId equals o.CustomerId
-                    where o.OrderId == model.OrderId
-                    select c).ToList().FirstOrDefault();
+                                join o in context.Orders on c.CustomerId equals o.CustomerId
+                                where o.OrderId == model.OrderId
+                                select c).ToList().FirstOrDefault();
                 customer.Address = model.CustomerAddress;
                 customer.PhoneNumber = model.CustomerPhoneNumber;
                 customer.CustomerName = model.CustomerName;
                 context.SaveChanges();
-                return RedirectToAction("OrderDetail", "Order", new {id = model.OrderId});
+                return RedirectToAction("OrderDetail", "Order", new { id = model.OrderId });
             }
 
             return View();

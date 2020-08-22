@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ShopDienThoai.Models;
+using ShopDienThoai.Models.OrderModel;
+using ShopDienThoai.Models.ProductModel;
+using ShopDienThoai.Models.UserModel;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using TheGioiDienThoai.Models;
-using TheGioiDienThoai.Models.OrderModel;
-using TheGioiDienThoai.Models.ProductModel;
-using TheGioiDienThoai.Models.UserModel;
-using TheGioiDienThoai.ViewModels.Order;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TheGioiDienThoai.Controllers
+namespace ShopDienThoai.Controllers
 {
     public class HomeController : Controller
     {
@@ -26,6 +23,7 @@ namespace TheGioiDienThoai.Controllers
         private readonly ICustomerRepository customerRepository;
         private readonly IOrderDetailRepository orderDetailRepository;
         private readonly ICarouselImageRepository carouselImageRepository;
+
         public HomeController(IProductRepository productRepository, IBrandRepository brandRepository, ICategoryRepository categoryRepository, AppDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, IOrderRepository orderRepository, ICustomerRepository customerRepository, IOrderDetailRepository orderDetailRepository, ICarouselImageRepository carouselImageRepository)
         {
             this.context = context;
@@ -39,6 +37,7 @@ namespace TheGioiDienThoai.Controllers
             this.orderDetailRepository = orderDetailRepository;
             this.carouselImageRepository = carouselImageRepository;
         }
+
         public IActionResult Index()
         {
             ViewBag.Brands = brandRepository.Get().ToList();
@@ -47,6 +46,7 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.CarouselImages = carouselImageRepository.Get().ToList();
             return View();
         }
+
         public IActionResult ViewProduct(string id)
         {
             var product = productRepository.Get(id);
@@ -68,12 +68,14 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.RelatedProducts = relatedProducts.Take(6);
             return View(product);
         }
+
         public IActionResult Search(int categoryId, int brandId, string keyWord, int minPrice, int maxPrice, string sortByPrice, int page = 1)
         {
             string key = string.Empty;
             if (keyWord != null)
                 key = keyWord.ToLower();
-            var products = (from p in context.Products where p.Remain > 0
+            var products = (from p in context.Products
+                            where p.Remain > 0
                             join c in context.Categories on p.CategoryId equals c.CategoryId
                             join b in context.Brands on p.BrandId equals b.BrandId
                             where ((p.FrontCamera.ToLower().Contains(key) ||
@@ -89,12 +91,12 @@ namespace TheGioiDienThoai.Controllers
                 products = (from p in products
                             where (p.BrandId == brandId)
                             select p).ToList();
-            
+
             if (categoryId != 0 && brandId == 0)
                 products = (from p in products
                             where (p.CategoryId == categoryId)
                             select p).ToList();
-            
+
             if (categoryId != 0 && brandId != 0)
                 products = (from p in products
                             where (p.CategoryId == categoryId) &&
@@ -125,6 +127,7 @@ namespace TheGioiDienThoai.Controllers
             ViewBag.Page = page;
             return View(products.Skip(page * 12 - 12).Take(12).ToList());
         }
+
         public IActionResult Category(int id, int page = 1)
         {
             var products = (from p in context.Products where p.CategoryId == id && p.Remain > 0 select p).ToList();

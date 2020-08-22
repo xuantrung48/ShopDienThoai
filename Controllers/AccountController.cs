@@ -21,6 +21,7 @@ namespace ShopDienThoai.Controllers
         private readonly IUserRepository userRepository;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly AppDbContext context;
+
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment webHostEnvironment, IUserRepository userRepository, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
             this.userManager = userManager;
@@ -30,6 +31,7 @@ namespace ShopDienThoai.Controllers
             this.roleManager = roleManager;
             this.context = context;
         }
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -50,6 +52,7 @@ namespace ShopDienThoai.Controllers
             }
             return RedirectToAction("Login", "Account");
         }
+
         [HttpPost]
         public IActionResult Index(UserViewModel model)
         {
@@ -85,6 +88,7 @@ namespace ShopDienThoai.Controllers
             }
             return RedirectToAction("Index", "Account");
         }
+
         [HttpGet]
         public IActionResult Login(string returnUrl, string productId)
         {
@@ -97,6 +101,7 @@ namespace ShopDienThoai.Controllers
             ViewBag.Product = (from p in context.Products where p.ProductId == productId select p).ToList().FirstOrDefault();
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -121,6 +126,7 @@ namespace ShopDienThoai.Controllers
             }
             return View();
         }
+
         [HttpGet]
         public IActionResult Register(string productId)
         {
@@ -132,6 +138,7 @@ namespace ShopDienThoai.Controllers
             ViewBag.Product = (from p in context.Products where p.ProductId == productId select p).ToList().FirstOrDefault();
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -177,6 +184,7 @@ namespace ShopDienThoai.Controllers
             }
             return View();
         }
+
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -186,6 +194,7 @@ namespace ShopDienThoai.Controllers
             }
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -206,15 +215,18 @@ namespace ShopDienThoai.Controllers
             }
             return View();
         }
+
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
         public IActionResult AccessDenied()
         {
             return View();
         }
+
         public IActionResult Orders()
         {
             if (signInManager.IsSignedIn(User))

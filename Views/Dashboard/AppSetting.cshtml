@@ -5,13 +5,13 @@
 }
 
 <form enctype="multipart/form-data" asp-controller="Dashboard" asp-action="AppSetting" method="post">
-    <input asp-for="Logo" value="@Model.Logo" hidden/>
-    <input asp-for="Icon" value="@Model.Icon" hidden/>
+    <input asp-for="Logo" value="@Model.Logo" hidden />
+    <input asp-for="Icon" value="@Model.Icon" hidden />
     <div class="row form-group">
         <div class="col-md-3">
         </div>
         <div class="col-md-9">
-            <img id="logoImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Logo}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true"/>
+            <img id="logoImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Logo}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true" />
         </div>
     </div>
     <div class="row form-group">
@@ -28,7 +28,7 @@
         <div class="col-md-3">
         </div>
         <div class="col-md-9">
-            <img id="iconImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Icon}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true"/>
+            <img id="iconImage" src="@(!string.IsNullOrEmpty(Model.Logo) ? $"/images/{Model.Icon}" : "/images/0.png")" width="150" style="display: none;" class="mx-auto d-block my-3" asp-append-version="true" />
         </div>
     </div>
 

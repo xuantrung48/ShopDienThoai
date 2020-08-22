@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ShopDienThoai.Models.OrderModel;
+using System;
 using System.ComponentModel.DataAnnotations;
-using ShopDienThoai.Models.OrderModel;
 
 namespace ShopDienThoai.ViewModels.Order
 {

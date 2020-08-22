@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ShopDienThoai.Models.UserModel;
+﻿using ShopDienThoai.Models.UserModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopDienThoai.Models.OrderModel
 {

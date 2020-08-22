@@ -12,7 +12,7 @@
                 <form class="form-signin" enctype="multipart/form-data" asp-controller="Order" asp-action="Order" method="post">
                     <h4 class="mb-3">Thông tin khách hàng</h4>
 
-                    <input hidden asp-for="ProductId" value="@product.ProductId"/>
+                    <input hidden asp-for="ProductId" value="@product.ProductId" />
                     <div class="form-label-group">
                         <input asp-for="Name" class="form-control" placeholder="Tên người nhận hàng">
                         <span asp-validation-for="Name" class="text-danger"></span>
@@ -26,7 +26,6 @@
                         <input asp-for="PhoneNumber" class="form-control" placeholder="Số điện thoại người nhận hàng">
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
-
 
                     <h4>Thông tin sản phẩm</h4>
                     <div class="row my-3">
@@ -57,7 +56,7 @@
 
 @section LoginCSS
 {
-    <link href="~/lib/css/LoginCSS.css" rel="stylesheet"/>
+    <link href="~/lib/css/LoginCSS.css" rel="stylesheet" />
 }
 
 @section ValidateScript

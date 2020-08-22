@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace ShopDienThoai.Models.Validation
 {
@@ -21,7 +21,6 @@ namespace ShopDienThoai.Models.Validation
                 if (file != null)
                     if (file.Length > _maxFileSize)
                         return new ValidationResult(GetErrorMessage());
-
 
             return ValidationResult.Success;
         }

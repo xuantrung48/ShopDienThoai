@@ -16,9 +16,9 @@
                 </div>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <form class="form-signin" enctype="multipart/form-data" asp-controller="Account" asp-action="Register" method="post">
-                    <input hidden asp-for="ProductId" value="@ViewBag.ProductId"/>
+                    <input hidden asp-for="ProductId" value="@ViewBag.ProductId" />
                     <div class="form-label-group">
-                        <img id="profilePicture" src="" width="200" style="display: none;" class="mx-auto d-block"/>
+                        <img id="profilePicture" src="" width="200" style="display: none;" class="mx-auto d-block" />
                     </div>
 
                     <div class="form-label-group custom-file">
@@ -79,7 +79,7 @@
 
 @section LoginCSS
 {
-    <link href="~/lib/css/LoginCSS.css" rel="stylesheet"/>
+    <link href="~/lib/css/LoginCSS.css" rel="stylesheet" />
 }
 
 @section ValidateScript
