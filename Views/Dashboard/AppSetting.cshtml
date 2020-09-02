@@ -88,7 +88,7 @@
     </div>
 </form>
 
-@section ValidateScript
+@section scripts
 {
     <environment include="Development">
         <script src="~/lib/jquery-validate/jquery.validate.js"></script>
@@ -98,19 +98,16 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     </environment>
-}
-
-@section Scripts{
     <script>
         $(".custom-file-input").on("change",
-            function() {
+            function () {
                 var fileName = $(this).val().split("\\").pop();
                 $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
             });
-        $('#i_file1').change(function(event) {
+        $('#i_file1').change(function (event) {
             $("#logoImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
-        $('#i_file2').change(function(event) {
+        $('#i_file2').change(function (event) {
             $("#iconImage").fadeIn("fast").attr('src', URL.createObjectURL(event.target.files[0]));
         });
     </script>

@@ -161,15 +161,25 @@
     </div>
 </form>
 
-@section Scripts{
+@section scripts{
+    <environment include="Development">
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/tinymce/tinymce.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
+    </environment>
     <script>
-        $(function() {
-            var imagesPreview = function(input, placeToInsertImagePreview) {
+        $(function () {
+            var imagesPreview = function (input, placeToInsertImagePreview) {
                 if (input.files) {
                     var filesAmount = input.files.length;
                     for (i = 0; i < filesAmount; i++) {
                         var reader = new FileReader();
-                        reader.onload = function(event) {
+                        reader.onload = function (event) {
                             $($.parseHTML('<img>')).attr('src', event.target.result).attr('height', '200px')
                                 .attr('class', 'mx-1 my-1').appendTo(placeToInsertImagePreview);
                         };
@@ -179,7 +189,7 @@
             };
 
             $('#i_file').on('change',
-                function() {
+                function () {
                     $("div.gallery").empty();
                     imagesPreview(this, 'div.gallery');
                     var fileLabel = $(this).next('.custom-file-label');
@@ -191,66 +201,23 @@
                     }
                 });
         });
+        tinymce.init({
+            selector: 'textarea',
+            theme: 'modern',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1:
+                'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons',
+            image_advtab: true,
+            content_css: [
+                '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+                '//www.tinymce.com/css/codepen.min.css'
+            ]
+        });
     </script>
-}
-
-@section tinyMCE{
-    <environment include="Development">
-        <script src="~/lib/tinymce/tinymce.min.js"></script>
-        <script>
-            tinymce.init({
-                selector: 'textarea',
-                theme: 'modern',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                    'searchreplace wordcount visualblocks visualchars code fullscreen',
-                    'insertdatetime media nonbreaking save table contextmenu directionality',
-                    'emoticons paste textcolor colorpicker textpattern imagetools'
-                ],
-                toolbar1:
-                    'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                toolbar2: 'print preview media | forecolor backcolor emoticons',
-                image_advtab: true,
-                content_css: [
-                    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-                    '//www.tinymce.com/css/codepen.min.css'
-                ]
-            });
-        </script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
-        <script>
-            tinymce.init({
-                selector: 'textarea',
-                theme: 'modern',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                    'searchreplace wordcount visualblocks visualchars code fullscreen',
-                    'insertdatetime media nonbreaking save table contextmenu directionality',
-                    'emoticons paste textcolor colorpicker textpattern imagetools'
-                ],
-                toolbar1:
-                    'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                toolbar2: 'print preview media | forecolor backcolor emoticons',
-                image_advtab: true,
-                content_css: [
-                    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-                    '//www.tinymce.com/css/codepen.min.css'
-                ]
-            });
-        </script>
-    </environment>
-}
-
-@section ValidateScript
-{
-    <environment include="Development">
-        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-    </environment>
 }

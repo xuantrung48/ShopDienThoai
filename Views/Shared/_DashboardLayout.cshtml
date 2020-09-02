@@ -16,9 +16,7 @@
     <title>@ViewBag.Title</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet" />
-    @RenderSection("lightboxcss", false)
-    @RenderSection("datatablecss", false)
-    @RenderSection("RemoveImageCss", false)
+    @RenderSection("styles", false)
     <link href="~/lib/css/DashboardStyles.css" rel="stylesheet" />
     <link rel="icon" href="~/images/@appSetting.Icon" asp-append-version="true" />
 </head>
@@ -156,10 +154,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js"></script>
 </environment>
 <script src="~/lib/js/DashboardScripts.js"></script>
-@RenderSection("Scripts", false)
-@RenderSection("ValidateScript", false)
-@RenderSection("lightboxjs", false)
-@RenderSection("datatablejs", false)
-@RenderSection("tinyMCE", false)
+@RenderSection("scripts", false)
 </body>
 </html>

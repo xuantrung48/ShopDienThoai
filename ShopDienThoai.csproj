@@ -5,6 +5,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <OutputType>Exe</OutputType>
     <StartupObject></StartupObject>
+    <UserSecretsId>e416c37d-95c1-476f-9b52-44bb97803793</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
