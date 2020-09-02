@@ -41,7 +41,7 @@ namespace ShopDienThoai.Controllers
         public IActionResult Buy(string id)
         {
             if (signInManager.IsSignedIn(User))
-                return RedirectToAction("UserBuy", new { ProductId = id });
+                return RedirectToAction("Order", new { ProductId = id });
             ViewBag.ProductId = id;
             ViewBag.Product = (from p in context.Products where p.IsDeleted == false && p.ProductId == id select p)
                 .ToList().FirstOrDefault();
